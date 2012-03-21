@@ -1,0 +1,7 @@
+/ve/
+*.pyc
+*.py~
+*.db
+*.html~
+*.log
+/newsconnector/static/

@@ -1,0 +1,73 @@
+.topmenu{
+	width: 100%; /* MUS be specified in px, % or em to center wrapper */
+	margin-top: -14px;
+	position: fixed;
+	z-index:999999;
+}
+ul#topMenuNavigation {
+    padding: 0px;
+    list-style: none;
+	text-align: center;
+	width:320px;
+	margin: auto;
+}
+ul#topMenuNavigation li {
+    width: 103px;
+    display:inline;
+    float:left;    
+}
+ul#topMenuNavigation li a {
+    display: block;
+    float:left;
+    margin-top: -2px;
+    width: 100px;
+    height: 40px;
+    background-color:#ccc;
+    background-repeat:no-repeat;
+    background-position:50% 10px;
+    border:1px solid #aaa;
+    -moz-border-radius:0px 0px 10px 10px;
+    -webkit-border-bottom-right-radius: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -khtml-border-bottom-right-radius: 10px;
+    -khtml-border-bottom-left-radius: 10px;
+    text-decoration:none;
+    text-align:center;
+    padding-top:80px;
+    opacity: 0.7;
+    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);  
+}
+ul#topMenuNavigation li a:hover{
+     background-color:#eee;
+	 border:1px solid #ccc;
+	 opacity: 1;
+	 filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);  
+}
+ul#topMenuNavigation li a span{
+    letter-spacing:2px;
+    font-size:11px;
+	font-weight: bold;
+    color:#000;
+    text-shadow: 0 -1px 1px #fff;      
+}
+ul#topMenuNavigation .home a{
+    background-image: url(../images/home.png);
+}
+ul#topMenuNavigation .photomap a      {
+    background-image: url(../images/photomap.png);
+}
+ul#topMenuNavigation .newsconnector a      {
+    background-image: url(../images/news.png);
+}
+ul#topMenuNavigation .podcasts a      {
+    background-image: url(../images/ipod.png);
+}
+ul#topMenuNavigation .rssfeed a   {
+    background-image: url(../images/rss.png);
+}
+ul#topMenuNavigation .photos a     {
+    background-image: url(../images/camera.png);
+}
+ul#topMenuNavigation .contact a    {
+    background-image: url(../images/mail.png);
+}

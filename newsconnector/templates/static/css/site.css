@@ -1,0 +1,21 @@
+body{
+	font-family:Arial;
+}
+
+.footer{
+	text-align: center;
+	margin: 20px;
+	margin-bottom: 60px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: bold;
+	position: relative;
+}
+
+.footer a{
+	text-decoration: none;
+}
+
+.footer a:hover{
+	text-decoration: underline;
+}

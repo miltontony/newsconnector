@@ -1,0 +1,84 @@
+<html lang="en">
+<head>
+<title>Home :: News Connector</title>
+<style>
+#infovis-canvaswidget {
+  margin:25px 0 0 25px;
+  cursor: move;
+}
+	
+#infovis {
+    position:relative;
+    width:100%;
+    height:100%;
+    margin:auto;
+    overflow:hidden;
+    cursor: move;
+}
+
+#nav{
+    position: absolute;
+    top: 0;
+    width: 95%;
+    text-align: center;
+}
+
+#nav a{
+    width: 200px;
+}
+
+/*TOOLTIPS*/
+.tip {
+    color: #111;
+    width: 139px;
+    background-color: white;
+    border:1px solid #ccc;
+    -moz-box-shadow:#555 2px 2px 8px;
+    -webkit-box-shadow:#555 2px 2px 8px;
+    -o-box-shadow:#555 2px 2px 8px;
+    box-shadow:#555 2px 2px 8px;
+    opacity:0.9;
+    filter:alpha(opacity=90);
+    font-size:10px;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
+    padding:7px;
+}	
+</style>
+
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css" />
+<!-- JIT Library File -->
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jit-yc.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.ui.1.8.min.js"></script>
+
+<!-- Example File -->
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/graph.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	data = {{data|safe}};
+	init(data);
+})	
+</script>
+</head>
+<body>
+<div class="container">
+<div id="container">
+	<div id="center-container">
+	    <div id="infovis"></div>    
+	</div>
+</div>
+<div id="nav">
+	<a id="center" href="#">Reset</a>
+	<a id="zoom-in" href="#">Zoom In</a>
+	<a id="zoom-out" href="#">Zoom Out</a>
+</div>
+<div id="log"></div>
+</body>
+<div id="tooltip" style="display:none"></div>
+
+<!-- Codrops top bar -->
+<section class="ac-container" id="article-details">
+</section>
+</div>
+</body>
+</html>
