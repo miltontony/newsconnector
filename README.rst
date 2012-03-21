@@ -1,12 +1,13 @@
 Newsconnector
-=================
+============
 
 A python app that relates news stories graphically sourced via rss feeds
 
 Getting it running
 ------------------
 
-From a terminal run the following::
+#. From a terminal run the following::
+
     $ git clone git://github.com/miltontony/newsconnector.git
     $ cd newsconnector
     $ virtualenv --no-site-packages ve
