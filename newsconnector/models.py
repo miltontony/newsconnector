@@ -1,12 +1,15 @@
 from django.db import models
 from datetime import datetime
 from django.utils.hashcompat import md5_constructor
+from time import mktime
+from datetime import datetime
 
 import lxml.html
     
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
     date_added = models.DateTimeField(auto_now_add = True)
+    date = models.DateTimeField(null=True, blank=True)
     title = models.TextField()
     link = models.TextField()
     content = models.TextField()
@@ -25,6 +28,7 @@ class Article(models.Model):
             a.link = dictArticle.link
             a.content = lxml.html.fromstring(dictArticle.description).text_content()
             a.source = source
+            a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
             a.save()
             return a
         return a

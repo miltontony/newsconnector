@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
+    url(r'^data/(?P<min_date>\d+)/(?P<max_date>\d+)/$', views.get_data, name='data'),
     url(r'^cron/$', views.cron, name='cron'),
     url(r'^admin/', include(admin.site.urls)),
 )

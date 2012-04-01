@@ -16,17 +16,16 @@ var labelType, useGradients, nativeTextSupport, animate;
 })();
 
 
-function init(data){
-    $("#tooltip").dialog({ autoOpen: false })
+function init(min_date, default_min_date){
+    $("#tooltip").dialog({ autoOpen: false });
     
     //init data
-    var json = data
+    //var json = data;
     
     var infovis = document.getElementById('infovis');
     var w = infovis.offsetWidth - 50, h = infovis.offsetHeight - 50;
-    node_counter = 22;
     //init Hypertree
-    var ht = new $jit.Hypertree({
+    ht = new $jit.Hypertree({
       //id of the visualization container
       injectInto: 'infovis',
       //type: '3D',
@@ -36,7 +35,7 @@ function init(data){
       //Change node and edge styles such as
       //color, width and dimensions.
       Node: {
-          dim: 9,
+          dim: 10,
           color: "#f33",
           type: "circle",
           transform: true,
@@ -88,7 +87,7 @@ function init(data){
                               }
                               count++;
                           });
-                          $('#article-details').html(html); 
+                          $('#article-details').html(html).data('node_id',node.id); 
                         }
                   }
               });
@@ -120,29 +119,8 @@ function init(data){
           var w = domElement.offsetWidth;
           style.left = (left - w / 2) + 'px';
       },
-          
-          //Build the right column relations list.
-          //This is done by collecting the information (stored in the data property) 
-          //for all the nodes adjacent to the centered node.
-          /*var node = ht.graph.getClosestNodeToOrigin("current");
-          var html = "<h4>" + node.name + "</h4><b>Connections:</b>";
-          html += "<ul>";
-          node.eachAdjacency(function(adj){
-              var child = adj.nodeTo;
-              if (child.data) {
-                  var rel = (child.data.band == node.name) ? child.data.relation : node.data.relation;
-                  html += "<li>" + child.name + " " + "<div class=\"relation\">(relation: " + rel + ")</div></li>";
-              }
-          });
-          html += "</ul>";
-          $jit.id('inner-details').innerHTML = html;*/
     });
-    //load JSON data.
-    ht.loadJSON(json);
-    //compute positions and plot.
-    ht.refresh();
-    //end
-    ht.controller.onComplete();
+
     
     $("#zoom-in").click(function(){
         x = 1.2;
@@ -158,5 +136,22 @@ function init(data){
         $("#tooltip").dialog('close')
     });
     
+    var options = {
+            bounds: {min: min_date, max: new Date()},
+            defaultValues: {min: default_min_date, max: new Date()},
+            };
     
+    $("#date-slider").dateRangeSlider(options).bind('valuesChanging', function(sender,event) {
+            var one_day=1000*60*60*24;
+            var span = Math.round((event.values.max - event.values.min)/one_day);
+                    
+            $(".ui-rangeSlider-bar").html(span + " days")
+    }).bind('valuesChanged', function(sender,event) {
+            $.get('/data/'+event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
+                    ht.loadJSON(data);
+                    ht.refresh();
+                    ht.controller.onComplete();
+                    $("#"+$('#article-details').data('node_id')).click();
+            });
+    });
 }
