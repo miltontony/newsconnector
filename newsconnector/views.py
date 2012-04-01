@@ -1,6 +1,5 @@
 from django.shortcuts import render,  redirect
 from django.core.urlresolvers import reverse
-from newsconnector.tasks import run_tasks
 from newsconnector.models import Article, Keyword
 from django.db.models import Min
 from django.http import HttpResponse
@@ -10,18 +9,6 @@ import json
 from datetime import date, timedelta, datetime
 
 import networkx as nx
-
-def cron(request):
-    #Article.objects.all().delete()
-    
-    feeds = [('http://feeds.news24.com/articles/news24/SouthAfrica/rss', 'news24.com'),
-             ('http://www.timeslive.co.za/?service=rss', 'timeslive.co.za'),
-             ('http://feeds.iol.co.za/rss/feed_southafrica.rss', 'iol.co.za'),
-             ('http://www.ewn.co.za/Feeds/Local.aspx', 'ewn.co.za'),
-             ('http://mg.co.za/rss/national', 'mg.co.za'),
-             ]
-    result = run_tasks.delay(feeds)
-    return render(request, 'cron.html')
 
 def get_data(request, min_date=None, max_date=None):
     min = datetime.fromtimestamp(int(min_date)/1000.0).date()
