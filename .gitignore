@@ -5,3 +5,5 @@
 *.html~
 *.log
 /newsconnector/static/
+*.err
+*.pid
