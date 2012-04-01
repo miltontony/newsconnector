@@ -57,7 +57,8 @@ def build_data(min_date, max_date):
 
 def index(request):    
     min_date = (Article.objects.aggregate(date = Min('date'))['date']).date()
-    default_min_date = date.today() - timedelta(days=3)
+    yesterday = date.today() - timedelta(days=1)
+    default_min_date = yesterday
     
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date if min_date <= default_min_date else min_date})
