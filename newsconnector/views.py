@@ -40,8 +40,7 @@ def build_data(min_date, max_date):
              {'id': k.pk, 'name': k.keyword, 'data': 
                  {
                   'count': len(nbrs.items()),
-                  },
-                'children': [{'id': 'a_%s' % a.pk, 
+                  'articles': [{'id': 'a_%s' % a.pk, 
                              'name': a.title + ' [' + a.source +']', 
                              'children': [], 
                              'data': {'description': a.content,
@@ -50,7 +49,8 @@ def build_data(min_date, max_date):
                                       'id': a.pk,
                                       'source': a.source,
                                       }
-                            } for a, nattr in nbrs.items()]
+                            } for a, nattr in nbrs.items()],
+                }
             } for k,nbrs in graph.adjacency_iter() if hasattr(k, 'keyword') and len(nbrs.items()) > 3]
            }
     return tree
@@ -61,7 +61,7 @@ def index(request):
     default_min_date = yesterday
     
     return render(request, 'index.html', {'min_date': min_date,
-                                          'default_min_date': default_min_date if min_date <= default_min_date else min_date})
+                                          'default_min_date': date.today()})
 
 def found_string(str1, str2):
     return ' ' + str1 + ' ' in ' ' + str2 + ' '

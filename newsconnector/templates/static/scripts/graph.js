@@ -35,7 +35,7 @@ function init(min_date, default_min_date){
       //Change node and edge styles such as
       //color, width and dimensions.
       Node: {
-          dim: 10,
+          dim: 15,
           color: "#f33",
           type: "circle",
           transform: true,
@@ -74,19 +74,19 @@ function init(min_date, default_min_date){
                         if(node.data.count){
                           var html = "";
                           count = 0;
-                          node.eachAdjacency(function(adj){
-                              var child = adj.nodeTo;
-                              if (child.data.id) {
+                          for(var i in node.data.articles){
+                              article = node.data.articles[i]
+                              if (article.data.id) {
                                   checked = count == 0 ? 'checked' : '';
-                                  html += '<div><input id="ac-' + child.data.id + '" name="accordion-1" type="radio" ' + checked + '/>' +
-                                        '<label for="ac-' + child.data.id + '">' + child.data.title + '</label>' +
+                                  html += '<div><input id="ac-' + article.data.id + '" name="accordion-1" type="radio" ' + checked + '/>' +
+                                        '<label for="ac-' + article.data.id + '">' + article.data.title + '</label>' +
                                         '<article class="ac-small">' +
-                                        '<p>[' + child.data.source + ']<br/>' + child.data.description + 
-                                        ' <a target="_blank" href="' + child.data.link +'">more...</a></p>' +
+                                        '<p>[' + article.data.source + ']<br/>' + article.data.description + 
+                                        ' <a target="_blank" href="' + article.data.link +'">more...</a></p>' +
                                         '</article></div>';
                               }
                               count++;
-                          });
+                          }
                           $('#article-details').html(html).data('node_id',node.id); 
                         }
                   }
