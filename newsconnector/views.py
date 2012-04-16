@@ -13,16 +13,17 @@ import networkx as nx
 def get_data(request, min_date=None, max_date=None):
     min = datetime.fromtimestamp(int(min_date)/1000.0).date()
     max = datetime.fromtimestamp(int(max_date)/1000.0).date()
-        
+    
     min = datetime(min.year, min.month, min.day, 0, 0, 0)
     max = datetime(max.year, max.month, max.day, 23, 59, 59)
-    print max
     
     data = json.dumps(build_data(min, max))
     return HttpResponse(data, mimetype='application/json')
 
 def build_data(min_date, max_date):
-    articles = Article.objects.filter(date__gte = min_date, date__lte = max_date)
+    articles = Article.objects\
+                .filter(date__gte = min_date, date__lte = max_date)\
+                .order_by('-date')
     
     graph = nx.DiGraph()
     
@@ -48,8 +49,9 @@ def build_data(min_date, max_date):
                                       'title': a.title,
                                       'id': a.pk,
                                       'source': a.source,
+                                      'date': a.date.ctime(),
                                       }
-                            } for a, nattr in nbrs.items()],
+                            } for a, nattr in sorted(nbrs.items(), key=lambda x: x[0].date, reverse=True)],
                 }
             } for k,nbrs in graph.adjacency_iter() if hasattr(k, 'keyword') and len(nbrs.items()) > 3]
            }
@@ -61,7 +63,7 @@ def index(request):
     default_min_date = yesterday
     
     return render(request, 'index.html', {'min_date': min_date,
-                                          'default_min_date': date.today()})
+                                          'default_min_date': default_min_date})
 
 def found_string(str1, str2):
     return ' ' + str1 + ' ' in ' ' + str2 + ' '

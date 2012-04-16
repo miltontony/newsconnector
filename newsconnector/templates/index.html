@@ -24,7 +24,7 @@
 	
 #date-slider-cont{
     position: absolute;
-    top: 50px;
+    top: 40px;
     width: 95%;
 }
 	
@@ -33,6 +33,15 @@
 	margin: auto;
 }
 
+#date-slider-bg{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: #fff;
+	height:80px;
+}
+	
 #nav a{
     width: 200px;
 }
@@ -50,9 +59,39 @@
     opacity:0.9;
     filter:alpha(opacity=90);
     font-size:10px;
-    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
     padding:7px;
-}	
+}
+
+body{
+	background: #000;
+	font-family: "Arial", Helvetica, sans-serif;
+	font-size: 12px;
+}
+
+#keys{
+	position: absolute;
+	top: 85px;
+	left: 300px;
+	width: 75%;
+}
+
+#keys ul li{
+	cursor: pointer;
+}
+	
+.search-filter{
+	position: absolute;
+	top: 40px;
+	left: 5px;
+}
+	
+#loading{
+	color: white;
+	text-align: center;
+	top: 200px;
+	position: absolute;
+	left: 400px;
+}
 </style>
 
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css" />
@@ -62,23 +101,101 @@
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.ui.1.8.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jQRangeSlider-min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jQDateRangeSlider-min.js"></script>
+
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.tagcloud.min.js "></script>
 <!-- Example File -->
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/graph.js"></script>
 <script type="text/javascript">
-
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
 $(document).ready(function(){
 	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
-	init(min_date, default_min_date);
-})	
+	//init(min_date, default_min_date);
+		
+	var options = {
+		bounds: {min: min_date, max: new Date()},
+		defaultValues: {min: default_min_date, max: new Date()},
+		};
+			
+	$('#filter').keyup(function() {
+		delay(function(){
+		  var q = $('#filter').val().toLowerCase();
+			  
+		  if(q == '') {
+			  $('#keywordscloud li').show();
+		  }else{
+			  var keys = $('#keywordscloud li');
+			  keys.filter('[title*="'+q+'"]').show();
+			  keys.not('[title*="'+q+'"]').hide();
+		  }
+		}, 500 );
+	});
+    
+    $("#date-slider").dateRangeSlider(options).bind('valuesChanging', function(sender,event) {
+            var one_day=1000*60*60*24;
+            var span = Math.round((event.values.max - event.values.min)/one_day);
+                    
+            $(".ui-rangeSlider-bar").html(span + " days")
+    }).bind('valuesChanged', function(sender,event) {
+            console.log(event.values.min);
+            /*$.get('/data/'+event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
+                    ht.loadJSON(data);
+                    ht.refresh();
+                    ht.controller.onComplete();
+                    $("#"+$('#article-details').data('node_id')).click();
+            });*/
+			$("#keys").html('<div id="loading">loading...</div>');
+            $.get('/data/'+event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
+                var keys = $("<ul class='xmpl' id='keywordscloud'></ul>");
+                $.each(data.children, function(i, value){
+					var keyword = $("<li value='"+value.data.count+"' title='"+value.name+"' id='key"+value.id+"'>"+value.name+"</li>")
+								  .data('articles', value.data.articles)
+								  .click(function(){
+									  var data = $(this).data('articles');
+									  if(data){
+										  var html = "";
+										  count = 0;
+										  for(var i in data){
+											  article = data[i]
+											  if (article.data.id) {
+												  checked = count == 0 ? 'checked' : '';
+												  html += '<div><input id="ac-' + article.data.id + '" name="accordion-1" type="radio" ' + checked + '/>' +
+														'<label for="ac-' + article.data.id + '">' + article.data.title + '</label>' +
+														'<article class="ac-small">' +
+														'<p>[' + article.data.source + '] - ' + article.data.date + '<br/>' + article.data.description + 
+														' <a target="_blank" href="' + article.data.link +'">more...</a></p>' +
+														'</article></div>';
+											  }
+											  count++;
+										  }
+										  $('#article-details').html(html).data('node_id',$(this).attr('id')); 
+										}
+								  });
+                    keys.append(keyword)
+                });
+				
+				$("#keys").html(keys);
+                keys.tagcloud({height:400, type:"sphere",sizemin:12, sizemax:30,colormin:"fff",colormax:"18e"});
+				
+            });
+    });
+		
+});	
 </script>
 </head>
 <body>
 <div class="container">
+<!--
 <div id="container">
 	<div id="center-container">
-	    <div id="infovis"></div>    
+	    <div id="infovis"></div>
 	</div>
 </div>
 <div id="nav">
@@ -86,12 +203,18 @@ $(document).ready(function(){
 	<a id="zoom-in" href="#">Zoom In</a>
 	<a id="zoom-out" href="#">Zoom Out</a>
 </div>
+-->
+<div id="keys">
+</div>
+<div id="date-slider-bg"></div>
 <div id="date-slider-cont">
 	<div id="date-slider"></div>
 </div>
+<div class="search-filter">
+	<label>Keywords </label>
+	<input type="search" name="filter" id="filter" autofocus placeholder="Filter..."/>
+</div>
 </body>
-<div id="tooltip" style="display:none"></div>
-
 <!-- Codrops top bar -->
 <section class="ac-container" id="article-details">
 </section>

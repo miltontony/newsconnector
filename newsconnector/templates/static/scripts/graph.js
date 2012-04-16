@@ -81,7 +81,7 @@ function init(min_date, default_min_date){
                                   html += '<div><input id="ac-' + article.data.id + '" name="accordion-1" type="radio" ' + checked + '/>' +
                                         '<label for="ac-' + article.data.id + '">' + article.data.title + '</label>' +
                                         '<article class="ac-small">' +
-                                        '<p>[' + article.data.source + ']<br/>' + article.data.description + 
+                                        '<p>[' + article.data.source + '] - ' + article.data.date + '<br/>' + article.data.description + 
                                         ' <a target="_blank" href="' + article.data.link +'">more...</a></p>' +
                                         '</article></div>';
                               }
@@ -134,24 +134,5 @@ function init(min_date, default_min_date){
     
     $("#infovis").click(function(){
         $("#tooltip").dialog('close')
-    });
-    
-    var options = {
-            bounds: {min: min_date, max: new Date()},
-            defaultValues: {min: default_min_date, max: new Date()},
-            };
-    
-    $("#date-slider").dateRangeSlider(options).bind('valuesChanging', function(sender,event) {
-            var one_day=1000*60*60*24;
-            var span = Math.round((event.values.max - event.values.min)/one_day);
-                    
-            $(".ui-rangeSlider-bar").html(span + " days")
-    }).bind('valuesChanged', function(sender,event) {
-            $.get('/data/'+event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
-                    ht.loadJSON(data);
-                    ht.refresh();
-                    ht.controller.onComplete();
-                    $("#"+$('#article-details').data('node_id')).click();
-            });
     });
 }
