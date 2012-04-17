@@ -35,7 +35,7 @@ class Article(models.Model):
 
 
 class Keyword(models.Model):
-    keyword = models.TextField()
+    keyword = models.TextField(unique=True)
     
     def __unicode__(self):  # pragma: no cover
         return self.keyword

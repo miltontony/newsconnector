@@ -3,10 +3,9 @@ from celery.task import task
 import feedparser
 
 from newsconnector.models import Article, Keyword
-#from newsconnector.graphing.models import GraphArticle, GraphKeyword
 from newsconnector.calais import Calais
 
-@task
+@task(ignore_result=True)
 def run_tasks(feeds):
     new_articles = []
     for feed, source in feeds:

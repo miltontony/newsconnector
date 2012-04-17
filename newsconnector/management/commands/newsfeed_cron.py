@@ -10,5 +10,8 @@ class Command(BaseCommand):
                  ('http://feeds.iol.co.za/rss/feed_southafrica.rss', 'iol.co.za'),
                  ('http://www.ewn.co.za/Feeds/Local.aspx', 'ewn.co.za'),
                  ('http://mg.co.za/rss/national', 'mg.co.za'),
+                 ('http://www.thenewage.co.za/rss.aspx?cat_id=1007', 'thenewage.co.za'),
+                 ('http://www.sowetanlive.co.za/news/?service=rss', 'sowetanlive.co.za'),
+                 ('http://feeds.citypress.co.za/articles/CityPress/TopStories/rss', 'citypress.co.za'),
                  ]
         result = run_tasks.delay(feeds)

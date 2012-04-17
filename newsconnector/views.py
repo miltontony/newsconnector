@@ -27,7 +27,7 @@ def build_data(min_date, max_date):
     
     graph = nx.DiGraph()
     
-    for word in Keyword.objects.all():
+    for word in Keyword.objects.exclude(keyword='the'):
         for a in articles:
             if found_string(word.keyword, ('%s %s' % (a.title, a.content)).lower()):
                 graph.add_edge(word, a)
@@ -58,9 +58,10 @@ def build_data(min_date, max_date):
     return tree
 
 def index(request):    
-    min_date = (Article.objects.aggregate(date = Min('date'))['date']).date()
+    #min_date = (Article.objects.aggregate(date = Min('date'))['date']).date()
+    min_date = date.today() - timedelta(days=7)
     yesterday = date.today() - timedelta(days=1)
-    default_min_date = yesterday
+    default_min_date = yesterday if datetime.now().hour < 13 else date.today()
     
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date})
