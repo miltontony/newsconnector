@@ -7,8 +7,8 @@ function init(min_date, default_min_date, data_url, is_staff, next){
                       $('#keywordscloud li').show();
               }else{
                       var keys = $('#keywordscloud li');
-                      keys.filter('[title*="'+q+'"]').show();
-                      keys.not('[title*="'+q+'"]').hide();
+                      keys.filter('[key*="'+q+'"]').show();
+                      keys.not('[key*="'+q+'"]').hide();
               }
             }, 500 );
     });
@@ -39,7 +39,8 @@ function init(min_date, default_min_date, data_url, is_staff, next){
                 var keys = $("<ul class='xmpl' id='keywordscloud'></ul>");
                 $.each(data.children, function(i, value){
                     var keyword = $("<li value='" + value.data.count +
-                                    "' id='key" + value.id + "'>" + value.name +
+                                    "' id='key" + value.id + "' key='"+ value.name + 
+                                    "'>" + value.name +
                                     getDelKeyword(is_staff, value.id, next) +
                                     "</li>")
                                   .data('articles', value.data.articles)
