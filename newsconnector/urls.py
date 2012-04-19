@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import patterns, include, url
 from django.contrib import admin
 from newsconnector import views
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -8,9 +9,8 @@ urlpatterns = patterns('',
     url(r'^sports/$', views.sports, name='sports'),
     url(r'^finance/$', views.finance, name='finance'),
     url(r'^entertainment/$', views.entertainment, name='entertainment'),
-    url(r'^data/(?P<min_date>\d+)/(?P<max_date>\d+)/$', views.get_data, name='data'),
-    url(r'^data/sports/(?P<min_date>\d+)/(?P<max_date>\d+)/$', views.get_data_sports, name='data'),
-    url(r'^data/finance/(?P<min_date>\d+)/(?P<max_date>\d+)/$', views.get_data_finance, name='data'),
-    url(r'^data/entertainment/(?P<min_date>\d+)/(?P<max_date>\d+)/$', views.get_data_entertainment, name='data'),
+    url(r'^data/', include('newsconnector.data.urls')),
+    url(r'^keyword/delete/(?P<pk>\d+)/$', views.delete_keyword, name='delete_keyword'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^logout/', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
 )

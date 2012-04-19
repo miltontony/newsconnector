@@ -1,4 +1,4 @@
-function init(min_date, default_min_date, data_url){
+function init(min_date, default_min_date, data_url, is_staff, next){
     $('#filter').keyup(function() {
             delay(function(){
               var q = $('#filter').val().toLowerCase();
@@ -22,6 +22,13 @@ function init(min_date, default_min_date, data_url){
                 }
         };
 			
+    function getDelKeyword(is_admin, id, next){
+        if(is_admin){
+            return " <small class='del-keyword'><a href='/keyword/delete/"+ id +"/?next="+next+"'>[del]</small>";
+        }
+        return '';
+    }
+    
     $("#date-slider").dateRangeSlider(options).bind('valuesChanging', function(sender,event) {
         var one_day=1000*60*60*24;
         var span = Math.round((event.values.max - event.values.min)/one_day);
@@ -31,7 +38,10 @@ function init(min_date, default_min_date, data_url){
             $.get(data_url + event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
                 var keys = $("<ul class='xmpl' id='keywordscloud'></ul>");
                 $.each(data.children, function(i, value){
-                    var keyword = $("<li value='"+value.data.count+"' id='key"+value.id+"'>"+value.name+"</li>")
+                    var keyword = $("<li value='" + value.data.count +
+                                    "' id='key" + value.id + "'>" + value.name +
+                                    getDelKeyword(is_staff, value.id, next) +
+                                    "</li>")
                                   .data('articles', value.data.articles)
                                   .click(function(){
                                           var data = $(this).data('articles');

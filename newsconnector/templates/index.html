@@ -110,6 +110,11 @@ body{
 	<a href="{% url sports %}" id="cat-sports">Sports</a>
 	<a href="{% url finance %}" id="cat-finance">Finance</a>
 	<a href="{% url entertainment %}" id="cat-entertainment">Entertainment</a>
+	{% if request.user.is_authenticated %}
+	 &nbsp;&nbsp; | &nbsp;&nbsp;<a href="{% url logout %}" id="logout">Sign Out</a>
+	{% else %}
+	 &nbsp;&nbsp; | &nbsp;&nbsp;<a href="/admin/?next={{request.path}}" id="login">Sign In</a>
+	{% endif %}
 </div>
 </body>
 <!-- Codrops top bar -->
@@ -131,9 +136,9 @@ body{
 </div>
 <div id="footer">NEWS CONNECTOR</div>
 <div id="footer-sites">
-| 
+. 
 {% for site in sites %}
-<a target="_blank" href="{{site.site}}">{{site.name}}</a> | 
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
 {% endfor %}
 </div>
 </body>
@@ -149,7 +154,7 @@ var delay = (function(){
 $(document).ready(function(){
 	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
-	init(min_date, default_min_date, '/data{{request.path}}');
+	init(min_date, default_min_date, '/data{{request.path}}', '{{request.user.is_staff}}' == 'True', '{{request.path}}');
 });	
 </script>
 </html>
