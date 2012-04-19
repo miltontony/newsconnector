@@ -20,36 +20,14 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'newsconnector.db',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'news',                      # Or path to database file if using sqlite3.
+        'USER': 'news',                      # Not used with sqlite3.
+        'PASSWORD': 'news',                  # Not used with sqlite3.
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-
-NEO4J_DATABASES = {
-    'default' : {
-        'HOST':'localhost',
-        'PORT':7470,
-        'ENDPOINT':'/db/data'
-    },
-    'test' : {
-        'HOST':'localhost',
-        'PORT':7472,
-        'ENDPOINT':'/db/data'
-    }
-}
-
-_data_path = os.path.join(PROJECT_ROOT, 'graphing_data')
-if not os.path.exists(_data_path):
-    os.mkdir(_data_path)
-    
-NEO4J_RESOURCE_URI = abspath(_data_path)
-NEO4J_OPTIONS = {}
-NEO4J_DELETE_KEY = 'news-secret-key'
-
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

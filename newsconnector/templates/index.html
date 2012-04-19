@@ -2,26 +2,6 @@
 <head>
 <title>Home :: News Connector</title>
 <style>
-#infovis-canvaswidget {
-  cursor: move;
-}
-	
-#infovis {
-    position:relative;
-    width:95%;
-    height:95%;
-    margin: 80px auto 0 auto;
-    overflow:hidden;
-    cursor: move;
-}
-
-#nav{
-    position: absolute;
-    top: 0;
-    width: 95%;
-    text-align: center;
-}
-	
 #date-slider{
 	position: absolute;
     top: 30px;
@@ -34,26 +14,6 @@
 	left: 0;
 	width: 100%;
 	height:80px;
-}
-	
-#nav a{
-    width: 200px;
-}
-
-/*TOOLTIPS*/
-.tip {
-    color: #111;
-    width: 139px;
-    background-color: white;
-    border:1px solid #ccc;
-    -moz-box-shadow:#555 2px 2px 8px;
-    -webkit-box-shadow:#555 2px 2px 8px;
-    -o-box-shadow:#555 2px 2px 8px;
-    box-shadow:#555 2px 2px 8px;
-    opacity:0.9;
-    filter:alpha(opacity=90);
-    font-size:10px;
-    padding:7px;
 }
 
 body{
@@ -115,6 +75,12 @@ body{
 	color: #fff;
 	text-decoration: none;
 }
+	
+#cat-nav{
+	position: absolute;
+	top: 2px;
+	right: 10px
+}
 </style>
 
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css" />
@@ -132,18 +98,6 @@ body{
 </head>
 <body>
 <div class="container">
-<!--
-<div id="container">
-	<div id="center-container">
-	    <div id="infovis"></div>
-	</div>
-</div>
-<div id="nav">
-	<a id="center" href="#">Reset</a>
-	<a id="zoom-in" href="#">Zoom In</a>
-	<a id="zoom-out" href="#">Zoom Out</a>
-</div>
--->
 <div id="keys">
 </div>
 <div id="date-slider-bg"></div>
@@ -151,21 +105,36 @@ body{
 <div class="search-filter">
 	<input type="search" name="filter" id="filter" autofocus placeholder="Keyword Filter..."/>
 </div>
+<div id="cat-nav">
+	<a href="{% url index %}" id="cat-news">News</a>
+	<a href="{% url sports %}" id="cat-sports">Sports</a>
+	<a href="{% url finance %}" id="cat-finance">Finance</a>
+	<a href="{% url entertainment %}" id="cat-entertainment">Entertainment</a>
+</div>
 </body>
 <!-- Codrops top bar -->
 <section class="ac-container" id="article-details">
+	<div class="h1"><label>{{title}} <br/><small>{{latest.0.date|date:"D, d M H:m"}}</small></label></div>
+{% for a in latest %}
+	<div>
+		<input id="ac-{{a.pk}}" name="accordion-1" type="radio"/>
+		<label for="ac-{{a.pk}}">{{a.title}}</label>
+		<article class="ac-small">
+			<p>[{{a.source}}] - {{a.date|date:"D, d M H:m"}}<br/>
+				{{a.content}}
+				<a target="_blank" href="{{a.link}}">more...</a>
+			</p>
+		</article>
+	</div>
+{% endfor %}
 </section>
 </div>
 <div id="footer">NEWS CONNECTOR</div>
 <div id="footer-sites">
-<a target="_blank" href="http://timeslive.co.za">timeslive.co.za</a> | 
-<a target="_blank" href="http://mg.co.za">mg.co.za</a> | 
-<a target="_blank" href="http://ewn.co.za">ewn.co.za</a> | 
-<a target="_blank" href="http://news24.com">news24.com</a> |
-<a target="_blank" href="http://iol.co.za">iol.co.za</a> | 
-<a target="_blank" href="http://sowetanlive.co.za">sowetanlive.co.za</a> | 
-<a target="_blank" href="http://citypress.co.za">citypress.co.za</a> | 
-<a target="_blank" href="http://thenewage.co.za">thenewage.co.za</a> 
+| 
+{% for site in sites %}
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> | 
+{% endfor %}
 </div>
 </body>
 <script type="text/javascript">
@@ -180,7 +149,7 @@ var delay = (function(){
 $(document).ready(function(){
 	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
-	init(min_date, default_min_date);		
+	init(min_date, default_min_date, '/data{{request.path}}');
 });	
 </script>
 </html>

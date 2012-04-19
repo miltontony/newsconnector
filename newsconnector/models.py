@@ -1,11 +1,6 @@
 from django.db import models
 from datetime import datetime
-from django.utils.hashcompat import md5_constructor
-from time import mktime
-from datetime import datetime
 
-import lxml.html
-    
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
     date_added = models.DateTimeField(auto_now_add = True)
@@ -17,25 +12,66 @@ class Article(models.Model):
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s' % (self.title,  self.content)
-    
-    @classmethod
-    def to_instance(cls, dictArticle, source):
-        hash_str = ':'.join([dictArticle.title,  dictArticle.link]).encode('ascii', 'ignore')
-        hash = md5_constructor(hash_str).hexdigest()
-        a, created = Article.objects.get_or_create(hash_key = hash)
-        if created:
-            a.title = dictArticle.title
-            a.link = dictArticle.link
-            a.content = lxml.html.fromstring(dictArticle.description).text_content()
-            a.source = source
-            a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
-            a.save()
-            return a
-        return a
 
 
 class Keyword(models.Model):
-    keyword = models.TextField(unique=True)
+    keyword = models.TextField()
+    date_updated = models.DateTimeField(auto_now = True, default = datetime.now())
     
     def __unicode__(self):  # pragma: no cover
         return self.keyword
+
+
+class RssFeed(models.Model):
+    id = models.AutoField(primary_key=True)
+    url = models.URLField(default='')
+    site = models.URLField(default='')
+    name = models.TextField()
+    
+    def __unicode__(self):  # pragma: no cover
+        return self.name
+
+
+#------ Articles ----------
+class NewsArticle(Article):
+    pass
+
+class SportsArticle(Article):
+    pass
+
+class FinanceArticle(Article):
+    pass
+
+class EntertainmentArticle(Article):
+    pass
+
+
+#------ Keywords ----------
+class NewsKeyword(Keyword):
+    pass
+
+class SportsKeyword(Keyword):
+    pass
+   
+class FinanceKeyword(Keyword):
+    pass
+   
+class EntertainmentKeyword(Keyword):
+    pass
+        
+        
+#------ Feeds ----------
+class NewsFeed(RssFeed):
+    pass
+
+class SportsFeed(RssFeed):
+    pass
+
+class FinanceFeed(RssFeed):
+    pass
+    
+class EntertainmentFeed(RssFeed):
+    pass
+    
+
+    
