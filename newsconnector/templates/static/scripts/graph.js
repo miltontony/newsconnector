@@ -32,7 +32,14 @@ function init(min_date, default_min_date, data_url, is_staff, next){
     $("#date-slider").dateRangeSlider(options).bind('valuesChanging', function(sender,event) {
         var one_day=1000*60*60*24;
         var span = Math.round((event.values.max - event.values.min)/one_day);
-        $(".ui-rangeSlider-bar").html(span + " days");
+        if(span < 2){
+            $(".ui-rangeSlider-leftLabel").hide();
+            $(".ui-rangeSlider-bar").html("1 day");
+        }
+        else {
+            $(".ui-rangeSlider-leftLabel").show();
+            $(".ui-rangeSlider-bar").html(span + " days");
+        }
     }).bind('valuesChanged', function(sender,event) {
             $("#keys").html('<div id="loading">loading...</div>');
             $.get(data_url + event.values.min.getTime() + '/' + event.values.max.getTime() + '/', function(data) {
@@ -47,7 +54,7 @@ function init(min_date, default_min_date, data_url, is_staff, next){
                                   .click(function(){
                                           var data = $(this).data('articles');
                                           if(data){
-                                              var html = '<div class="h1"><label>'+$(this).text()+'<br/><small>'+value.data.count+' items</small></label></div>';
+                                              var html = '';
                                               count = 0;
                                               for(var i in data){
                                                       article = data[i]
@@ -63,14 +70,19 @@ function init(min_date, default_min_date, data_url, is_staff, next){
                                                       }
                                                       count++;
                                               }
-                                              $('#article-details').html(html).data('node_id',$(this).attr('id')); 
+                                              html = "<div class='content'>"+html+"</div>";
+                                              html+='<div class="page_navigation"></div>';
+                                              
+                                              $('#article-header').html('<div class="h1"><label>'+$(this).text()+'<br/><small>'+value.data.count+' items</small></label></div>');
+                                              $('#article-details').html(html).data('node_id',$(this).attr('id'));
+                                              $('#article-details').pajinate();
                                             }
                                   });
                     keys.append(keyword)
                 });
 				
                 $("#keys").html(keys);                                
-                keys.tagcloud({height:500, type:"sphere",sizemin:12, sizemax:50,colormin:"fff",colormax:"18e"});				
+                keys.tagcloud({height:500, type:"sphere",sizemin:12, sizemax:50,colormin:"fff",colormax:"18e"});
             });
     });
 }

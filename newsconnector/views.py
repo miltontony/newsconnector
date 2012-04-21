@@ -27,6 +27,7 @@ def news(request):
                                           'default_min_date': default_min_date,
                                           'sites': NewsFeed.objects.all(),
                                           'title': 'LATEST NEWS',
+                                          'id': 1,
                                           'latest': NewsArticle.objects.all().order_by('-date')[:10]})
 
 def sports(request):    
@@ -39,6 +40,7 @@ def sports(request):
                                           'default_min_date': default_min_date,
                                           'sites': SportsFeed.objects.all(),
                                           'title': 'LATEST SPORTS NEWS',
+                                          'id': 2,
                                           'latest': SportsArticle.objects.all().order_by('-date')[:10]})
 
 def finance(request):    
@@ -51,6 +53,7 @@ def finance(request):
                                           'default_min_date': default_min_date,
                                           'sites': FinanceFeed.objects.all(),
                                           'title': 'LATEST FINANCIAL NEWS',
+                                          'id': 3,
                                           'latest': FinanceArticle.objects.all().order_by('-date')[:10]})
 
 def entertainment(request):    
@@ -63,4 +66,5 @@ def entertainment(request):
                                           'default_min_date': default_min_date,
                                           'sites': EntertainmentFeed.objects.all(),
                                           'title': 'LATEST GOSSIP',
+                                          'id': 4,
                                           'latest': EntertainmentArticle.objects.all().order_by('-date')[:10]})

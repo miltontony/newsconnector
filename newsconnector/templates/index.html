@@ -4,7 +4,7 @@
 <style>
 #date-slider{
 	position: absolute;
-    top: 30px;
+    top: 33px;
 	width: 350px;
 }
 
@@ -36,11 +36,13 @@ body{
 	
 .search-filter{
 	position: absolute;
-	top: 22px;
+	top: 25px;
 	right: 10px;
 }
 #filter{
 	position: relative;
+	width: 320px;
+	box-shadow: none;
 }
 	
 #loading{
@@ -79,7 +81,58 @@ body{
 #cat-nav{
 	position: absolute;
 	top: 2px;
-	right: 10px
+	right: 22px;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+	border-radius: 5px;
+	background: #1a1a23;
+	border: 1px solid #09090e;
+	padding: 5px 0;
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 11px;
+	font-weight: bold;
+	color: #87879c;
+}
+
+#cat-nav a{
+	text-decoration: none;
+	color: #87879c;
+	padding: 5px 10px;
+	margin-left: -4px;
+}
+
+#cat-nav a.active{
+	color: #e1e1f8;
+	background: #367fc2;
+	background: -moz-linear-gradient(top, #367fc2 1%, #26417b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#367fc2), color-stop(100%,#26417b));
+	background: -webkit-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: -o-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: -ms-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: linear-gradient(top, #367fc2 1%,#26417b 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
+	border: 1px solid #26417b;35ec0b
+}
+	
+#cat-nav #login{
+	color: #e1e1f8;
+	background: #21ba1a;
+	background: -moz-linear-gradient(top, #21ba1a 1%, #116d0c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#21ba1a), color-stop(100%,#116d0c));
+	background: -webkit-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: -o-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: -ms-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21ba1a', endColorstr='#116d0c',GradientType=0 );
+	border-radius: 0 5px 5px 0;
+	border: 1px solid #116d0c;
+}
+	
+#cat-news.active{
+	border-radius: 5px 0 0 5px;
+}
+		
+#cat-nav #cat-news{
+	margin-left: 0;
 }
 </style>
 
@@ -92,6 +145,7 @@ body{
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jQDateRangeSlider-min.js"></script>
 
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.tagcloud.min.js "></script>
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
 <!-- Example File -->
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/graph.js"></script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
@@ -106,32 +160,37 @@ body{
 	<input type="search" name="filter" id="filter" autofocus placeholder="Keyword Filter..."/>
 </div>
 <div id="cat-nav">
-	<a href="{% url index %}" id="cat-news">News</a>
-	<a href="{% url sports %}" id="cat-sports">Sports</a>
-	<a href="{% url finance %}" id="cat-finance">Finance</a>
-	<a href="{% url entertainment %}" id="cat-entertainment">Entertainment</a>
+	<a href="{% url index %}" id="cat-news" {% if id == 1 %}class="active"{%endif%}>News</a>
+	<a href="{% url sports %}" id="cat-sports" {% if id == 2 %}class="active"{%endif%}>Sports</a>
+	<a href="{% url finance %}" id="cat-finance" {% if id == 3 %}class="active"{%endif%}>Finance</a>
+	<a href="{% url entertainment %}" id="cat-entertainment" {% if id == 4 %}class="active"{%endif%}>Entertainment</a>
 	{% if request.user.is_authenticated %}
-	 &nbsp;&nbsp; | &nbsp;&nbsp;<a href="{% url logout %}" id="logout">Sign Out</a>
+	 <a href="{% url logout %}" id="logout">Sign Out</a>
 	{% else %}
-	 &nbsp;&nbsp; | &nbsp;&nbsp;<a href="/admin/?next={{request.path}}" id="login">Sign In</a>
+	 <a href="/admin/?next={{request.path}}" id="login">Sign In</a>
 	{% endif %}
 </div>
 </body>
 <!-- Codrops top bar -->
-<section class="ac-container" id="article-details">
+<section class="ac-container" id="article-header">
 	<div class="h1"><label>{{title}} <br/><small>{{latest.0.date|date:"D, d M H:m"}}</small></label></div>
-{% for a in latest %}
-	<div>
-		<input id="ac-{{a.pk}}" name="accordion-1" type="radio"/>
-		<label for="ac-{{a.pk}}">{{a.title}}</label>
-		<article class="ac-small">
-			<p>[{{a.source}}] - {{a.date|date:"D, d M H:m"}}<br/>
-				{{a.content}}
-				<a target="_blank" href="{{a.link}}">more...</a>
-			</p>
-		</article>
+</section>
+<section class="ac-container" id="article-details">
+	<div class='content'>
+	{% for a in latest %}
+		<div>
+			<input id="ac-{{a.pk}}" name="accordion-1" type="radio"/>
+			<label for="ac-{{a.pk}}">{{a.title}}</label>
+			<article class="ac-small">
+				<p>[{{a.source}}] - {{a.date|date:"D, d M H:m"}}<br/>
+					{{a.content}}
+					<a target="_blank" href="{{a.link}}">more...</a>
+				</p>
+			</article>
+		</div>
+	{% endfor %}
 	</div>
-{% endfor %}
+	<div class="page_navigation"></div>
 </section>
 </div>
 <div id="footer">NEWS CONNECTOR</div>
@@ -152,6 +211,7 @@ var delay = (function(){
 })();
 
 $(document).ready(function(){
+	$('#article-details').pajinate();
 	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
 	init(min_date, default_min_date, '/data{{request.path}}', '{{request.user.is_staff}}' == 'True', '{{request.path}}');
