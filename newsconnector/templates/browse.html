@@ -1,0 +1,291 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>	
+#footer{
+	width: 99%;
+	color: #fff;
+	#position: absolute;
+	font-family: 'Century Gothic', 'AppleGothic', sans-serif;
+	text-align: center;
+	font-size: 30px;
+	line-height: 28px;
+}
+	
+#footer-sites{
+	width: 99%;
+	color: #fff;
+	#position: absolute;
+	font-family: 'Century Gothic', 'AppleGothic', sans-serif;
+	text-align: center;
+	font-size: 10px;
+	border-top: 1px solid #fff;
+	overflow: hidden;
+	height: 15px;
+}
+#footer-sites a{
+	color: #fff;
+	text-decoration: none;
+}
+
+fieldset legend a, 
+fieldset legend a:visited, 
+fieldset legend a:link{
+	color: #fff;
+	text-decoration: none;
+}
+	
+fieldset legend{
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 14px;
+	color: #fff;
+	margin-left: 50px;
+	padding: 0 5px;
+	font-family: serif;
+}
+	
+fieldset label a{
+	text-decoration: none;
+}
+	
+fieldset{
+	margin: 0 25px 0 40px;
+	padding: 10px;
+	border-right: none;
+	border-bottom: none;
+	border-left: none;
+}
+
+	
+fieldset label, 
+fieldset article, 
+fieldset article-content, 
+fieldset article-footer{
+	display: block;
+	padding: 5px;
+}
+	
+#search-latest,
+#search-results{
+	color: #fff;
+}
+	
+#search-results a{
+	color: #18E;
+}
+	
+#search-results article-footer a,
+#search-results article-footer a:link,
+#search-results article-footer a:visited{
+	color: #A8D3F8;
+}
+
+#search-results fieldset div{
+	width: 600px;
+}
+
+#search-results article-content, 
+#search-results label {
+	color: #fff;
+}
+
+#search-results label{
+	padding-bottom: 0;
+	font-size: 13px;
+}
+	
+#search-results article-content{
+	padding-top: 2px;
+	font-size: 13px;
+}
+	
+#search-latest fieldset label a
+{
+	color: #000;
+}
+
+#search-latest article-footer a,
+#search-latest article-footer a:link,
+#search-latest article-footer a:visited{
+	color: #fff;
+	text-decoration: none;
+}
+	
+
+#search-latest article-content, 
+#search-latest article-content a{
+	font-size: 1em;
+	color: #fff;
+}
+	
+#search-latest article-content{
+	height: 100px;
+	padding: 5px;
+	#font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+	font-size: 1.1em;
+	font-style: italic;
+}
+	
+#search-latest article-footer{
+	width: 100%;
+}
+	
+#search-results article-footer{
+	padding-top: 0;
+}
+
+#search-latest label:hover {
+	background: #C6E1EC;
+	color: #3D7489;
+	text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.6);
+	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 0px 2px 2px rgba(0,0,0,0.1);
+}
+	
+#search-latest fieldset label{
+	height: 25px;
+	line-height: 25px;
+	color: #333;
+	font-size: 1.1em;
+}
+		
+#search-latest fieldset article{
+	display: block;
+	float: left;
+	width: 240px;
+}
+	
+#search-string{
+	font-family: "Georgia", "Times New Roman", Helvetica, Arial, sans-serif;
+	font-size: 30px;
+	font-style: italic;
+	color: #fff;
+	padding: 10px 0 0 60px;
+}
+	
+#search-pagination{
+	padding-left: 60px;
+}
+	
+#search-pagination a.active,
+#search-pagination a:hover,
+#search-pagination a.active:hover{
+	color: #fff;
+	background: #4F97BD;
+	text-shadow: none;
+	box-shadow: none;
+}
+	
+#search-pagination a:hover{
+	background: #79bbdd;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(83,140,170, 0.4);
+}
+	
+#search-pagination a{
+	padding: 5px 10px;
+	text-decoration: none;
+	display: inline;
+}
+	
+#container{
+	min-height: 600px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div id="container">
+<div id="cat-nav">
+	<a href="{% url index %}" id="cat-news">News</a>
+	<a href="{% url sports %}" id="cat-sports">Sports</a>
+	<a href="{% url finance %}" id="cat-finance">Finance</a>
+	<a href="{% url entertainment %}" id="cat-entertainment">Entertainment</a>
+	{% if request.user.is_authenticated %}
+	 <a href="{% url logout %}" id="logout">Sign Out</a>
+	{% else %}
+	 <a href="/admin/?next={{request.path}}" id="login">Sign In</a>
+	{% endif %}
+</div>
+
+<div id="browse-search">
+	<div id="search-string">
+		Search for &ldquo;{{query_string}}&rdquo; &mdash; {{article_count}} result{{article_count|pluralize}}
+	</div>
+	<div id="search-form">
+	<form action="{% url browse %}">
+	<input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
+	<input type="submit" id="search" value="Search"/>
+	</form>
+	</div>
+</div>
+
+<div id="search-latest">
+  <fieldset>
+    <legend>Latest</legend>
+    {% for n in news_top %}
+	<article>
+		<label><a target="_blank" href="{{n.link}}">{{n.title}}</a></label>
+		<article-content>
+		{{n.content}}
+		<a target="_blank" href="{{n.link}}">more...</a>
+		</article-content>
+		<article-footer>
+			{{n.date|date:"D, d M H:m"}}<br/>
+			<a href="{{n.link}}">{{n.source}}</a>
+		</article-footer>
+	</article>
+    {% endfor %}
+  </fieldset>
+</div>
+
+{% if news %}
+<div id="search-results">
+  <fieldset>
+    <legend> Results &ndash; Page {{paged_news.number}} of {{paged_news.paginator.num_pages}}</legend>
+    <div>
+    {% for n in news %}
+	<article>
+		<label><a href="{{n.link}}">{{n.title}}</a></label>
+		<article-content>{{n.content}}</article-content>
+		<article-footer>
+			{{n.date|date:"D, d M H:m"}} | 
+			<a href="{{n.link}}">{{n.source}}</a>
+		</article-footer>
+	</article>
+    {% endfor %}
+    </div>
+  </fieldset>
+</div>
+{% endif %}
+	
+<div id="search-pagination">
+	{% if paged_news.has_previous %}
+	<a href="?q={{q}}&page={{ paged_news.previous_page_number }}">&lt;</a>
+	{% endif %}
+	{% for i in paged_news.paginator.page_range %}
+	<a href="?q={{q}}&page={{ i }}" {% if paged_news.number == i %}class="active"{%endif%}>{{i}}</a>
+	{% endfor %}
+	{% if paged_news.has_next %}
+	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
+	{% endif %}
+</div>
+</div>
+<div id="footer">NEWS CONNECTOR</div>
+<div id="footer-sites">
+. 
+{% for site in sites %}
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
+{% endfor %}
+</div>
+
+{% endblock %}
+
+{% block js %}
+	
+$(document).ready(function(){
+	//$('#article-details').pajinate();
+});	
+
+{% endblock %}

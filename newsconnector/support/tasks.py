@@ -1,4 +1,4 @@
-from newsconnector.calais import Calais
+from newsconnector.support.calais import Calais
 from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
 from time import mktime

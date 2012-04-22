@@ -116,7 +116,7 @@ LOGGING = {
     }
 }
 
-CELERY_IMPORTS = ("newsconnector.tasks",)
+CELERY_IMPORTS = ("newsconnector.support.tasks",)
 CELERY_RESULT_BACKEND = "amqp"
 
 LOGIN_URL = '/admin/'

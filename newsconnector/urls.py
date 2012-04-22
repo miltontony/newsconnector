@@ -6,6 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.news, name='index'),
+    url(r'^browse/$', views.browse, name='browse'),
     url(r'^sports/$', views.sports, name='sports'),
     url(r'^finance/$', views.finance, name='finance'),
     url(r'^entertainment/$', views.entertainment, name='entertainment'),

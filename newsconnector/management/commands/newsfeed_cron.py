@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from newsconnector.tasks import run_tasks
+from newsconnector.support.tasks import run_tasks
 from newsconnector.models import *
 
 class Command(BaseCommand):

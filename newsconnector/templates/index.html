@@ -1,58 +1,7 @@
-<html lang="en">
-<head>
-<title>Home :: News Connector</title>
-<style>
-#date-slider{
-	position: absolute;
-    top: 33px;
-	width: 350px;
-}
+{% extends "base.html" %}
 
-#date-slider-bg{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height:80px;
-}
-
-body{
-	background: #000;
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-size: 12px;
-}
-
-#keys{
-	position: absolute;
-	top: 85px;
-	left: 300px;
-	width: 75%;
-	color: #fff;
-}
-
-#keys ul li{
-	cursor: pointer;
-}
-	
-.search-filter{
-	position: absolute;
-	top: 25px;
-	right: 10px;
-}
-#filter{
-	position: relative;
-	width: 320px;
-	box-shadow: none;
-}
-	
-#loading{
-	color: white;
-	text-align: center;
-	top: 200px;
-	position: absolute;
-	left: 400px;
-}
-	
+{% block head %}
+<style>	
 #footer{
 	width: 99%;
 	bottom: 10;
@@ -72,93 +21,39 @@ body{
 	text-align: center;
 	font-size: 10px;
 	border-top: 1px solid #fff;
+	overflow: hidden;
+	height: 15px;
 }
 #footer-sites a{
 	color: #fff;
 	text-decoration: none;
 }
+</style>	
 	
-#cat-nav{
-	position: absolute;
-	top: 2px;
-	right: 22px;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
-	border-radius: 5px;
-	background: #1a1a23;
-	border: 1px solid #09090e;
-	padding: 5px 0;
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-size: 11px;
-	font-weight: bold;
-	color: #87879c;
-}
-
-#cat-nav a{
-	text-decoration: none;
-	color: #87879c;
-	padding: 5px 10px;
-	margin-left: -4px;
-}
-
-#cat-nav a.active{
-	color: #e1e1f8;
-	background: #367fc2;
-	background: -moz-linear-gradient(top, #367fc2 1%, #26417b 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#367fc2), color-stop(100%,#26417b));
-	background: -webkit-linear-gradient(top, #367fc2 1%,#26417b 100%);
-	background: -o-linear-gradient(top, #367fc2 1%,#26417b 100%);
-	background: -ms-linear-gradient(top, #367fc2 1%,#26417b 100%);
-	background: linear-gradient(top, #367fc2 1%,#26417b 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
-	border: 1px solid #26417b;35ec0b
-}
-	
-#cat-nav #login{
-	color: #e1e1f8;
-	background: #21ba1a;
-	background: -moz-linear-gradient(top, #21ba1a 1%, #116d0c 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#21ba1a), color-stop(100%,#116d0c));
-	background: -webkit-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
-	background: -o-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
-	background: -ms-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
-	background: linear-gradient(top, #21ba1a 1%,#116d0c 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21ba1a', endColorstr='#116d0c',GradientType=0 );
-	border-radius: 0 5px 5px 0;
-	border: 1px solid #116d0c;
-}
-	
-#cat-news.active{
-	border-radius: 5px 0 0 5px;
-}
-		
-#cat-nav #cat-news{
-	margin-left: 0;
-}
-</style>
-
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css" />
-<!-- JIT Library File -->
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jit-yc.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.ui.1.8.min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jQRangeSlider-min.js"></script>
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jQDateRangeSlider-min.js"></script>
-
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.tagcloud.min.js "></script>
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
-<!-- Example File -->
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/graph.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
-</head>
-<body>
-<div class="container">
+{% endblock %}
+
+{% block content %}
 <div id="keys">
 </div>
-<div id="date-slider-bg"></div>
 <div id="date-slider-cont"><div id="date-slider"></div></div>
-<div class="search-filter">
-	<input type="search" name="filter" id="filter" autofocus placeholder="Keyword Filter..."/>
+
+<div id="browse-search">
+	<div id="search-string">
+		{{query_string}}
+	</div>
+	<div id="search-form">
+	<form action="{% url browse %}">
+	<input type="search" name="q" id="filter" results=5 autofocus placeholder="Filter or Search..." value="{{q}}"/>
+	<input type="submit" id="search" value="Search"/>
+	</form>
+	</div>
 </div>
+
 <div id="cat-nav">
 	<a href="{% url index %}" id="cat-news" {% if id == 1 %}class="active"{%endif%}>News</a>
 	<a href="{% url sports %}" id="cat-sports" {% if id == 2 %}class="active"{%endif%}>Sports</a>
@@ -170,7 +65,7 @@ body{
 	 <a href="/admin/?next={{request.path}}" id="login">Sign In</a>
 	{% endif %}
 </div>
-</body>
+
 <!-- Codrops top bar -->
 <section class="ac-container" id="article-header">
 	<div class="h1"><label>{{title}} <br/><small>{{latest.0.date|date:"D, d M H:m"}}</small></label></div>
@@ -199,9 +94,11 @@ body{
 {% for site in sites %}
 <a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
 {% endfor %}
-</div>
-</body>
-<script type="text/javascript">
+
+{% endblock %}
+
+{% block js %}
+	
 var delay = (function(){
   var timer = 0;
   return function(callback, ms){
@@ -216,5 +113,5 @@ $(document).ready(function(){
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
 	init(min_date, default_min_date, '/data{{request.path}}', '{{request.user.is_staff}}' == 'True', '{{request.path}}');
 });	
-</script>
-</html>
+
+{% endblock %}

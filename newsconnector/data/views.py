@@ -2,7 +2,7 @@ import json
 from django.http import HttpResponse
 
 from newsconnector.models import *
-from newsconnector.utils import *
+from newsconnector.support.utils import *
 
 def get_data_news(request, min_date=None, max_date=None):
     data = json.dumps(build_data(get_min_date(min_date), get_max_date(max_date), \
