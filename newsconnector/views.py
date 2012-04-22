@@ -41,15 +41,22 @@ def browse(request):
     
     try:
         paged_news = paginator.page(page)
+        page = int(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
         paged_news = paginator.page(1)
+        page = 1
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         paged_news = paginator.page(paginator.num_pages)
+        page = int(paginator.num_pages)
 
     news_top = found_entries[:4]
     news = paged_news
+    
+    adjacent_pages = 3
+    pages = paginator.num_pages
+    page_numbers = range(max(1, page-adjacent_pages), min(pages, page+adjacent_pages)+1)
 
     return render(request, 'browse.html', {'sites': RssFeed.objects.all(), #.distinct('name'),
                                           'query_string': query_string,
@@ -57,7 +64,10 @@ def browse(request):
                                           'news_top': news_top,
                                           'news': news,
                                           'paged_news': paged_news,
-                                          'article_count': found_entries.count()
+                                          'article_count': found_entries.count(),
+                                          'pages': page_numbers,
+                                          'show_first': 1 not in page_numbers,
+                                          'show_last': pages not in page_numbers,
                                           })
 
 def news(request):    

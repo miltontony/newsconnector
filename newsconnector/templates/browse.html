@@ -204,6 +204,14 @@ fieldset article-footer{
 	text-shadow: 1px 1px 1px rgba(83,140,170, 0.4);
 }
 	
+#search-pagination a.elipses{
+	background: none;
+	color: #fff;
+	box-shadow: none;
+	text-shadow: 1px 1px 1px rgba(0,0,0, 0.7);
+	padding: 0 5px;
+}
+	
 #search-pagination a{
 	padding: 5px 10px;
 	text-decoration: none;
@@ -287,9 +295,17 @@ fieldset article-footer{
 	{% if paged_news.has_previous %}
 	<a href="?q={{q}}&page={{ paged_news.previous_page_number }}">&lt;</a>
 	{% endif %}
-	{% for i in paged_news.paginator.page_range %}
+	{% if show_first %}
+	<a href="?q={{q}}&page=1" {% if paged_news.number == 1 %}class="active"{%endif%}>1</a>
+	<a class="elipses">...</a>
+	{% endif %}
+	{% for i in pages %}
 	<a href="?q={{q}}&page={{ i }}" {% if paged_news.number == i %}class="active"{%endif%}>{{i}}</a>
 	{% endfor %}
+	{% if show_last %}
+	<a class="elipses">...</a>
+	<span class="page"><a href="?q={{q}}&page={{paged_news.paginator.num_pages}}">{{ paged_news.paginator.num_pages }}</a></span>
+	{% endif %}
 	{% if paged_news.has_next %}
 	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
 	{% endif %}
