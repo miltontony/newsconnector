@@ -28,11 +28,12 @@
 	text-decoration: none;
 }
 
-fieldset legend a, 
-fieldset legend a:visited, 
-fieldset legend a:link{
+fieldset a, 
+fieldset a:visited, 
+fieldset a:link{
 	color: #fff;
 	text-decoration: none;
+	cursor: pointer;
 }
 	
 fieldset legend{
@@ -46,7 +47,7 @@ fieldset legend{
 	font-family: serif;
 }
 	
-fieldset label a{
+fieldset span a{
 	text-decoration: none;
 }
 	
@@ -59,7 +60,7 @@ fieldset{
 }
 
 	
-fieldset label, 
+fieldset span, 
 fieldset article, 
 fieldset article-content, 
 fieldset article-footer{
@@ -87,11 +88,11 @@ fieldset article-footer{
 }
 
 #search-results article-content, 
-#search-results label {
+#search-results span {
 	color: #fff;
 }
 
-#search-results label{
+#search-results span{
 	padding-bottom: 0;
 	font-size: 13px;
 }
@@ -99,6 +100,17 @@ fieldset article-footer{
 #search-results article-content{
 	padding-top: 2px;
 	font-size: 13px;
+}
+	
+#search-latest{
+	background: url(/static/images/bgnoise_lg.jpg);
+	padding-top: 10px;
+	margin-bottom: 20px;
+}
+		
+#search-latest fieldset legend{
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	color: #333;
 }
 	
 #search-latest fieldset label a
@@ -109,7 +121,7 @@ fieldset article-footer{
 #search-latest article-footer a,
 #search-latest article-footer a:link,
 #search-latest article-footer a:visited{
-	color: #fff;
+	color: #18E;
 	text-decoration: none;
 }
 	
@@ -117,7 +129,7 @@ fieldset article-footer{
 #search-latest article-content, 
 #search-latest article-content a{
 	font-size: 1em;
-	color: #fff;
+	color: #333;
 }
 	
 #search-latest article-content{
@@ -130,6 +142,7 @@ fieldset article-footer{
 	
 #search-latest article-footer{
 	width: 100%;
+	color: #777;
 }
 	
 #search-results article-footer{
@@ -226,7 +239,7 @@ fieldset article-footer{
     <legend>Latest</legend>
     {% for n in news_top %}
 	<article>
-		<label><a target="_blank" href="{{n.link}}">{{n.title}}</a></label>
+		<a target="_blank" href="{{n.link}}"><label>{{n.title}}</label></a>
 		<article-content>
 		{{n.content}}
 		<a target="_blank" href="{{n.link}}">more...</a>
@@ -247,7 +260,7 @@ fieldset article-footer{
     <div>
     {% for n in news %}
 	<article>
-		<label><a href="{{n.link}}">{{n.title}}</a></label>
+		<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
 		<article-content>{{n.content}}</article-content>
 		<article-footer>
 			{{n.date|date:"D, d M H:m"}} | 
