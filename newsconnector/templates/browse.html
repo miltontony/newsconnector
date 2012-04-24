@@ -257,7 +257,7 @@ fieldset article-footer{
     <legend>Latest</legend>
     {% for n in news_top %}
 	<article>
-		<a target="_blank" href="{{n.link}}"><label>{{n.title}}</label></a>
+		<a target="_blank" href="{{n.link}}"><label>{{n.title|truncatechars:37 }}</label></a>
 		<article-content>
 		{{n.content}}
 		<a target="_blank" href="{{n.link}}">more...</a>
