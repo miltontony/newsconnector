@@ -66,9 +66,20 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'subdomains.middleware.SubdomainURLRoutingMiddleware',
 )
 
 ROOT_URLCONF = 'newsconnector.urls'
+REMOVE_WWW_FROM_DOMAIN = True
+
+SUBDOMAIN_URLCONFS = {
+    # The format for these is 'subdomain': 'urlconf'
+    None: 'newsconnector.urls',
+    'www': 'newsconnector.urls',
+    'sports': 'newsconnector.sports_urls',
+    'finance': 'newsconnector.urls',
+    'entertainment': 'newsconnector.urls',
+}
 
 TEMPLATE_DIRS = (
     "templates",

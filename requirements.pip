@@ -12,3 +12,4 @@ feedparser
 simplejson
 lxml
 networkx
+django-subdomains
