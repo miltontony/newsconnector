@@ -7,5 +7,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.news, name='index'),
+    url(r'^browse/$', views.browse,name='browse', ),
     url(r'', include('newsconnector.base_urls')),
 )

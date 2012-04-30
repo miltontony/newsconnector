@@ -19,7 +19,7 @@ def delete_keyword(request, pk):
         return redirect(redirect_url)
     return redirect(reverse('index'))
 
-def browse(request):
+def browse(request, articleModel = Article):
     q = request.GET.get('q', None)
     found_entries = None
     news_top = None
@@ -31,10 +31,10 @@ def browse(request):
         
         entry_query = get_query(query_string, ['title', 'content',])
         
-        found_entries = Article.objects.filter(entry_query).order_by('-date')
+        found_entries = articleModel.objects.filter(entry_query).order_by('-date')
         
     else:
-        found_entries = Article.objects.all().order_by('-date')[:10]
+        found_entries = articleModel.objects.all().order_by('-date')[:10]
         
     paginator = Paginator(found_entries[4:], 6)
     page = request.GET.get('page', 'none')

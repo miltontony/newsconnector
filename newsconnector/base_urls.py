@@ -6,7 +6,6 @@ from newsconnector import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^browse/$', views.browse, name='browse'),
     url(r'^data/', include('newsconnector.data.urls')),
     url(r'^keyword/delete/(?P<pk>\d+)/$', views.delete_keyword, name='delete_keyword'),
     url(r'^admin/', include(admin.site.urls)),
