@@ -77,8 +77,9 @@ SUBDOMAIN_URLCONFS = {
     None: 'newsconnector.urls',
     'www': 'newsconnector.urls',
     'sports': 'newsconnector.sports_urls',
-    'finance': 'newsconnector.urls',
-    'entertainment': 'newsconnector.urls',
+    'finance': 'newsconnector.finance_urls',
+    'entertainment': 'newsconnector.entertainment_urls',
+    'read': 'newsconnector.urls',
 }
 
 TEMPLATE_DIRS = (
