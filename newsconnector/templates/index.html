@@ -111,7 +111,8 @@ $(document).ready(function(){
 	$('#article-details').pajinate();
 	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
-	init(min_date, default_min_date, '/data{{request.path}}', '{{request.user.is_staff}}' == 'True', '{{request.path}}');
+	var subdomain = '{{request.subdomain}}' == 'None' ? '': '{{request.subdomain}}/';
+	init(min_date, default_min_date, '/data/'+subdomain, '{{request.user.is_staff}}' == 'True', '{{request.path}}');
 });	
 
 {% endblock %}
