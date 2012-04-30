@@ -6,7 +6,7 @@ from newsconnector import views
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', views.news, name='index'),
-    url(r'^browse/$', views.browse,name='browse', ),
-    url(r'', include('newsconnector.base_urls')),
+    url(r'^$', views.read, name='index'),
+    url(r'^search/$', views.search,name='search', ),
+    url(r'', include('newsconnector.urls.base')),
 )

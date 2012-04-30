@@ -74,12 +74,12 @@ REMOVE_WWW_FROM_DOMAIN = True
 
 SUBDOMAIN_URLCONFS = {
     # The format for these is 'subdomain': 'urlconf'
-    None: 'newsconnector.urls',
-    'www': 'newsconnector.urls',
-    'sports': 'newsconnector.sports_urls',
-    'finance': 'newsconnector.finance_urls',
-    'entertainment': 'newsconnector.entertainment_urls',
-    'read': 'newsconnector.urls',
+    None: 'newsconnector.urls.read',
+    'www': 'newsconnector.urls.news',
+    'sports': 'newsconnector.urls.sports',
+    'finance': 'newsconnector.urls.finance',
+    'entertainment': 'newsconnector.urls.entertainment',
+    'read': 'newsconnector.urls.read',
 }
 
 TEMPLATE_DIRS = (

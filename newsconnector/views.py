@@ -19,7 +19,7 @@ def delete_keyword(request, pk):
         return redirect(redirect_url)
     return redirect(reverse('index'))
 
-def browse(request, articleModel = Article):
+def search(request, articleModel = Article):
     q = request.GET.get('q', None)
     found_entries = None
     news_top = None
@@ -58,7 +58,7 @@ def browse(request, articleModel = Article):
     pages = paginator.num_pages
     page_numbers = range(max(1, page-adjacent_pages), min(pages, page+adjacent_pages)+1)
 
-    return render(request, 'browse.html', {'sites': RssFeed.objects.all(), #.distinct('name'),
+    return render(request, 'browse.html', {'sites': RssFeed.objects.all().distinct('name'),
                                           'query_string': query_string,
                                           'q': q,
                                           'news_top': news_top,
@@ -120,3 +120,11 @@ def entertainment(request):
                                           'title': 'LATEST GOSSIP',
                                           'id': 4,
                                           'latest': EntertainmentArticle.objects.all().order_by('-date')[:10]})
+                                          
+def read(request):    
+    return render(request, 'read.html', {'sites': RssFeed.objects.all().distinct('name'),
+                                         'news': NewsArticle.objects.all().order_by('-date')[:10],
+                                         'sports': SportsArticle.objects.all().order_by('-date')[:10],
+                                         'finance': FinanceArticle.objects.all().order_by('-date')[:10],
+                                         'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10]
+                                         })

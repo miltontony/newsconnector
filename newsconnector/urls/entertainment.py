@@ -8,6 +8,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.entertainment, name='entertainment'),
-    url(r'^browse/$', views.browse, {'articleModel': EntertainmentArticle},name='browse', ),
-    url(r'', include('newsconnector.base_urls')),
+    url(r'^search/$', views.search, {'articleModel': EntertainmentArticle},name='search', ),
+    url(r'', include('newsconnector.urls.base')),
 )

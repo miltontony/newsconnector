@@ -1,0 +1,26 @@
+#footer{
+	width: 99%;
+	bottom: 10;
+	color: #fff;
+	position: absolute;
+	font-family: 'Century Gothic', 'AppleGothic', sans-serif;
+	text-align: center;
+	font-size: 30px;
+}
+	
+#footer-sites{
+	width: 99%;
+	bottom: 0;
+	color: #fff;
+	position: absolute;
+	font-family: 'Century Gothic', 'AppleGothic', sans-serif;
+	text-align: center;
+	font-size: 10px;
+	border-top: 1px solid #fff;
+	overflow: hidden;
+	height: 15px;
+}
+#footer-sites a{
+	color: #fff;
+	text-decoration: none;
+}

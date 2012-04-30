@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/results.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
 {% endblock %}
 
 {% block content %}
@@ -32,10 +32,10 @@
 
 <div id="search-latest">
   <fieldset>
-    <legend>Latest</legend>
-    {% for n in news_top %}
-	<article>
-		<a target="_blank" href="{{n.link}}"><label>{{n.title|truncatechars:37 }}</label></a>
+    <legend>Latest News</legend>
+	{% with n=news.0 %}
+	<article class="new-cat">
+		<a target="_blank" href="http://news.newsworld.co.za/"><label>Local News</label></a>
 		<article-content>
 		{{n.content}}
 		</article-content>
@@ -44,7 +44,43 @@
 			<a href="{{n.link}}">{{n.source}}</a>
 		</article-footer>
 	</article>
-    {% endfor %}
+	{% endwith %}
+	{% with n=finance.0 %}
+	<article class="finance-cat">
+		<a target="_blank" href="http://sports.newsworld.co.za/"><label>Sports</label></a>
+		<article-content>
+		{{n.content}}
+		</article-content>
+		<article-footer>
+			{{n.date|date:"D, d M H:m"}}<br/>
+			<a href="{{n.link}}">{{n.source}}</a>
+		</article-footer>
+	</article>
+	{% endwith %}
+	{% with n=sports.0 %}
+	<article class="sports-cat">
+		<a target="_blank" href="http://finance.newsworld.co.za/"><label>Financial</label></a>
+		<article-content>
+		{{n.content}}
+		</article-content>
+		<article-footer>
+			{{n.date|date:"D, d M H:m"}}<br/>
+			<a href="{{n.link}}">{{n.source}}</a>
+		</article-footer>
+	</article>
+	{% endwith %}
+	{% with n=entertainment.0 %}
+	<article class="entertainment-cat">
+		<a target="_blank" href="http://entertainment.newsworld.co.za/"><label>Entertainment</label></a>
+		<article-content>
+		{{n.content}}
+		</article-content>
+		<article-footer>
+			{{n.date|date:"D, d M H:m"}}<br/>
+			<a href="{{n.link}}">{{n.source}}</a>
+		</article-footer>
+	</article>
+	{% endwith %}
   </fieldset>
 </div>
 
