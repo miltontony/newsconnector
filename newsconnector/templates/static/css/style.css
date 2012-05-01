@@ -1,3 +1,10 @@
+body{
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+	font-size: 12px;
+	background: #090909 url(../images/bgnoise_black.jpg);
+	margin: 0;
+}
+
 #date-slider{
 	position: absolute;
 	top: 33px;
@@ -12,11 +19,36 @@
 	height:80px;
 }
 
-body{
-	font-family: "Helvetica Neue", Helvetica, sans-serif;
-	font-size: 12px;
-	background: #090909 url(../images/bgnoise_black.jpg);
-	margin: 0;
+#just-read{
+    position: absolute;
+    top: 0;
+    width: 99%;
+}
+    
+#just-read div a{
+    text-decoration: none;
+    color: white;
+    font-family: "Georgia", "Times New Roman", Helvetica, Arial, sans-serif;
+    padding: 5px;
+    display: block;
+}
+    
+#just-read div{
+    text-align: center;
+    width: 100px;
+    margin: 0 auto;
+    border-radius: 0 0 5px 5px;
+    background: #e83325;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    font-size: 1.1em;
+    background: -moz-linear-gradient(top, #e83325 1%, #760d06 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#e83325), color-stop(100%,#760d06));
+    background: -webkit-linear-gradient(top, #e83325 1%,#760d06 100%);
+    background: -o-linear-gradient(top, #e83325 1%,#760d06 100%);
+    background: -ms-linear-gradient(top, #e83325 1%,#760d06 100%);
+    background: linear-gradient(top, #e83325 1%,#760d06 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e83325', endColorstr='#760d06',GradientType=0 );
 }
 
 #browse-search{

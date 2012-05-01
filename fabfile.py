@@ -8,7 +8,12 @@ def push():
     with cd(env.path):
         run('git pull')
 
+def static():
+    with cd(env.path):
+        run('source ve/bin/activate && cd newsconnector/ && ./manage.py collectstatic --noinput')
+
 def deploy():
     with cd(env.path):
         run('git pull')
         run('supervisorctl -c config/%(supervisord_file)s restart all' % env)
+
