@@ -150,6 +150,20 @@ body{
 	border-radius: 0 5px 5px 0;
 	border: 1px solid #116d0c;
 }
+
+#cat-nav #logout{
+	color: #e1e1f8;
+	background: #e83325;
+	background: -moz-linear-gradient(top, #e83325 1%, #760d06 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#e83325), color-stop(100%,#760d06));
+	background: -webkit-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: -o-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: -ms-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: linear-gradient(top, #e83325 1%,#760d06 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e83325', endColorstr='#760d06',GradientType=0 );
+	border-radius: 0 5px 5px 0;
+	border: 1px solid #760d06;
+}
 	
 #cat-news.active{
 	border-radius: 5px 0 0 5px;

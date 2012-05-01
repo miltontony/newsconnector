@@ -33,11 +33,11 @@ fieldset a:link{
 }
 	
 fieldset legend{
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+	text-shadow: 1px 1px 1px rgba(100,100,100,0.8);
+	color: #fff;
 	text-transform: uppercase;
 	font-weight: bold;
 	font-size: 14px;
-	color: #fff;
 	margin-left: 50px;
 	padding: 0 5px;
 	font-family: serif;
@@ -64,107 +64,99 @@ fieldset article-footer{
 	padding: 5px;
 }
 	
-#search-latest,
-#search-results{
+#read-latest{
 	color: #fff;
 }
 	
-#search-results a{
+#read-results article a{
 	color: #18E;
 }
 	
-#search-results article-footer a,
-#search-results article-footer a:link,
-#search-results article-footer a:visited{
-	color: #A8D3F8;
+#read-results article-footer a,
+#read-results article-footer a:link,
+#read-results article-footer a:visited{
+	color: #18E;
 }
 
-#search-results fieldset div{
+#read-results fieldset div{
 	width: 600px;
 }
 
-#search-results span{
-	color: #317AB9;
-	font-weight: bold;
-	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-}
-
-#search-results article-content{
-	color: #fff;
-}
-
-#search-results span{
+#read-results span{
 	padding-bottom: 0;
-	font-size: 13px;
+	font-size: 1.2em;
+	color: #111;
+	font-weight: bold;
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
 }
 	
-#search-results article-content{
+#read-results article-content{
 	padding-top: 2px;
-	font-size: 13px;
+	font-size: 1.1em;
+	font-style: italic;
+	color: #333;;
 }
 	
-#search-latest{
-	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
+#read-latest{
 	padding-top: 10px;
 	margin-bottom: 20px;
 }
-		
-#search-latest fieldset legend{
-	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
-	color: #333;
-}
 	
-#search-latest fieldset label a
+#read-latest fieldset label a
 {
-	color: #000;
+	color: #fff;
 }
 
-#search-latest article-footer a,
-#search-latest article-footer a:link,
-#search-latest article-footer a:visited{
+#read-latest article{
+    background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
+}
+
+#read-latest article-footer a,
+#read-latest article-footer a:link,
+#read-latest article-footer a:visited{
 	color: #18E;
 	text-decoration: none;
 }
 	
 
-#search-latest article-content, 
-#search-latest article-content a{
+#read-latest article-content, 
+#read-latest article-content a{
 	font-size: 1em;
-	color: #333;
+	color: #111;
 }
 	
-#search-latest article-content{
-	height: 120px;
+#read-latest article-content{
+	height: 160px;
 	padding: 5px;
 	#font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
 	font-size: 1.1em;
 	font-style: italic;
 }
 	
-#search-latest article-footer{
+#read-latest article-footer{
 	width: 100%;
 	color: #777;
+        height: 30px;
 }
 	
-#search-results article-footer{
+#read-results article-footer{
 	padding-top: 0;
+	color: #777;
 }
 
-#search-latest label:hover {
+#read-latest label:hover {
 	background: #C6E1EC;
-	color: #3D7489;
-	text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.6);
+	text-shadow: 0px 1px 1px rgba(155, 155, 155, 0.6);
 	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 0px 2px 2px rgba(0,0,0,0.1);
 }
 	
-#search-latest fieldset label{
+#read-latest fieldset label{
 	height: 25px;
 	line-height: 25px;
-	color: #333;
 	font-size: 1.1em;
 }
 		
-#search-latest fieldset article{
+#read-latest fieldset article{
 	display: block;
 	float: left;
 	width: 240px;
@@ -181,26 +173,26 @@ fieldset article-footer{
 	padding: 10px 0 0 60px;
 }
 	
-#search-pagination{
+#read-pagination{
 	padding-left: 60px;
 }
 	
-#search-pagination a.active,
-#search-pagination a:hover,
-#search-pagination a.active:hover{
+#read-pagination a.active,
+#read-pagination a:hover,
+#read-pagination a.active:hover{
 	color: #fff;
 	background: #4F97BD;
 	text-shadow: none;
 	box-shadow: none;
 }
 	
-#search-pagination a:hover{
+#read-pagination a:hover{
 	background: #79bbdd;
 	color: #fff;
 	text-shadow: 1px 1px 1px rgba(83,140,170, 0.4);
 }
 	
-#search-pagination a.elipses{
+#read-pagination a.elipses{
 	background: none;
 	color: #fff;
 	box-shadow: none;
@@ -208,7 +200,7 @@ fieldset article-footer{
 	padding: 0 5px;
 }
 	
-#search-pagination a{
+#read-pagination a{
 	padding: 5px 10px;
 	text-decoration: none;
 	display: inline;

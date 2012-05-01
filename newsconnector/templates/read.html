@@ -2,13 +2,141 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
+
+<style>
+article h1{
+	font-size: 1.2em;
+	font-style: normal;
+	font-weight: bold;
+	display: block;
+	padding: 2px 2px 5px 2px;
+	margin: 0;
+}
+	
+#read-latest article label{
+	font-family: 'Arial Narrow', Arial, sans-serif;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 5px;
+	position: relative;
+	z-index: 20;
+	display: block;
+	cursor: pointer;
+	color: #fff;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+	font-weight: bold;
+	font-size: 1.1em;
+}
+	
+#read-latest article.news-cat label,
+.tabs-news{
+	background: #367fc2;
+	background: -moz-linear-gradient(top, #367fc2 1%, #26417b 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#367fc2), color-stop(100%,#26417b));
+	background: -webkit-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: -o-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: -ms-linear-gradient(top, #367fc2 1%,#26417b 100%);
+	background: linear-gradient(top, #367fc2 1%,#26417b 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
+}
+		
+#read-latest article.entertainment-cat label,
+.tabs-entertainment{
+	background: #e83325;
+	background: -moz-linear-gradient(top, #e83325 1%, #760d06 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#e83325), color-stop(100%,#760d06));
+	background: -webkit-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: -o-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: -ms-linear-gradient(top, #e83325 1%,#760d06 100%);
+	background: linear-gradient(top, #e83325 1%,#760d06 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e83325', endColorstr='#760d06',GradientType=0 );
+}
+
+#tabs li a{
+	width: 108px;
+	display: block;
+}
+	
+#read-latest article.sports-cat label,
+#tabs li.tabs-sports a, 
+#tabs li.tabs-sports a:link, 
+#tabs li.tabs-sports a:visited {
+	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
+	color: #333;
+}
+	
+#read-latest article.sports-cat label{
+	border-bottom: 1px solid #ccc;
+}
+	
+#read-latest article.sports-cat label,
+.tabs-sports{
+	background: #ffffff;
+	background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
+	background: -webkit-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
+}
+	
+#read-latest article.finance-cat label,
+.tabs-finance{
+	background: #21ba1a;
+	background: -moz-linear-gradient(top, #21ba1a 1%, #116d0c 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#21ba1a), color-stop(100%,#116d0c));
+	background: -webkit-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: -o-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: -ms-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	background: linear-gradient(top, #21ba1a 1%,#116d0c 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21ba1a', endColorstr='#116d0c',GradientType=0 );
+}
+	
+.ui-tabs{
+	padding: 5px;
+}
+	
+.ui-tabs .ui-tabs-hide{
+	display: none;
+}
+		
+.ui-tabs .ui-tabs-nav li{
+	text-transform: uppercase;
+	display: block;
+	float: left;
+	padding: 5px;
+	margin-right: 2px;
+	height: 20px;
+	line-height: 20px;
+	font-weight: bold;
+	color: #e1e1f8;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
+	position: relative;
+}
+	
+.ui-tabs .ui-tabs-nav .ui-tabs-selected{
+	border-bottom: 4px double #fff;
+}
+	
+.ui-tabs .ui-tabs-nav .tabs-sports.ui-tabs-selected{
+	border-bottom: 4px double #ccc;
+}
+	
+.ui-tabs .ui-tabs-panel{
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
+}
+	
+</style>
 {% endblock %}
 
 {% block content %}
 <div id="container">
 <div id="cat-nav">
 	<a href="http://newsworld.co.za" id="cat-news">News</a>
-	<a href="http://finance.newsworld.co.za" id="cat-finance">Finance</a>
+	<a href="http://finance.newsworld.co.za" id="cat-finance">Financial</a>
 	<a href="http://sports.newsworld.co.za" id="cat-sports">Sports</a>
 	<a href="http://entertainment.newsworld.co.za" id="cat-entertainment">Entertainment</a>
 	{% if request.user.is_authenticated %}
@@ -20,7 +148,7 @@
 
 <div id="browse-search">
 	<div id="search-string">
-		Search for &ldquo;{{query_string}}&rdquo; &mdash; {{article_count}} result{{article_count|pluralize}}
+		Just Read!
 	</div>
 	<div id="search-form">
 	<form action="{% url search %}">
@@ -30,99 +158,128 @@
 	</div>
 </div>
 
-<div id="search-latest">
+<div id="read-latest">
   <fieldset>
     <legend>Latest News</legend>
 	{% with n=news.0 %}
-	<article class="new-cat">
-		<a target="_blank" href="http://news.newsworld.co.za/"><label>Local News</label></a>
+	<article class="news-cat">
+		<label>Local News</label>
 		<article-content>
+		<h1><a target="_blank" href="{{n.link}}">{{n.title}}</a></h1>
 		{{n.content}}
 		</article-content>
 		<article-footer>
 			{{n.date|date:"D, d M H:m"}}<br/>
-			<a href="{{n.link}}">{{n.source}}</a>
+			<a target="_blank" href="{{n.link}}">{{n.source}}</a>
 		</article-footer>
 	</article>
 	{% endwith %}
 	{% with n=finance.0 %}
 	<article class="finance-cat">
-		<a target="_blank" href="http://sports.newsworld.co.za/"><label>Sports</label></a>
+		<label>Financial</label>
 		<article-content>
+		<h1><a target="_blank" href="{{n.link}}">{{n.title}}</a></h1>
 		{{n.content}}
 		</article-content>
 		<article-footer>
 			{{n.date|date:"D, d M H:m"}}<br/>
-			<a href="{{n.link}}">{{n.source}}</a>
+			<a target="_blank" href="{{n.link}}">{{n.source}}</a>
 		</article-footer>
 	</article>
 	{% endwith %}
 	{% with n=sports.0 %}
 	<article class="sports-cat">
-		<a target="_blank" href="http://finance.newsworld.co.za/"><label>Financial</label></a>
+		<label>Sports</label>
 		<article-content>
+		<h1><a target="_blank" href="{{n.link}}">{{n.title}}</a></h1>
 		{{n.content}}
 		</article-content>
 		<article-footer>
 			{{n.date|date:"D, d M H:m"}}<br/>
-			<a href="{{n.link}}">{{n.source}}</a>
+			<a target="_blank" href="{{n.link}}">{{n.source}}</a>
 		</article-footer>
 	</article>
 	{% endwith %}
 	{% with n=entertainment.0 %}
 	<article class="entertainment-cat">
-		<a target="_blank" href="http://entertainment.newsworld.co.za/"><label>Entertainment</label></a>
+		<label>Entertainment</label>
 		<article-content>
+		<h1><a target="_blank" href="{{n.link}}">{{n.title}}</a></h1>
 		{{n.content}}
 		</article-content>
 		<article-footer>
 			{{n.date|date:"D, d M H:m"}}<br/>
-			<a href="{{n.link}}">{{n.source}}</a>
+			<a target="_blank" href="{{n.link}}">{{n.source}}</a>
 		</article-footer>
 	</article>
 	{% endwith %}
   </fieldset>
 </div>
 
-{% if news %}
-<div id="search-results">
-  <fieldset>
-    <legend> Results &ndash; Page {{paged_news.number}} of {{paged_news.paginator.num_pages}}</legend>
-    <div>
-    {% for n in news %}
-	<article>
-		<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-		<article-content>{{n.content}}</article-content>
-		<article-footer>
-			{{n.date|date:"D, d M H:m"}} | 
-			<a href="{{n.link}}">{{n.source}}</a>
-		</article-footer>
-	</article>
-    {% endfor %}
+<div id="read-results">
+  <fieldset><legend> By section</legend>
+    <div id="tabs">
+			<ul>
+			<li class="tabs-news"><a href="#tabs-news">Local News</a></li>
+			<li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
+			<li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
+			<li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
+			</ul>
+			{% for n in news %}
+			<div id="tabs-news">
+			<article>
+				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
+				<article-content>{{n.content}}</article-content>
+				<article-footer>
+					{{n.date|date:"D, d M H:m"}} | 
+					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+				</article-footer>
+			</article>
+			</div>
+			{% endfor %}
+
+			{% for n in finance %}
+			<div id="tabs-finance">
+			<article>
+				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
+				<article-content>{{n.content}}</article-content>
+				<article-footer>
+					{{n.date|date:"D, d M H:m"}} | 
+					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+				</article-footer>
+			</article>
+			</div>
+			{% endfor %}
+
+			{% for n in sports %}
+			<div id="tabs-sports">
+			<article>
+				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
+				<article-content>{{n.content}}</article-content>
+				<article-footer>
+					{{n.date|date:"D, d M H:m"}} | 
+					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+				</article-footer>
+			</article>
+			</div>
+			{% endfor %}
+
+			{% for n in entertainment %}
+			<div id="tabs-entertainment">
+			<article>
+				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
+				<article-content>{{n.content}}</article-content>
+				<article-footer>
+					{{n.date|date:"D, d M H:m"}} | 
+					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+				</article-footer>
+			</article>
+			</div>
+			{% endfor %}
     </div>
   </fieldset>
 </div>
-{% endif %}
-	
-<div id="search-pagination">
-	{% if paged_news.has_previous %}
-	<a href="?q={{q}}&page={{ paged_news.previous_page_number }}">&lt;</a>
-	{% endif %}
-	{% if show_first %}
-	<a href="?q={{q}}&page=1" {% if paged_news.number == 1 %}class="active"{%endif%}>1</a>
-	<a class="elipses">...</a>
-	{% endif %}
-	{% for i in pages %}
-	<a href="?q={{q}}&page={{ i }}" {% if paged_news.number == i %}class="active"{%endif%}>{{i}}</a>
-	{% endfor %}
-	{% if show_last %}
-	<a class="elipses">...</a>
-	<span class="page"><a href="?q={{q}}&page={{paged_news.paginator.num_pages}}">{{ paged_news.paginator.num_pages }}</a></span>
-	{% endif %}
-	{% if paged_news.has_next %}
-	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
-	{% endif %}
-</div>
+
 </div>
 <div id="footer">NEWS WORLD</div>
 <div id="footer-sites">
@@ -137,7 +294,19 @@
 {% block js %}
 	
 $(document).ready(function(){
-	//$('#article-details').pajinate();
+	$('#tabs').tabs();
+	$('article.news-cat label').click(function(){
+		$('li.tabs-news a').click();
+	});
+	$('article.sports-cat label').click(function(){
+		$('li.tabs-sports a').click();
+	});
+	$('article.entertainment-cat label').click(function(){
+		$('li.tabs-entertainment a').click();
+	});
+	$('article.finance-cat label').click(function(){
+		$('li.tabs-finance a').click();
+	});
 });	
 
 {% endblock %}
