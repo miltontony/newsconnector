@@ -17,7 +17,7 @@ def delete_keyword(request, pk):
         
         redirect_url = request.GET.get('next', reverse('index'))
         return redirect(redirect_url)
-    return redirect(reverse('index'))
+    return redirect('/')
 
 def search(request, articleModel = Article):
     q = request.GET.get('q', None)
