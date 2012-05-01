@@ -32,6 +32,8 @@ def get_instance(cls, dictArticle, source):
     except etree.ParseError:
         print dictArticle.description
         a.delete()
+    except TypeError:
+        print 'Unable to save %s' % dictArticle.title
     except IntegrityError:
         print 'Unable to save %s' % dictArticle.title
     return None
