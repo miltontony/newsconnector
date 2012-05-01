@@ -23,6 +23,11 @@ def get_instance(cls, dictArticle, source):
             a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
             a.save()
             return a
+        #don't save blanks
+        if not a.title:
+            a.delete()
+            return None
+        
         return a
     except etree.ParseError:
         print dictArticle.description
