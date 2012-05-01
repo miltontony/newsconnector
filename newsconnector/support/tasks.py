@@ -29,13 +29,16 @@ def get_instance(cls, dictArticle, source):
             return None
         
         return a
+    
     except etree.ParseError:
         print dictArticle.description
-        a.delete()
     except TypeError:
         print 'Unable to save %s' % dictArticle.title
     except IntegrityError:
         print 'Unable to save %s' % dictArticle.title
+    
+    if a:
+        a.delete()
     return None
 
 @task(ignore_result=True)
