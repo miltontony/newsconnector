@@ -15,7 +15,7 @@ def delete_keyword(request, pk):
         keyword = get_object_or_404(Keyword, pk=pk)
         keyword.delete()
         
-        redirect_url = request.GET.get('next', reverse('index'))
+        redirect_url = request.GET.get('next', '/')
         return redirect(redirect_url)
     return redirect('/')
 
