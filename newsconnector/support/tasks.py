@@ -13,6 +13,8 @@ from lxml import etree
 def get_instance(cls, dictArticle, source):
     hash_str = ':'.join([dictArticle.title,  dictArticle.link]).encode('ascii', 'ignore')
     hash = md5_constructor(hash_str).hexdigest()
+    a = None
+    
     try:
         a, created = cls.objects.get_or_create(hash_key = hash)
         if created:
