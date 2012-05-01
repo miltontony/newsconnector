@@ -10,7 +10,7 @@ def push():
 
 def static():
     with cd(env.path):
-        run('source ve/bin/activate && cd newsconnector/ && ./manage.py collectstatic --noinput')
+        run('ve/bin/python %(path)s/newsconnector/manage.py collectstatic --noinput' % env)
 
 def deploy():
     with cd(env.path):
