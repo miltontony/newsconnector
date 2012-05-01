@@ -10,8 +10,22 @@
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
 {% block head %}
 {% endblock %}
+<style>
+#just-read{
+    position: abosolute;
+    top: 0;
+    width: 99%;
+}
+    
+#just-read div{
+    width: 100px;
+    margin: 0 auto;
+}
+
+</style>
 </head>
 <body>
+<div id="just-read"><div><a href="read.newsworld.co.za">Just Read!</a></div></div>
 {% block content %}
 {% endblock %}
 </body>
