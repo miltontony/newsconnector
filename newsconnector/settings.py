@@ -76,10 +76,13 @@ SUBDOMAIN_URLCONFS = {
     # The format for these is 'subdomain': 'urlconf'
     None: 'newsconnector.urls.news',
     'www': 'newsconnector.urls.news',
+    'news': 'newsconnector.urls.news',
     'sports': 'newsconnector.urls.sports',
     'finance': 'newsconnector.urls.finance',
     'entertainment': 'newsconnector.urls.entertainment',
+    'e': 'newsconnector.urls.entertainment',
     'read': 'newsconnector.urls.read',
+    'justread': 'newsconnector.urls.read',
 }
 
 TEMPLATE_DIRS = (

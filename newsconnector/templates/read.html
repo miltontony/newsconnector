@@ -230,7 +230,7 @@ article h1{
 			<li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
 			</ul>
 			{% for n in news %}
-			<div id="tabs-news">
+			<div id="tabs-news" {% if forloop.first %}class="first-article"{% endif %}>
 			<article>
 				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
 				<article-content>{{n.content}}</article-content>
@@ -243,7 +243,7 @@ article h1{
 			{% endfor %}
 
 			{% for n in finance %}
-			<div id="tabs-finance">
+			<div id="tabs-finance" {% if forloop.first %}class="first-article"{% endif %}>
 			<article>
 				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
 				<article-content>{{n.content}}</article-content>
@@ -256,7 +256,7 @@ article h1{
 			{% endfor %}
 
 			{% for n in sports %}
-			<div id="tabs-sports">
+			<div id="tabs-sports" {% if forloop.first %}class="first-article"{% endif %}>
 			<article>
 				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
 				<article-content>{{n.content}}</article-content>
@@ -269,7 +269,7 @@ article h1{
 			{% endfor %}
 
 			{% for n in entertainment %}
-			<div id="tabs-entertainment">
+			<div id="tabs-entertainment" {% if forloop.first %}class="first-article"{% endif %}>
 			<article>
 				<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
 				<article-content>{{n.content}}</article-content>
