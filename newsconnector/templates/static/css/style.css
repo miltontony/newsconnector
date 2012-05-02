@@ -31,6 +31,7 @@ body{
     font-family: "Georgia", "Times New Roman", Helvetica, Arial, sans-serif;
     padding: 5px;
     display: block;
+    font-style: italic;
 }
     
 #just-read div{
