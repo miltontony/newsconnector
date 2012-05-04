@@ -29,7 +29,8 @@ article h1{
 }
 	
 #read-latest article.news-cat label,
-.tabs-news{
+#tabs li.tabs-news.ui-tabs-selected,
+#tabs li.tabs-news.hover{
 	background: #367fc2;
 	background: -moz-linear-gradient(top, #367fc2 1%, #26417b 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#367fc2), color-stop(100%,#26417b));
@@ -41,7 +42,8 @@ article h1{
 }
 		
 #read-latest article.entertainment-cat label,
-.tabs-entertainment{
+#tabs li.tabs-entertainment.ui-tabs-selected,
+#tabs li.tabs-entertainment.hover{
 	background: #e83325;
 	background: -moz-linear-gradient(top, #e83325 1%, #760d06 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#e83325), color-stop(100%,#760d06));
@@ -58,9 +60,10 @@ article h1{
 }
 	
 #read-latest article.sports-cat label,
-#tabs li.tabs-sports a, 
-#tabs li.tabs-sports a:link, 
-#tabs li.tabs-sports a:visited {
+#tabs li.tabs-sports.ui-tabs-selected a, 
+#tabs li.tabs-sports.hover a, 
+#tabs li.tabs-sports.ui-tabs-selected a:link, 
+#tabs li.tabs-sports.ui-tabs-selected a:visited {
 	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
 	color: #333;
 }
@@ -70,7 +73,8 @@ article h1{
 }
 	
 #read-latest article.sports-cat label,
-.tabs-sports{
+#tabs li.tabs-sports.ui-tabs-selected,
+#tabs li.tabs-sports.hover{
 	background: #ffffff;
 	background: -moz-linear-gradient(top, #ffffff 1%, #eaeaea 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#eaeaea));
@@ -82,7 +86,8 @@ article h1{
 }
 	
 #read-latest article.finance-cat label,
-.tabs-finance{
+#tabs li.tabs-finance.ui-tabs-selected,
+#tabs li.tabs-finance.hover{
 	background: #21ba1a;
 	background: -moz-linear-gradient(top, #21ba1a 1%, #116d0c 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#21ba1a), color-stop(100%,#116d0c));
@@ -115,6 +120,14 @@ article h1{
 	position: relative;
 	border-radius: 10px 10px 0 0;
 	top: 6px;
+	background: #111;
+	background: -moz-linear-gradient(top, #777 1%, #111 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#777), color-stop(100%,#111));
+	background: -webkit-linear-gradient(top, #777 1%,#111 100%);
+	background: -o-linear-gradient(top, #777 1%,#111 100%);
+	background: -ms-linear-gradient(top, #777 1%,#111 100%);
+	background: linear-gradient(top, #777 1%,#111 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777', endColorstr='#111',GradientType=0 );
 }
 	
 .ui-tabs .ui-tabs-nav .ui-tabs-selected{
@@ -315,6 +328,11 @@ $(document).ready(function(){
 	$('article.finance-cat label').click(function(){
 		$('li.tabs-finance a').click();
 	});
+		
+	$('#tabs ul li').hover(
+	   function(){ $(this).stop(true).addClass('hover', 100) },
+	   function(){ $(this).stop(true).removeClass('hover', 100) }
+	);
 });	
 
 {% endblock %}
