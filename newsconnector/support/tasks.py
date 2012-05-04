@@ -75,7 +75,7 @@ def run_tasks(feeds, feedModel, keywordModel):
                 print keywordModel.objects.filter(keyword = k)
     
     print 'clean up keywords'
-    existing_slots = []
+    existing_slots = ['is', 'with']
     for placeholder in keywordModel.objects.all():
         if placeholder.keyword in existing_slots:
             placeholder.delete()
