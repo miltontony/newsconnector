@@ -136,3 +136,4 @@ CELERY_IMPORTS = ("newsconnector.support.tasks",)
 CELERY_RESULT_BACKEND = "amqp"
 
 LOGIN_URL = '/admin/'
+SESSION_COOKIE_DOMAIN = '.newsworld.co.za'
