@@ -115,7 +115,7 @@ def entertainment(request):
     #min_date = (Article.objects.aggregate(date = Min('date'))['date']).date()
     min_date = date.today() - timedelta(days=7)
     yesterday = date.today() - timedelta(days=1)
-    default_min_date = yesterday if datetime.now().hour < 13 else date.today()
+    default_min_date = yesterday
     
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date,
