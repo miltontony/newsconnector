@@ -149,7 +149,37 @@ article h1{
 .ui-tabs .first-article{
 	border-top: 1px solid #ccc;
 }
+
+#read-results .read-more span,
+#read-results .read-more span,
+#read-results .read-more span{
+	color: #18E;
+}
 	
+.read-more span{
+	width: 100%;
+}
+	
+div.read-more-spacer {
+	border-bottom: 2px dashed #ccc;
+}
+	
+div.read-more {
+	padding: 5px 0px;
+	text-align: center;
+	background: #fff;
+	background: -moz-linear-gradient(top, #fff 1%, #A8C9E4 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#fff), color-stop(100%,#A8C9E4));
+	background: -webkit-linear-gradient(top, #fff 1%,#A8C9E4 100%);
+	background: -o-linear-gradient(top, #fff 1%,#A8C9E4 100%);
+	background: -ms-linear-gradient(top, #fff 1%,#A8C9E4 100%);
+	background: linear-gradient(top, #fff 1%,#A8C9E4 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#A8C9E4',GradientType=0 );
+}	
+
+.read-more-cont #read-more div.ui-tabs-panel{
+	width: 599px;
+}
 </style>
 {% endblock %}
 
@@ -258,6 +288,12 @@ article h1{
 			</article>
 			</div>
 			{% endfor %}
+			<div id="tabs-news" class="read-more-cont">
+			<div id="read-more"></div>
+			<div class="read-more">
+				<a href="{% url read_more 1 %}?page=2" cat=1><span>more...</span></a>
+			</div>
+			</div>
 
 			{% for n in finance %}
 			<div id="tabs-finance" {% if forloop.first %}class="first-article"{% endif %}>
@@ -271,6 +307,12 @@ article h1{
 			</article>
 			</div>
 			{% endfor %}
+			<div id="tabs-finance" class="read-more-cont">
+			<div id="read-more"></div>
+			<div class="read-more">
+				<a href="{% url read_more 3 %}?page=2" cat=3><span>more...</span></a>
+			</div>
+			</div>
 
 			{% for n in sports %}
 			<div id="tabs-sports" {% if forloop.first %}class="first-article"{% endif %}>
@@ -284,6 +326,12 @@ article h1{
 			</article>
 			</div>
 			{% endfor %}
+			<div id="tabs-sports" class="read-more-cont">
+			<div id="read-more"></div>
+			<div class="read-more">
+				<a href="{% url read_more 2 %}?page=2" cat=2><span>more...</span></a>
+			</div>
+			</div>
 
 			{% for n in entertainment %}
 			<div id="tabs-entertainment" {% if forloop.first %}class="first-article"{% endif %}>
@@ -297,6 +345,12 @@ article h1{
 			</article>
 			</div>
 			{% endfor %}
+			<div id="tabs-entertainment" class="read-more-cont">
+			<div id="read-more"></div>
+			<div class="read-more">
+				<a href="{% url read_more 4 %}?page=2" cat=4><span>more...</span></a>
+			</div>
+			</div>
     </div>
   </fieldset>
 </div>
@@ -333,6 +387,27 @@ $(document).ready(function(){
 	   function(){ $(this).stop(true).addClass('hover', 100) },
 	   function(){ $(this).stop(true).removeClass('hover', 100) }
 	);
+		
+	$('.read-more a').click(function(event){
+		event.preventDefault();
+		var href = $(this).attr('href');
+		var target = $(this).parent().parent().find('#read-more');
+		var _ = $(this);
+		target.append('<div class="read-more-spacer"></div>');
+		$.get(href, function(data) {
+			$.each(data.articles, function(i, value){
+				target.append('<div id="tabs-news" class="ui-tabs-panel"><article>'+
+				'<a target="_blank" href="'+value.link+'"><span>'+value.title+'</span></a>'+
+				'<article-content>'+value.content+'</article-content>'+
+				'<article-footer>'+value.date+' | '+
+				'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
+				'</article-footer></article></div>');
+				});
+			if(data.has_next){
+				_.attr('href','/more/'+_.attr('cat')+'/?page='+data.next_page);
+			}
+		});
+	});
 });	
 
 {% endblock %}
