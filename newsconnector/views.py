@@ -7,6 +7,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+import json
+from django.http import HttpResponse
+
 from datetime import date, timedelta, datetime
 
 @login_required
@@ -128,3 +131,41 @@ def read(request):
                                          'finance': FinanceArticle.objects.all().order_by('-date')[:10],
                                          'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10]
                                          })
+
+def read_more(request, category):
+    page = int(request.GET.get('page', None))
+    category = int(category)
+    
+    if not page:
+        return HttpResponse(json.dumps({'error': 'page not selected'}), 
+                            mimetype='application/json')
+    
+    articleModel = NewsArticle
+    
+    if category == 2:
+        articleModel = SportsArticle
+    elif category == 3:
+        articleModel = FinanceArticle
+    if category == 4:
+        articleModel = EntertainmentArticle
+    
+    paginator = Paginator(articleModel.objects.all().order_by('-date'), 10)
+    page = request.GET.get('page', 'none')
+    
+    try:
+        paged_news = paginator.page(page)
+    except EmptyPage:
+        return HttpResponse(json.dumps({'error': 'page not found'}), 
+                            mimetype='application/json')
+    
+    data = json.dumps({'articles': [{'title': a.title, 
+                                     'link': a.link, 
+                                     'content': a.content,
+                                     'source': a.source,
+                                     'date': a.date.strftime('%a, %d %b %H:%M')} \
+                                     for a in paged_news.object_list],
+                       'has_next': paged_news.has_next(),
+                       'next_page': paged_news.next_page_number()})
+                       
+    return HttpResponse(data, mimetype='application/json')
+
