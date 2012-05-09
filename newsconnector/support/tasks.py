@@ -10,13 +10,15 @@ import feedparser
 import lxml.html
 from lxml import etree
 
+
 def get_instance(cls, dictArticle, source):
-    hash_str = ':'.join([dictArticle.title,  dictArticle.link]).encode('ascii', 'ignore')
+    hash_str = ':'.join([dictArticle.title,  dictArticle.link])\
+                  .encode('ascii', 'ignore')
     hash = md5_constructor(hash_str).hexdigest()
     a = None
-    
+
     try:
-        a, created = cls.objects.get_or_create(hash_key = hash)
+        a, created = cls.objects.get_or_create(hash_key=hash)
         if created:
             a.title = dictArticle.title
             a.link = dictArticle.link
@@ -26,22 +28,22 @@ def get_instance(cls, dictArticle, source):
             a.save()
             return a
         #don't save blanks
-        if not a.title:
+        if not a.title or not a.link:
             a.delete()
             return None
-        
         return a
-    
+
     except etree.ParseError:
         print dictArticle.description
     except TypeError:
         print 'Unable to save %s' % dictArticle.title
     except IntegrityError:
         print 'Unable to save %s' % dictArticle.title
-    
+
     if a:
         a.delete()
     return None
+
 
 @task(ignore_result=True)
 def run_tasks(feeds, feedModel, keywordModel):
@@ -52,28 +54,28 @@ def run_tasks(feeds, feedModel, keywordModel):
         print 'Fetched: %s' % feed
     print 'Fetching complete.'
     print 'Start OpenCalais keyword fetch.'
-    
+
     data = ' '.join(['%s %s' % (a.title, a.content) for a in new_articles if a])
-    
+
     if not data:
         return
-    
+
     data = data.encode('ascii', 'ignore')
-    
+
     calais = Calais('r8krg8jjs9smep7c2z9jvzew', submitter="python-calais newsconnector")
     result = calais.analyze(data)
     print 'Keyword analysis complete.'
     print 'Save keywords.'
     keywords = (a["name"].lower() for a in result.entities)
-    
+
     for k in keywords:
-        if not keywordModel.objects.filter(keyword = k).exists():
+        if not keywordModel.objects.filter(keyword=k).exists():
             try:
-                keywordModel(keyword = k).save()
+                keywordModel(keyword=k).save()
             except IntegrityError:
                 print k
-                print keywordModel.objects.filter(keyword = k)
-    
+                print keywordModel.objects.filter(keyword=k)
+
     print 'clean up keywords'
     existing_slots = ['is', 'with']
     for placeholder in keywordModel.objects.all():
@@ -81,5 +83,5 @@ def run_tasks(feeds, feedModel, keywordModel):
             placeholder.delete()
         else:
             existing_slots.append(placeholder.keyword)
-                    
+
     print 'Update complete.'
