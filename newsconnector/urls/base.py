@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'^keyword/delete/(?P<pk>\d+)/$', views.delete_keyword, name='delete_keyword'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^logout/', 'django.contrib.auth.views.logout', {'next_page': '/'}, name='logout'),
+    url(r'^health/', views.health, name='health'),
     url(r'^cgi-sys/defaultwebpage.cgi$', redirect_to, {'url': '/'}),
 )
