@@ -1,7 +1,7 @@
 from fabric.api import *
 
 env.path = '/var/sites/newsconnector'
-env.supervisord_file = 'supervisord.production.conf'
+env.supervisord_file = 'supervisord.conf'
 env.hosts = ['ubuntu@23.21.46.126']
 
 def push():
