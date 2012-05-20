@@ -1,3 +1,7 @@
+#browse-search {
+	padding: 10px 0;
+}
+
 #footer{
 	width: 99%;
 	color: #fff;
@@ -104,14 +108,8 @@ fieldset article-footer{
 }
 	
 #search-latest{
-	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
 	padding-top: 10px;
 	margin-bottom: 20px;
-}
-		
-#search-latest fieldset legend{
-	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
-	color: #333;
 }
 	
 #search-latest fieldset label a
@@ -171,6 +169,7 @@ fieldset article-footer{
 	border: 1px solid #CCC;
 	padding: 0;
 	margin-right: 2px;
+	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
 }
 	
 #search-string{

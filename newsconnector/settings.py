@@ -74,8 +74,8 @@ REMOVE_WWW_FROM_DOMAIN = True
 
 SUBDOMAIN_URLCONFS = {
     # The format for these is 'subdomain': 'urlconf'
-    None: 'newsconnector.urls.news',
-    'www': 'newsconnector.urls.news',
+    None: 'newsconnector.urls.read',
+    'www': 'newsconnector.urls.read',
     'news': 'newsconnector.urls.news',
     'sports': 'newsconnector.urls.sports',
     'finance': 'newsconnector.urls.finance',
