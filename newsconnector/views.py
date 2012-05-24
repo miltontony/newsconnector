@@ -172,14 +172,8 @@ def read_more(request, category):
         return HttpResponse(json.dumps({'error': 'page not found'}), 
                             mimetype='application/json')
     
-    data = json.dumps({'articles': [{'title': a.title, 
-                                     'link': a.link, 
-                                     'content': a.content,
-                                     'source': a.source,
-                                     'date': a.date.strftime('%a, %d %b %H:%M')} \
-                                     for a in paged_news.object_list],
+    data = json.dumps({'articles': [a.to_dto() for a in paged_news.object_list],
                        'has_next': paged_news.has_next(),
                        'next_page': paged_news.next_page_number()})
                        
     return HttpResponse(data, mimetype='application/json')
-

@@ -41,7 +41,7 @@ fieldset a:link{
 }
 	
 #read-latest fieldset legend,
-#read-results fieldset legend{
+.read-results fieldset legend{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 	color: #fff;
 	text-transform: uppercase;
@@ -57,7 +57,7 @@ fieldset span a{
 }
 	
 #read-latest fieldset,
-#read-results fieldset{
+.read-results fieldset{
 	margin: 0 25px 0 40px;
 	padding: 10px;
 	border-right: none;
@@ -78,21 +78,21 @@ fieldset article-footer{
 	color: #fff;
 }
 	
-#read-results article a{
+.read-results article a{
 	color: #18E;
 }
 	
-#read-results article-footer a,
-#read-results article-footer a:link,
-#read-results article-footer a:visited{
+.read-results article-footer a,
+.read-results article-footer a:link,
+.read-results article-footer a:visited{
 	color: #18E;
 }
 
-#read-results fieldset div{
+.read-results fieldset div{
 	width: auto;
 }
 
-#read-results span{
+.read-results span{
 	padding-bottom: 0;
 	font-size: 1.2em;
 	color: #111;
@@ -100,7 +100,7 @@ fieldset article-footer{
 	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
 }
 	
-#read-results article-content{
+.read-results article-content{
 	padding-top: 2px;
 	font-size: 1.1em;
 	font-style: italic;
@@ -150,7 +150,7 @@ fieldset article-footer{
         height: 30px;
 }
 	
-#read-results article-footer{
+.read-results article-footer{
 	padding-top: 0;
 	color: #777;
 }
@@ -374,9 +374,9 @@ article h1{
 	border-top: 1px solid #ccc;
 }
 
-#read-results .read-more span,
-#read-results .read-more span,
-#read-results .read-more span{
+.read-results .read-more span,
+.read-results .read-more span,
+.read-results .read-more span{
 	color: #18E;
 }
 	
@@ -403,4 +403,18 @@ div.read-more {
 
 .read-more-cont #read-more div.ui-tabs-panel{
 	width: 599px;
+}
+
+#read-related-close {
+	margin: 0 0 0 50px;
+	display: inline;
+	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
+	width: 40px;
+	padding: 5px;
+}
+
+.related-article-title{
+	color: #fff;
+	font-size: 18px;
+
 }

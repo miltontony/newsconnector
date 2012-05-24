@@ -19,13 +19,18 @@ class FeedAdmin(admin.ModelAdmin):
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Keyword, KeywordAdmin)
 admin.site.register(RssFeed, FeedAdmin)
+
 admin.site.register(NewsFeed, FeedAdmin)
 admin.site.register(SportsFeed, FeedAdmin)
 admin.site.register(FinanceFeed, FeedAdmin)
 admin.site.register(EntertainmentFeed, FeedAdmin)
+
+admin.site.register(NewsArticle, ArticleAdmin)
 admin.site.register(SportsArticle, ArticleAdmin)
 admin.site.register(FinanceArticle, ArticleAdmin)
 admin.site.register(EntertainmentArticle, ArticleAdmin)
+
+admin.site.register(NewsKeyword, KeywordAdmin)
 admin.site.register(SportsKeyword, KeywordAdmin)
 admin.site.register(FinanceKeyword, KeywordAdmin)
 admin.site.register(EntertainmentKeyword, KeywordAdmin)

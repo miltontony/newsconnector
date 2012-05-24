@@ -1,6 +1,15 @@
 from django.db import models
 from datetime import datetime
 
+
+class Keyword(models.Model):
+    keyword = models.TextField()
+    date_updated = models.DateTimeField(auto_now = True, default = datetime.now())
+    
+    def __unicode__(self):  # pragma: no cover
+        return self.keyword
+
+
 class Article(models.Model):
     hash_key = models.CharField(max_length=32, unique=True)
     date_added = models.DateTimeField(auto_now_add = True)
@@ -9,17 +18,18 @@ class Article(models.Model):
     link = models.TextField()
     content = models.TextField()
     source = models.TextField()
+    keywords = models.ManyToManyField(Keyword, blank=True, null=True)
 
     def __unicode__(self):  # pragma: no cover
         return '%s - %s' % (self.title,  self.content)
 
-
-class Keyword(models.Model):
-    keyword = models.TextField()
-    date_updated = models.DateTimeField(auto_now = True, default = datetime.now())
-    
-    def __unicode__(self):  # pragma: no cover
-        return self.keyword
+    def to_dto(self):
+        return {'title': self.title,
+                'link': self.link,
+                'content': self.content,
+                'source': self.source,
+                'date': self.date.strftime('%a, %d %b %H:%M'),
+                'keywords': [k.keyword for k in self.keywords.all()]}
 
 
 class RssFeed(models.Model):

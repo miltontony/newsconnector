@@ -1,8 +1,10 @@
 from newsconnector.support.calais import Calais
+from newsconnector.support.utils import found_string
+from newsconnector.models import *
 from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
 from time import mktime
-from datetime import datetime
+from datetime import datetime, timedelta, date
 
 from celery.task import task
 
@@ -84,4 +86,19 @@ def run_tasks(feeds, feedModel, keywordModel):
         else:
             existing_slots.append(placeholder.keyword)
 
+    print 'Update keywords for related articles'
+
+    update_keywords(keywordModel, feedModel)
+
     print 'Update complete.'
+
+
+def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
+    min_date = date.today() - timedelta(days=7)
+
+    for word in keywordModel.objects.exclude(keyword='the').distinct():
+        for a in articleModel.objects.filter(date_added__gt=min_date):
+            if found_string(word.keyword, ('%s %s' % (a.title, a.content)).lower()):
+                if not a.keywords.filter(pk=word.pk).exists():
+                    a.keywords.add(word)
+                    print "Added [%s] to [%s]" % (word.keyword, a.title)

@@ -82,7 +82,7 @@
   </fieldset>
 </div>
 
-<div id="read-results">
+<div class="read-results" id="read-results">
   <a name="section_top"></a>
   <fieldset style="border-top: none;">
   	<!-- <legend> More</legend> -->
@@ -101,6 +101,9 @@
 				<article-footer>
 					{{n.date|date:"D, d M H:m"}} | 
 					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+					{% if n.keywords.exists %}
+					<br/><a class="view-related" href="{% url related_news n.pk %}">View Similar</a>
+					{% endif %}
 				</article-footer>
 			</article>
 			</div>
@@ -121,6 +124,9 @@
 				<article-footer>
 					{{n.date|date:"D, d M H:m"}} | 
 					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+					{% if n.keywords.exists %}
+					<br/><a class="view-related" href="{% url related_finance n.pk %}">View Similar</a>
+					{% endif %}
 				</article-footer>
 			</article>
 			</div>
@@ -141,6 +147,9 @@
 				<article-footer>
 					{{n.date|date:"D, d M H:m"}} | 
 					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+					{% if n.keywords.exists %}
+					<br/><a class="view-related" href="{% url related_sports n.pk %}">View Similar</a>
+					{% endif %}
 				</article-footer>
 			</article>
 			</div>
@@ -161,6 +170,9 @@
 				<article-footer>
 					{{n.date|date:"D, d M H:m"}} | 
 					<a target="_blank" href="{{n.link}}">{{n.source}}</a>
+					{% if n.keywords.exists %}
+					<br/><a class="view-related" href="{% url related_entertainment n.pk %}">View Similar</a>
+					{% endif %}
 				</article-footer>
 			</article>
 			</div>
@@ -175,7 +187,15 @@
     </div>
   </fieldset>
 </div>
-
+<div class="read-results" id="read-related" style="display:none">
+	<div style="margin-bottom: -10px">
+		<a id="read-related-close" href="#">Close</a>
+		<div style="display:inline" class="related-article-title">
+	 	&nbsp;- articles related to <em>"<div style="display:inline"  id="read-related-title"></div>"</em>
+		</div>
+	</div>
+	<fieldset style="border-top: none;"><div class="ui-tabs"></div>
+	</fieldset>
 </div>
 <div id="footer">NEWS WORLD</div>
 <div id="footer-sites">
@@ -188,6 +208,35 @@
 {% endblock %}
 
 {% block js %}
+
+function view_related(link){
+	var target = $('#read-related .ui-tabs').html('')
+	$.get(link.attr('href'), function(data) {
+		$('#read-related-title').html(data.article.title);
+		target.append('<div id="related-article" class="ui-tabs-panel" tabindex="100"><article>'+
+			'<a target="_blank" href="'+data.article.link+'"><span>'+data.article.title+'</span></a>'+
+			'<article-content>'+data.article.content+'</article-content>'+
+			'<article-footer>'+data.article.date+' | '+
+			'<a target="_blank" href="'+data.article.link+'">'+data.article.source+'</a>'+
+			'</article-footer></article></div>');
+		target.append('<div style="margin-bottom: 5px;" class="ui-tabs-panel"><article>'+
+			'<article-content><strong>Keywords:</strong> '+data.article.keywords+'</article-content>'+
+			'</article></div>');
+		$.each(data.articles, function(i, value){
+			target.append('<div class="ui-tabs-panel"><article>'+
+			'<a target="_blank" href="'+value.link+'"><span>'+value.title+'</span></a>'+
+			'<article-content>'+value.content+'</article-content>'+
+			'<article-footer>'+value.date+' | '+
+			'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
+			'</article-footer></article></div>');
+			});
+		$('#read-results').fadeOut(300, function(){
+			$('#read-related').fadeIn(500, function(){
+				$.scrollTo('#read-related-close');
+			});
+		});
+	});
+}
 	
 $(document).ready(function(){
 	$('#tabs').tabs();
@@ -208,7 +257,18 @@ $(document).ready(function(){
 	   function(){ $(this).stop(true).addClass('hover', 100) },
 	   function(){ $(this).stop(true).removeClass('hover', 100) }
 	);
-		
+	
+	$('a.view-related').click(function(event){
+		event.preventDefault();
+		view_related($(this));
+	});	
+
+	$('#read-related-close').click(function(event){
+		event.preventDefault();
+		$('#read-related').fadeOut(300, function(){
+			$('#read-results').fadeIn(500);
+		});
+	});	
 	$('.read-more a').click(function(event){
 		event.preventDefault();
 		var href = $(this).attr('href');
