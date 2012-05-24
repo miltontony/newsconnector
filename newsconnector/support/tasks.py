@@ -61,22 +61,10 @@ def run_tasks(feeds, feedModel, keywordModel):
 
     if not data:
         return
+    
+    print "Article count: %s" % len(new_articles)
 
-    data = data.encode('ascii', 'ignore')
-
-    calais = Calais('r8krg8jjs9smep7c2z9jvzew', submitter="python-calais newsconnector")
-    result = calais.analyze(data)
-    print 'Keyword analysis complete.'
-    print 'Save keywords.'
-    keywords = (a["name"].lower() for a in result.entities)
-
-    for k in keywords:
-        if not keywordModel.objects.filter(keyword=k).exists():
-            try:
-                keywordModel(keyword=k).save()
-            except IntegrityError:
-                print k
-                print keywordModel.objects.filter(keyword=k)
+    update_articles(new_articles, keywordModel)
 
     print 'clean up keywords'
     existing_slots = ['is', 'with']
@@ -88,9 +76,55 @@ def run_tasks(feeds, feedModel, keywordModel):
 
     print 'Update keywords for related articles'
 
-    update_keywords(keywordModel, feedModel)
-
     print 'Update complete.'
+
+
+def update_articles(articles_list, keywordModel):
+    for art in articles_list:
+        if not art:
+            continue
+
+        data = '%s %s' % (art.title, art.content)
+        
+        if not data:
+            continue
+
+        data = data.encode('ascii', 'ignore')
+
+        calais = Calais('r8krg8jjs9smep7c2z9jvzew', submitter="python-calais newsconnector")
+        result = calais.analyze(data)
+
+        if not hasattr(result, 'entities'):
+            print 'No keywords found for [%s]' % art.title
+            continue
+
+        print 'Keyword analysis complete.'
+        print 'Save keywords.'
+        keywords = [a["name"].lower() for a in result.entities]
+        print 'Keywords found: %s' % keywords
+
+        for k in keywords:
+            if not keywordModel.objects.filter(keyword=k).exists():
+                try:
+                    a_k = keywordModel(keyword=k)
+                    a_k.save()
+                    if not art.keywords.filter(pk=a_k.pk).exists():
+                        art.keywords.add(a_k)
+                        print "[%s] added." % k
+                    else:
+                        print "Keyword [%s] already exists: [%s]" %\
+                                (k, [x for x in art.keywords.all()])
+                except IntegrityError:
+                    print k
+                    print keywordModel.objects.filter(keyword=k)
+            else:
+                a_k = keywordModel.objects.get(keyword=k)
+                if not art.keywords.filter(pk=a_k.pk).exists():
+                    art.keywords.add(a_k)
+                    print "[%s] added." % k
+                else:
+                    print "Keyword [%s] already exists: [%s]" %\
+                            (k, [x for x in art.keywords.all()])
 
 
 def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
@@ -102,3 +136,9 @@ def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
                 if not a.keywords.filter(pk=word.pk).exists():
                     a.keywords.add(word)
                     print "Added [%s] to [%s]" % (word.keyword, a.title)
+
+
+def manual_update_articles(keywordModel=NewsKeyword, articleModel=NewsArticle):
+    min_date = date.today() - timedelta(days=7)
+    l = [a for a in articleModel.objects.filter(date_added__gt=min_date)]
+    update_articles(l, keywordModel)
