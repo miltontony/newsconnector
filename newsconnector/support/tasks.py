@@ -112,19 +112,16 @@ def update_articles(articles_list, keywordModel):
                         art.keywords.add(a_k)
                         print "[%s] added." % k
                     else:
-                        print "Keyword [%s] already exists: [%s]" %\
-                                (k, [x for x in art.keywords.all()])
+                        print "Keyword [%s] already exists." % k
                 except IntegrityError:
                     print k
-                    print keywordModel.objects.filter(keyword=k)
             else:
                 a_k = keywordModel.objects.get(keyword=k)
                 if not art.keywords.filter(pk=a_k.pk).exists():
                     art.keywords.add(a_k)
                     print "[%s] added." % k
                 else:
-                    print "Keyword [%s] already exists: [%s]" %\
-                            (k, [x for x in art.keywords.all()])
+                    print "Keyword [%s] already exists." % k
 
 
 def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
