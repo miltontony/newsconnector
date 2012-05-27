@@ -14,17 +14,19 @@ from lxml import etree
 
 
 def get_instance(cls, dictArticle, source):
-    hash_str = ':'.join([dictArticle.title,  dictArticle.link])\
-                  .encode('ascii', 'ignore')
-    hash = md5_constructor(hash_str).hexdigest()
     a = None
 
     try:
+        content = lxml.html.fromstring(dictArticle.description).text_content()
+        hash_str = ':'.join([dictArticle.title,  content])\
+                      .encode('ascii', 'ignore')
+        hash = md5_constructor(hash_str).hexdigest()
+        
         a, created = cls.objects.get_or_create(hash_key=hash)
         if created:
             a.title = dictArticle.title
             a.link = dictArticle.link
-            a.content = lxml.html.fromstring(dictArticle.description).text_content()
+            a.content = content
             a.source = source
             a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
             a.save()
@@ -77,6 +79,18 @@ def run_tasks(feeds, feedModel, keywordModel):
     print 'Update keywords for related articles'
 
     print 'Update complete.'
+
+
+def remove_duplicate_articles():
+    existing_slots = []
+    for placeholder in Article.objects.all().order_by('-date_added'):
+        hash_str = ':'.join([placeholder.title,  placeholder.content])\
+                      .encode('ascii', 'ignore')
+        hash = md5_constructor(hash_str).hexdigest()
+        if hash in existing_slots:
+            placeholder.delete()
+        else:
+            existing_slots.append(hash)
 
 
 def update_articles(articles_list, keywordModel):
