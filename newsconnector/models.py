@@ -28,6 +28,7 @@ class Article(models.Model):
                 'link': self.link,
                 'content': self.content,
                 'source': self.source,
+                'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'keywords': [k.keyword for k in self.keywords.all()]}
     
@@ -37,6 +38,7 @@ class Article(models.Model):
                 'link': self.link,
                 'content': self.content,
                 'source': self.source,
+                'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'sdate': '%s' % self.date.isoformat(),
                 'keywords': [k.keyword for k in self.keywords.all()],

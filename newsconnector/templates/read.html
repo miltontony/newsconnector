@@ -304,11 +304,16 @@ $(document).ready(function(){
 				'<article-content>'+value.content+'</article-content>'+
 				'<article-footer>'+value.date+' | '+
 				'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
+				'<br/><a class="view-related" href="/data/related/'+_.attr('cat')+'/'+value.id+'/">View Similar</a>'+
 				'</article-footer></article></div>');
 				});
 			if(data.has_next){
 				_.attr('href','/more/'+_.attr('cat')+'/?page='+data.next_page);
 			}
+			target.find('a.view-related').click(function(event){
+				event.preventDefault();
+				view_related($(this));
+			});
 		});
 	});
 });	
