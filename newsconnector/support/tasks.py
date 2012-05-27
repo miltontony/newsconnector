@@ -18,7 +18,7 @@ def get_instance(cls, dictArticle, source):
 
     try:
         content = lxml.html.fromstring(dictArticle.description).text_content()
-        hash_str = ':'.join([dictArticle.title,  content])\
+        hash_str = ':'.join([dictArticle.title,  content, source])\
                       .encode('ascii', 'ignore')
         hash = md5_constructor(hash_str).hexdigest()
         
@@ -84,7 +84,7 @@ def run_tasks(feeds, feedModel, keywordModel):
 def remove_duplicate_articles():
     existing_slots = []
     for placeholder in Article.objects.all().order_by('-date_added'):
-        hash_str = ':'.join([placeholder.title,  placeholder.content])\
+        hash_str = ':'.join([placeholder.title,  placeholder.content, placeholder.source])\
                       .encode('ascii', 'ignore')
         hash = md5_constructor(hash_str).hexdigest()
         if hash in existing_slots:

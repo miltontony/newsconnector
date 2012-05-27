@@ -30,7 +30,8 @@ def related(request, pk, articleModel=NewsArticle):
     keywords = [i.pk for i in articleModel.objects.get(pk=pk).keywords.all()]
     l = articleModel.objects.filter(keywords__in=keywords)\
                                .exclude(pk=pk)\
-                               .order_by('-date')[:20]
+                               .distinct('pk')\
+                               .order_by('pk','-date')[:20]
     articles = [a.to_related_dto(keywords) for a in l]
     s_articles = sorted(articles, key=itemgetter('rank','sdate'), reverse=True)
 
