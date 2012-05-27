@@ -30,6 +30,18 @@ class Article(models.Model):
                 'source': self.source,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'keywords': [k.keyword for k in self.keywords.all()]}
+    
+    def to_related_dto(self, keywords):
+        matched = [k.keyword for k in self.keywords.filter(pk__in=keywords)]
+        return {'title': self.title,
+                'link': self.link,
+                'content': self.content,
+                'source': self.source,
+                'date': self.date.strftime('%a, %d %b %H:%M'),
+                'keywords': [k.keyword for k in self.keywords.all()],
+                'matched': matched,
+                'rank': len(matched),
+                'rankp': len(matched) / float(len(keywords)) * 100}
 
 
 class RssFeed(models.Model):

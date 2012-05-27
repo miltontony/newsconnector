@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block head %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
 {% endblock %}
 
@@ -213,6 +214,11 @@ function view_related(link){
 	var target = $('#read-related .ui-tabs').html('')
 	$.get(link.attr('href'), function(data) {
 		$('#read-related-title').html(data.article.title);
+		var keys = $('<div/>');
+		$.each(data.article.keywords,function(i,value){
+			keys.append('<div class="related-article-keyword">'+value+'</div>')
+		});
+
 		target.append('<div id="related-article" class="ui-tabs-panel" tabindex="100"><article>'+
 			'<a target="_blank" href="'+data.article.link+'"><span>'+data.article.title+'</span></a>'+
 			'<article-content>'+data.article.content+'</article-content>'+
@@ -220,16 +226,32 @@ function view_related(link){
 			'<a target="_blank" href="'+data.article.link+'">'+data.article.source+'</a>'+
 			'</article-footer></article></div>');
 		target.append('<div style="margin-bottom: 5px;" class="ui-tabs-panel"><article>'+
-			'<article-content><strong>Keywords:</strong> '+data.article.keywords+'</article-content>'+
+			'<strong>Keywords:</strong> '+keys.html()+
 			'</article></div>');
 		$.each(data.articles, function(i, value){
+			var matched_keys = $('<div/>');
+			$.each(value.matched,function(i,value){
+				matched_keys.append('<div class="matched-keyword">'+value+'</div>')
+			});
 			target.append('<div class="ui-tabs-panel"><article>'+
 			'<a target="_blank" href="'+value.link+'"><span>'+value.title+'</span></a>'+
 			'<article-content>'+value.content+'</article-content>'+
 			'<article-footer>'+value.date+' | '+
-			'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
+			'<a target="_blank" href="'+value.link+'">'+value.source+'</a><br/>'+
+			'<div class="rank">'+value.rankp+'%</div>'+
+			matched_keys.html()+
 			'</article-footer></article></div>');
 			});
+		target.find('.rank')
+			  .each(function(){
+			  	$(this).progressBar({boxImage:'/static/images/progressbar.gif',
+							barImage: {
+								0:  '/static/images/progressbg_red.gif',
+								40: '/static/images/progressbg_orange.gif',
+								70: '/static/images/progressbg_green.gif'
+							},
+							showText: false,
+						  });});
 		$('#read-results').fadeOut(300, function(){
 			$('#read-related').fadeIn(500, function(){
 				$.scrollTo('#read-related-close');

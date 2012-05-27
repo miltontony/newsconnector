@@ -105,7 +105,7 @@ fieldset article-footer{
 	font-size: 1.1em;
 	font-style: italic;
 	color: #333;
-	width: 600px;
+	max-width: 600px;
 }
 	
 #read-latest{
@@ -417,4 +417,30 @@ div.read-more {
 	color: #fff;
 	font-size: 18px;
 
+}
+
+.related-article-keyword,
+.matched-keyword{
+	display: inline;
+	background: #333;
+	padding: 3px 7px;
+	border-radius: 7px;
+	color: white;
+	font-size: 12px;
+	margin: 0 2px;
+}
+
+.matched-keyword{
+	background: #AAA;
+	color: white;
+	line-height: 30px;
+	margin: 0 3px 0 0;
+}
+
+.rank {
+	margin-top: 3px;
+}
+
+.rank span{
+	display: none;
 }

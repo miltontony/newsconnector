@@ -1,4 +1,6 @@
 import json
+from operator import itemgetter, attrgetter
+
 from django.http import HttpResponse
 
 from newsconnector.models import *
@@ -25,12 +27,13 @@ def get_data_entertainment(request, min_date=None, max_date=None):
     return HttpResponse(data, mimetype='application/json')
 
 def related(request, pk, articleModel=NewsArticle):
-    list = articleModel.objects.filter(keywords__in=[i.pk\
-                                                     for i in articleModel\
-                                                       .objects.get(pk=pk)\
-                                                       .keywords.all()])\
+    keywords = [i.pk for i in articleModel.objects.get(pk=pk).keywords.all()]
+    l = articleModel.objects.filter(keywords__in=keywords)\
                                .exclude(pk=pk)\
                                .order_by('-date')[:20]
-    data = json.dumps({'articles': [a.to_dto() for a in list],
+    articles = [a.to_related_dto(keywords) for a in l]
+    s_articles = sorted(articles, key=itemgetter('rank','date'), reverse=True)
+
+    data = json.dumps({'articles': s_articles,
                        'article': articleModel.objects.get(pk=pk).to_dto()})
     return HttpResponse(data, mimetype='application/json')
