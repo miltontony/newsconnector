@@ -93,6 +93,20 @@ def remove_duplicate_articles():
             existing_slots.append(hash)
 
 
+def update_hash():
+    existing_slots = []
+    for a in Article.objects.all().order_by('-date_added'):
+        hash_str = ':'.join([a.title,  a.content, a.source])\
+                      .encode('ascii', 'ignore')
+        hash = md5_constructor(hash_str).hexdigest()
+        if hash in existing_slots:
+            a.delete()
+        else:
+            existing_slots.append(hash)
+            a.hash = hash
+            a.save()
+
+
 def update_articles(articles_list, keywordModel):
     for art in articles_list:
         if not art:
