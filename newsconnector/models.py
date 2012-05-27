@@ -38,6 +38,7 @@ class Article(models.Model):
                 'content': self.content,
                 'source': self.source,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
+                'sdate': '%s' % self.date.isoformat(),
                 'keywords': [k.keyword for k in self.keywords.all()],
                 'matched': matched,
                 'rank': len(matched),

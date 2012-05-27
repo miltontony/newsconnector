@@ -32,7 +32,7 @@ def related(request, pk, articleModel=NewsArticle):
                                .exclude(pk=pk)\
                                .order_by('-date')[:20]
     articles = [a.to_related_dto(keywords) for a in l]
-    s_articles = sorted(articles, key=itemgetter('rank','date'), reverse=True)
+    s_articles = sorted(articles, key=itemgetter('rank','sdate'), reverse=True)
 
     data = json.dumps({'articles': s_articles,
                        'article': articleModel.objects.get(pk=pk).to_dto()})

@@ -170,7 +170,7 @@ fieldset article-footer{
 #read-latest fieldset article{
 	display: block;
 	float: left;
-	width: 240px;
+	width: 224px;
 	border: 1px solid #CCC;
 	padding: 0;
 	margin-right: 2px;
@@ -230,6 +230,8 @@ fieldset article-footer{
 	
 #container{
 	min-height: 600px;
+	width: 1000;
+	margin: auto;
 }
 
 article h1{
