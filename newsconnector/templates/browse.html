@@ -5,20 +5,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="container">
-	
-<div id="browse-search">
-	<div id="search-string">
-		Search for &ldquo;{{query_string}}&rdquo; &mdash; {{article_count}} result{{article_count|pluralize}}
-	</div>
-	<div id="search-form">
-	<form action="{% url search %}">
-	<input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
-	<input type="submit" id="search" value="Search"/>
-	</form>
-	</div>
-</div>
-
 <div id="search-latest">
   <fieldset>
     <legend>Latest</legend>
@@ -76,15 +62,6 @@
 	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
 	{% endif %}
 </div>
-</div>
-<div id="footer">NEWS WORLD</div>
-<div id="footer-sites">
-. 
-{% for site in sites %}
-<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
-{% endfor %}
-</div>
-
 {% endblock %}
 
 {% block js %}

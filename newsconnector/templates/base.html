@@ -27,13 +27,29 @@
 </script>
 </head>
 <body>
-<!--
-<div id="just-read">
-    <div><a href="http://read.newsworld.co.za">Just Read!</a></div>
+<div id="container">
+<div id="header-cont">
+  <div id="header">
+    <a href="/">News World</a><br/>
+    <span class="tag-line">South Africa's biggest online news resource</span>
+  </div>
+  <div id="search-form">
+  <form action="{% url search %}">
+  <input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
+  <input type="submit" id="search" value="Search"/>
+  </form>
+  </div>
 </div>
--->
 {% block content %}
 {% endblock %}
+</div>
+<div id="footer">NEWS WORLD</div>
+<div id="footer-sites">
+. 
+{% for site in sites %}
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
+{% endfor %}
+<div>
 </body>
 <script type="text/javascript">
 {% block js %}

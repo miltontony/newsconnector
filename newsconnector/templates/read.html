@@ -6,25 +6,6 @@
 {% endblock %}
 
 {% block content %}
-<div id="container">
-<div id="browse-search">
-	<div id="search-string">
-		<fieldset>
-			<legend>Analyse keywords</legend>
-			<a href="{% url news %}">News</a>
-			<a href="{% url finance %}">Financial</a>
-			<a href="{% url sports %}">Sports</a>
-			<a href="{% url entertainment %}">Entertainment</a>
-		</fieldset>
-	</div>
-	<div id="search-form">
-	<form action="{% url search %}">
-	<input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
-	<input type="submit" id="search" value="Search"/>
-	</form>
-	</div>
-</div>
-
 <div id="read-latest">
   <fieldset>
     <legend>Latest News</legend>
@@ -198,14 +179,6 @@
 	<fieldset style="border-top: none;"><div class="ui-tabs"></div>
 	</fieldset>
 </div>
-<div id="footer">NEWS WORLD</div>
-<div id="footer-sites">
-. 
-{% for site in sites %}
-<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
-{% endfor %}
-</div>
-
 {% endblock %}
 
 {% block js %}

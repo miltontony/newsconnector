@@ -76,11 +76,11 @@ SUBDOMAIN_URLCONFS = {
     # The format for these is 'subdomain': 'urlconf'
     None: 'newsconnector.urls.read',
     'www': 'newsconnector.urls.read',
-    'news': 'newsconnector.urls.news',
-    'sports': 'newsconnector.urls.sports',
-    'finance': 'newsconnector.urls.finance',
-    'entertainment': 'newsconnector.urls.entertainment',
-    'e': 'newsconnector.urls.entertainment',
+    'news': 'newsconnector.urls.read',
+    #'sports': 'newsconnector.urls.sports',
+    #'finance': 'newsconnector.urls.finance',
+    #'entertainment': 'newsconnector.urls.entertainment',
+    #'e': 'newsconnector.urls.entertainment',
     'read': 'newsconnector.urls.read',
     'justread': 'newsconnector.urls.read',
 }
