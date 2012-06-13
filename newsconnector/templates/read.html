@@ -253,10 +253,10 @@ $(document).ready(function(){
 	   function(){ $(this).stop(true).removeClass('hover', 100) }
 	);
 	
-	$('a.view-related').click(function(event){
-		event.preventDefault();
-		view_related($(this));
-	});	
+	$('#tabs').on('click', 'a.view-related', function(event) {
+	    event.preventDefault();
+	    view_related($(this));
+	});
 
 	$('#read-related-close').click(function(event){
 		event.preventDefault();
@@ -268,6 +268,7 @@ $(document).ready(function(){
 		event.preventDefault();
 		var href = $(this).attr('href');
 		var target = $(this).parent().parent().find('#read-more');
+
 		var _ = $(this);
 		target.append('<a href="#section_top">Back to top</a><div class="read-more-spacer"></div>');
 		$.get(href, function(data) {
@@ -283,10 +284,6 @@ $(document).ready(function(){
 			if(data.has_next){
 				_.attr('href','/more/'+_.attr('cat')+'/?page='+data.next_page);
 			}
-			target.find('a.view-related').click(function(event){
-				event.preventDefault();
-				view_related($(this));
-			});
 		});
 	});
 });	
