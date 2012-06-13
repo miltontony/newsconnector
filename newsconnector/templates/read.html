@@ -239,7 +239,7 @@ function view_related(link){
 			keys.append('<div class="related-article-keyword">'+value+'</div>')
 		});
 
-		var artilce_image_url = data.article.image_url != '' || data.article.image_url != 'null' ? data.article.image_url : '/static/images/news.png';
+		var artilce_image_url = data.article.image_url != '' ? data.article.image_url : '/static/images/news.png';
 		var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '';
 
 		target.append('<div id="related-article" class="related-article-panel" tabindex="100"><article>'+
@@ -326,7 +326,7 @@ $(document).ready(function(){
 		$.get(href, function(data) {
 			$.each(data.articles, function(i, value){
 				var artilce_image_url = value.image_url;
-				var image_tag = artilce_image_url != '' || artilce_image_url != 'null' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '';
+				var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '';
 
 				target.append('<div id="tabs-news" class="ui-tabs-panel"><article>'+
 				'<a target="_blank" href="'+value.link+'"><span>'+value.title+'</span></a>'+
