@@ -29,7 +29,7 @@ class Article(models.Model):
                 'link': self.link,
                 'content': self.content,
                 'source': self.source,
-                'image_url': self.image_url,
+                'image_url': self.image_url if self.image_url else '',
                 'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'keywords': [k.keyword for k in self.keywords.all()]}
