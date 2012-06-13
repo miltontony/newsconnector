@@ -4,6 +4,7 @@ from newsconnector.support.utils import get_query
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 
 import json
 from django.http import HttpResponse
@@ -137,13 +138,22 @@ def entertainment(request):
                                           'title': 'LATEST GOSSIP',
                                           'id': 4,
                                           'latest': EntertainmentArticle.objects.all().order_by('-date')[:10]})
-                                          
+                      
+def get_featured_articles(keywordModel):
+    return keywordModel.objects.filter(date_updated__gte=date.today())\
+                                      .annotate(count=Count('article'))\
+                                      .order_by('-count')[:5]
+
 def read(request):    
     return render(request, 'read.html', {'sites': RssFeed.objects.all().distinct('name'),
                                          'news': NewsArticle.objects.all().order_by('-date')[:10],
                                          'sports': SportsArticle.objects.all().order_by('-date')[:10],
                                          'finance': FinanceArticle.objects.all().order_by('-date')[:10],
-                                         'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10]
+                                         'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10],
+                                         'featuredNews': get_featured_articles(NewsKeyword),
+                                         'featuredSports': get_featured_articles(SportsKeyword),
+                                         'featuredFinance': get_featured_articles(FinanceKeyword),
+                                         'featuredEntertainment': get_featured_articles(EntertainmentKeyword),
                                          })
 
 def read_more(request, category):

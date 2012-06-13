@@ -9,6 +9,7 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = ('-date','source')
 
 class KeywordAdmin(admin.ModelAdmin):
+    list_display = ('keyword', 'date_updated',)
     search_fields = ('keyword',)
     ordering = ('-date_updated',)
     

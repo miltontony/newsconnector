@@ -1,0 +1,28 @@
+<div class="featured-articles">
+    <h1><text>Featured</text></h1>
+    {% for k in keywords %}
+    {% with a=k.article_set.all.0 %}
+    <div class="featured-article">
+        <h2>{{forloop.counter}}</h2>
+        <a target="_blank" href="{{a.link}}">
+            {% if a.image_url %}
+            <img src="{{a.image_url}}" width="55px"/>
+            {% else %}
+            <img src="/static/images/news.png" width="55px"/>
+            {% endif %}
+        </a>
+        <div>
+        <a target="_blank" href="{{a.link}}">{{ a.title }}</a>
+        <br/>
+        <ul>
+        {% for s in k.article_set.all %}
+        <li>
+        <small><a target="_blank" href="{{s.link}}">{{s.source}}</a></small>
+        </li>
+        {% endfor %}
+        </ul>
+        </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+</div>

@@ -401,7 +401,7 @@ div.read-more {
 .featured-articles{
 	width: 34% !important;
 	float: left;
-	margin-left: 5px;
+	margin-left: 10px;
 	height: 100%;
 	color: #fff;
 }
@@ -413,8 +413,8 @@ div.read-more {
 
 .featured-articles h1{
 	font-size: 12px;
-	border-top: 1px solid #fff;
-	margin: 0 0 5px 0;
+	border-top: 1px solid #34a5c2;
+	margin: 0 0 10px 0;
 	padding: 0;
 	font-weight: normal;
 	text-transform: uppercase;
@@ -423,4 +423,51 @@ div.read-more {
 .featured-articles h1 text{
 	background: #34a5c2;
 	padding: 0 50px 2px 5px;
+}
+
+div.featured-article {
+	display: block;
+	margin: 0 0 10px 0;
+	clear: both;
+	height: 55px;
+	border-bottom: 1px dotted #CCC;
+	padding-bottom: 10px;
+}
+
+div.featured-article h2{
+	display: block;
+	width: 57px;
+	height: 57px;
+	line-height: 55px;
+	float: left;
+	text-align: center;
+	background: #CCC;
+	margin: 0 5px 0 0;
+	font-size: 35px;
+	font-weight: bold;
+	font-family: arial;
+}
+
+div.featured-article img{
+	float: left;
+	margin: 0 5px 0 0;
+}
+
+div.featured-article a{
+	color: #fff;
+}
+
+div.featured-article ul{
+	margin: 0;
+	padding: 0 0 0 20px;
+}
+
+#tabs div.featured-article small a{
+	color: #34A5C2;
+}
+
+div.featured-article div{
+	float: right;
+	width: 180px;
+	font-size: 14px;
 }
