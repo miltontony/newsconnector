@@ -393,13 +393,13 @@ div.read-more {
 }
 
 .tabs-container{
-	width: 65% !important;
+	width: 59% !important;
 	float: left;
 	background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
 }
 
 .featured-articles{
-	width: 34% !important;
+	width: 40% !important;
 	float: left;
 	margin-left: 10px;
 	height: 100%;
@@ -467,6 +467,6 @@ div.featured-article ul{
 
 div.featured-article div{
 	float: right;
-	width: 220px;
+	width: 270px;
 	font-size: 14px;
 }
