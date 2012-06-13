@@ -448,7 +448,7 @@ div.featured-article h2{
 	font-family: arial;
 }
 
-div.featured-article img{
+div.featured-article a.img{
 	float: left;
 	margin: 0 5px 0 0;
 }

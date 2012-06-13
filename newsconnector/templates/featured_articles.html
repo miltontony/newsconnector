@@ -4,7 +4,7 @@
     {% with a=k.article_set.all.0 %}
     <div class="featured-article">
         <h2>{{forloop.counter}}</h2>
-        <a target="_blank" href="{{a.link}}">
+        <a class="img" target="_blank" href="{{a.link}}">
             {% if a.image_url %}
             <img src="{{a.image_url}}" width="55px"/>
             {% else %}
@@ -22,6 +22,7 @@
         {% endfor %}
         </ul>
         </div>
+        <br style="display:block; clear:both"/>
     </div>
     {% endwith %}
     {% endfor %}
