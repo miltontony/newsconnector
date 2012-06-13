@@ -24,8 +24,8 @@ fieldset span a{
 	
 #read-latest fieldset,
 .read-results fieldset{
-	margin: 0 25px 0 40px;
-	padding: 10px;
+	margin: 0 5px 0 5px;
+	padding: 10px 0;
 	border-right: none;
 	border-bottom: none;
 	border-left: none;
@@ -223,7 +223,7 @@ article h1{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e83325', endColorstr='#760d06',GradientType=0 );
 }
 
-#tabs li a{
+#tabs ul.ui-tabs-nav li a{
 	width: 108px;
 	display: block;
 	color: #fff;
@@ -467,6 +467,6 @@ div.featured-article ul{
 
 div.featured-article div{
 	float: right;
-	width: 180px;
+	width: 220px;
 	font-size: 14px;
 }

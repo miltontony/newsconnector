@@ -42,7 +42,7 @@ body{
 	font-size: 30px;
 	font-style: italic;
 	color: white;
-	padding: 10px 0 0 50px;
+	padding: 10px 0 0 5px;
 	float: left;
 }
 
@@ -134,7 +134,7 @@ body{
 
 #search-form{
 	float: right;
-	width: 355px;
+	width: 340px;
 }
 
 #search:hover{
