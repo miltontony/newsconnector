@@ -54,10 +54,6 @@ fieldset article-footer{
 	color: #18E;
 }
 
-.read-results fieldset div{
-	width: auto;
-}
-
 .read-results span{
 	padding-bottom: 0;
 	font-size: 1.2em;
@@ -289,7 +285,7 @@ article h1{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 	position: relative;
 	border-radius: 10px 10px 0 0;
-	top: 6px;
+	top: 4px;
 	background: #111;
 	background: -moz-linear-gradient(top, #777 1%, #111 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#777), color-stop(100%,#111));
@@ -309,7 +305,7 @@ article h1{
 	border-bottom: 4px double #ccc;
 }
 	
-.ui-tabs .ui-tabs-panel{
+.related-article-panel{
 	border-left: 1px solid #ccc;
 	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
 	position: relative;
@@ -388,4 +384,43 @@ div.read-more {
 
 .rank span{
 	display: none;
+}
+
+#tabs article img, 
+#related-article article img{
+	float: left;
+	padding: 2px 5px 5px 5px;
+}
+
+.tabs-container{
+	width: 65% !important;
+	float: left;
+	background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
+}
+
+.featured-articles{
+	width: 34% !important;
+	float: left;
+	margin-left: 5px;
+	height: 100%;
+	color: #fff;
+}
+
+.featured-articles featured-article-header{
+	text-align: right;
+	color: #fff;
+}
+
+.featured-articles h1{
+	font-size: 12px;
+	border-top: 1px solid #fff;
+	margin: 0 0 5px 0;
+	padding: 0;
+	font-weight: normal;
+	text-transform: uppercase;
+}
+
+.featured-articles h1 text{
+	background: #34a5c2;
+	padding: 0 50px 2px 5px;
 }

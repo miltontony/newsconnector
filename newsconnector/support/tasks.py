@@ -12,6 +12,11 @@ import feedparser
 import lxml.html
 from lxml import etree
 
+def get_image_url(links):
+    for link in links:
+        if(link.type == 'image/jpeg'):
+            return link.href
+    return ''
 
 def get_instance(cls, dictArticle, source):
     a = None
@@ -28,6 +33,7 @@ def get_instance(cls, dictArticle, source):
             a.link = dictArticle.link
             a.content = content
             a.source = source
+            a.image_url = get_image_url(dictArticle.links)
             a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
             a.save()
             return a

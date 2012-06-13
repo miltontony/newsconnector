@@ -16,6 +16,7 @@ class Article(models.Model):
     date = models.DateTimeField(null=True, blank=True)
     title = models.TextField()
     link = models.TextField()
+    image_url = models.TextField(null=True, blank=True)
     content = models.TextField()
     source = models.TextField()
     keywords = models.ManyToManyField(Keyword, blank=True, null=True)
@@ -28,6 +29,7 @@ class Article(models.Model):
                 'link': self.link,
                 'content': self.content,
                 'source': self.source,
+                'image_url': self.image_url,
                 'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'keywords': [k.keyword for k in self.keywords.all()]}
@@ -38,6 +40,7 @@ class Article(models.Model):
                 'link': self.link,
                 'content': self.content,
                 'source': self.source,
+                'image_url': self.image_url,
                 'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'sdate': '%s' % self.date.isoformat(),
