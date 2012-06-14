@@ -1,4 +1,6 @@
 from django.shortcuts import render,  redirect
+from operator import itemgetter, attrgetter
+
 from newsconnector.models import *
 from newsconnector.support.utils import get_query
 from django.contrib.auth.decorators import login_required
@@ -187,3 +189,17 @@ def read_more(request, category):
                        'next_page': paged_news.next_page_number()})
                        
     return HttpResponse(data, mimetype='application/json')
+
+def related(request, pk, articleModel=NewsArticle, section_index=1):
+    keywords = [i.pk for i in articleModel.objects.get(pk=pk).keywords.all()]
+    l = articleModel.objects.filter(keywords__in=keywords)\
+                               .exclude(pk=pk)\
+                               .distinct('date', 'pk')\
+                               .order_by('-date', 'pk')[:20]
+    articles = [a.to_related_dto(keywords) for a in l]
+    s_articles = sorted(articles, key=itemgetter('rank', 'sdate'), reverse=True)
+
+    data = {'articles': s_articles,
+            'article': articleModel.objects.get(pk=pk).to_dto(),
+            'section_index': section_index}
+    return render(request, 'related.html', data)

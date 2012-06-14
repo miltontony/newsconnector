@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
+{% endblock %}
+
+{% block content %}
+<div class="read-results" id="read-related">
+    <fieldset style="border-top: none;">
+        <div class="ui-tabs">
+            <div id="related-article" class="related-article-panel" tabindex="100">
+                <article>
+                <a href="{{article.link}}"><span>{{article.title}}</span></a>
+                {% if article.image_url %}<img src="{{article.image_url}}" width="64px"/>
+                {% else %}<img src="/static/images/news.png" width="64px"/>
+                {% endif %}
+                <article-content>{{article.content}}</article-content>
+                <article-footer>{{article.date}}&nbsp;|&nbsp; 
+                <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+                </article-footer>
+                </article>
+            </div>
+            <div style="margin-bottom: 5px;" class="related-article-panel">
+                <article>
+                    <strong>Keywords:</strong> 
+                    {% for k in article.keywords %}
+                    <div class="related-article-keyword">{{k}}</div>
+                    {% endfor %}
+                </article>
+            </div>
+        <br/>
+        <fieldset>
+            <legend>Related articles</legend>
+            {% for a in articles %}
+            <div class="related-article-panel">
+                <article>
+                    <a target="_blank" href="/related/{{section_index}}/{{a.id}}/"><span>{{a.title}}</span></a>
+                    <article-content>{{a.content}}</article-content>
+                    <article-footer>{{a.date}}&nbsp;|&nbsp;
+                    <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
+                    <div class="rank">{{a.rankp}}%</div>
+                    
+                    {% for m in a.matched %}
+                        <div class="matched-keyword">{{m}}</div>
+                    {% endfor %}
+
+                    </article-footer>
+                </article>
+            </div>
+            {% empty %}
+            <div style="color:#fff">
+                0 related articles.
+            </div>
+            {% endfor %}
+        </fieldset>
+        </div>
+    </fieldset>
+</div>
+{% endblock %}
+
+{% block js %}
+    
+$(document).ready(function(){
+    $('.rank')
+      .each(function(){
+        $(this).progressBar({boxImage:'/static/images/progressbar.gif',
+                    barImage: {
+                        0:  '/static/images/progressbg_red.gif',
+                        40: '/static/images/progressbg_orange.gif',
+                        70: '/static/images/progressbg_green.gif'
+                    },
+                    showText: false,
+                  });});
+}); 
+
+{% endblock %}
