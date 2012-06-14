@@ -1,0 +1,12 @@
+<article {% if forloop.first %}class="first-article"{% endif %}>
+    <a target="_blank" href="{{article.link}}"><span>{{article.title}}</span></a>
+    {% if article.image_url %}<img src="{{article.image_url}}" width="64px"/>{%endif%}
+    <article-content>{{article.content}}</article-content>
+    <article-footer>
+        {{article.date|date:"D, d M H:m"}} | 
+        <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+        {% if article.keywords.exists %}
+        <br/><a class="view-related" href="{% url related_finance article.pk %}">View Similar</a>
+        {% endif %}
+    </article-footer>
+</article>

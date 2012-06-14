@@ -22,27 +22,10 @@
 			<div id="tabs-news">
 					<div class="tabs-container">
 					{% for n in news %}
-					<article {% if forloop.first %}class="first-article"{% endif %}>
-						<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-						{% if n.image_url %}<img src="{{n.image_url}}" width="64px"/>{%endif%}
-						<article-content>{{n.content}}</article-content>
-						<article-footer>
-							{{n.date|date:"D, d M H:m"}} | 
-							<a target="_blank" href="{{n.link}}">{{n.source}}</a>
-							{% if n.keywords.exists %}
-							<br/><a class="view-related" href="{% url related_news n.pk %}">View Similar</a>
-							{% endif %}
-						</article-footer>
-					</article>
+					{% include "article_block.html" with article=n %}
 					{% endfor %}
 
-					<div class="read-more-cont">
-						<div id="read-more"></div>
-						<a href="#section_top">Back to top</a>
-						<div class="read-more">
-							<a href="{% url read_more 1 %}?page=2" cat=1><span>more...</span></a>
-						</div>
-					</div>
+					{% include "read_more_block.html" with section_index=1 %}
 					</div>
 					{% include "featured_articles.html" with keywords=featuredNews %}
 			</div>
@@ -50,27 +33,10 @@
 			<div id="tabs-finance">
 				<div class="tabs-container">
 				{% for n in finance %}
-				<article {% if forloop.first %}class="first-article"{% endif %}>
-					<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-					{% if n.image_url %}<img src="{{n.image_url}}" width="64px"/>{%endif%}
-					<article-content>{{n.content}}</article-content>
-					<article-footer>
-						{{n.date|date:"D, d M H:m"}} | 
-						<a target="_blank" href="{{n.link}}">{{n.source}}</a>
-						{% if n.keywords.exists %}
-						<br/><a class="view-related" href="{% url related_finance n.pk %}">View Similar</a>
-						{% endif %}
-					</article-footer>
-				</article>
+				{% include "article_block.html" with article=n %}
 				{% endfor %}
 
-				<div class="read-more-cont">
-					<div id="read-more"></div>
-					<a href="#section_top">Back to top</a>
-					<div class="read-more">
-						<a href="{% url read_more 3 %}?page=2" cat=3><span>more...</span></a>
-					</div>
-				</div>
+				{% include "read_more_block.html" with section_index=3 %}
 				</div>
 				{% include "featured_articles.html" with keywords=featuredFinance %}
 			</div>
@@ -78,26 +44,10 @@
 			<div id="tabs-sports">
 				<div class="tabs-container">
 				{% for n in sports %}
-				<article {% if forloop.first %}class="first-article"{% endif %}>
-					<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-					{% if n.image_url %}<img src="{{n.image_url}}" width="64px"/>{%endif%}
-					<article-content>{{n.content}}</article-content>
-					<article-footer>
-						{{n.date|date:"D, d M H:m"}} | 
-						<a target="_blank" href="{{n.link}}">{{n.source}}</a>
-						{% if n.keywords.exists %}
-						<br/><a class="view-related" href="{% url related_sports n.pk %}">View Similar</a>
-						{% endif %}
-					</article-footer>
-				</article>
+				{% include "article_block.html" with article=n %}
 				{% endfor %}
-				<div class="read-more-cont">
-					<div id="read-more"></div>
-					<a href="#section_top">Back to top</a>
-					<div class="read-more">
-						<a href="{% url read_more 2 %}?page=2" cat=2><span>more...</span></a>
-					</div>
-				</div>
+				
+				{% include "read_more_block.html" with section_index=2 %}
 				</div>
 				{% include "featured_articles.html" with keywords=featuredSports %}
 			</div>
@@ -105,26 +55,10 @@
 			<div id="tabs-entertainment">
 				<div class="tabs-container">
 				{% for n in entertainment %}
-				<article {% if forloop.first %}class="first-article"{% endif %}>
-					<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-					{% if n.image_url %}<img src="{{n.image_url}}" width="64px"/>{%endif%}
-					<article-content>{{n.content}}</article-content>
-					<article-footer>
-						{{n.date|date:"D, d M H:m"}} | 
-						<a target="_blank" href="{{n.link}}">{{n.source}}</a>
-						{% if n.keywords.exists %}
-						<br/><a class="view-related" href="{% url related_entertainment n.pk %}">View Similar</a>
-						{% endif %}
-					</article-footer>
-				</article>
+				{% include "article_block.html" with article=n %}
 				{% endfor %}
-				<div class="read-more-cont">
-					<div id="read-more"></div>
-					<a href="#section_top">Back to top</a>
-					<div class="read-more">
-						<a href="{% url read_more 4 %}?page=2" cat=4><span>more...</span></a>
-					</div>
-				</div>
+				
+				{% include "read_more_block.html" with section_index=4 %}
 				</div>
 				{% include "featured_articles.html" with keywords=featuredEntertainment %}
 			</div>
