@@ -12,7 +12,7 @@
             {% endif %}
         </a>
         <div>
-        <a target="_blank" href="{{a.link}}">{{ a.title }}</a>
+        <a target="_blank" href="/related/{{section_index}}/{{a.id}}/">{{ a.title }}</a>
         <br/>
         <ul>
         {% for s in k.article_set.all %}
