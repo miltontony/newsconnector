@@ -142,7 +142,7 @@ def entertainment(request):
                                           'latest': EntertainmentArticle.objects.all().order_by('-date')[:10]})
                       
 def get_featured_articles(keywordModel):
-    return keywordModel.objects.filter(article__date__gte=date.today())\
+    return keywordModel.objects.filter(article__date__gte=date.today())\ 
                                       .annotate(count=Count('article'))\
                                       .order_by('-count')[:5]
 
