@@ -95,17 +95,28 @@ def build_related(articleModel):
   graph = nx.DiGraph()
 
   for a in articleModel.objects.filter(date__gte = d):
-    if a.keywords.count() > 1:
-      for k in a.keywords.all():
+    _count = a.keywords.count()
+    if _count > 1:
+      _keywords = a.keywords.all()
+      for k in _keywords:
         for a_r in k.article_set.exclude(pk=a.pk).filter(date__gte=d):
-          matched = [_k.keyword for _k in a_r.keywords.filter(pk__in=a.keywords.all())]
-          weight = len(matched) / float(a.keywords.count())
+          matched = len([_k for _k in a_r.keywords.filter(pk__in=_keywords)])
+          weight = matched / float(_count)
           if weight >= 0.75:
             graph.add_edge(a, a_r, weight = weight)
 
-  r_articles = (({'article': a,\
-                  'related': (x for x,y in sorted(nbrs.items(), key=lambda (x,y): y['weight'], reverse=True)[:5])},\
-                  len(nbrs.items())) for a, nbrs in graph.adjacency_iter())
-  r_sorted = sorted(r_articles, key=lambda (x,y): y, reverse=True)[:5]
+  bucket = []
+  r_articles = []
+  for a, nbrs in graph.adjacency_iter():
+    if a.pk in bucket:
+      continue
+    else:
+      bucket.append(a.pk)
+      r_articles.append(({'article': a,\
+                        'related': [x for x,y in sorted(nbrs.items(),\
+                                  key=lambda (x,y): y['weight'],\
+                                  reverse=True)[:5]]},\
+                        len(nbrs.items())))
 
+  r_sorted = sorted(r_articles, key=lambda (x,y): y, reverse=True)[:5]
   return r_sorted
