@@ -21,26 +21,26 @@ def build_data(min_date, max_date, articleModel, keywordModel):
   articles = articleModel.objects\
         .filter(date__gte = min_date, date__lte = max_date)\
         .order_by('-date')
-  
+
   graph = nx.DiGraph()
-  
+
   for word in keywordModel.objects.exclude(keyword='the').distinct():
     for a in articles:
       if found_string(word.keyword, ('%s %s' % (a.title, a.content)).lower()):
         graph.add_edge(word, a)
-    
+
   tree = {
       'id':'main_node',
       'name': 'Latest News',
       'data': [],
       'children':
       [
-       {'id': k.pk, 'name': k.keyword, 'data': 
+       {'id': k.pk, 'name': k.keyword, 'data':
          {
           'count': len(nbrs.items()),
-          'articles': [{'id': 'a_%s' % a.pk, 
-               'name': a.title + ' [' + a.source +']', 
-               'children': [], 
+          'articles': [{'id': 'a_%s' % a.pk,
+               'name': a.title + ' [' + a.source +']',
+               'children': [],
                'data': {'description': a.content,
                     'link': a.link,
                     'title': a.title,
@@ -60,19 +60,19 @@ def normalize_query(query_string,
   ''' Splits the query string in invidual keywords, getting rid of unecessary spaces
     and grouping quoted words together.
     Example:
-    
+
     >>> normalize_query('  some random  words "with   quotes  " and   spaces')
     ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
-  
+
   '''
-  return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)] 
+  return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)]
 
 def get_query(query_string, search_fields):
   ''' Returns a query, that is a combination of Q objects. That combination
     aims to search keywords within a model by testing the given search fields.
-  
+
   '''
-  query = None # Query to search for every search term    
+  query = None # Query to search for every search term
   terms = normalize_query(query_string)
   for term in terms:
     or_query = None # Query to search for a given term in each field
@@ -93,14 +93,15 @@ def build_related(articleModel):
   #d = datetime(2012, 6, 13)
   d = date.today()
   graph = nx.DiGraph()
-  
+
   for a in articleModel.objects.filter(date__gte = d):
-    for k in a.keywords.all():
-      for a_r in k.article_set.exclude(pk=a.pk).filter(date__gte=d):
-        matched = [_k.keyword for _k in a_r.keywords.filter(pk__in=a.keywords.all())]
-        weight = len(matched) / float(a.keywords.count())
-        if weight >= 0.75:
-          graph.add_edge(a, a_r, weight = weight)
+    if a.keywords.count() > 1:
+      for k in a.keywords.all():
+        for a_r in k.article_set.exclude(pk=a.pk).filter(date__gte=d):
+          matched = [_k.keyword for _k in a_r.keywords.filter(pk__in=a.keywords.all())]
+          weight = len(matched) / float(a.keywords.count())
+          if weight >= 0.75:
+            graph.add_edge(a, a_r, weight = weight)
 
   r_articles = (({'article': a,\
                   'related': (x for x,y in sorted(nbrs.items(), key=lambda (x,y): y['weight'], reverse=True)[:5])},\
