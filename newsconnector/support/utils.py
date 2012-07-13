@@ -91,15 +91,14 @@ def get_query(query_string, search_fields):
   return query
 
 
-def build_related(articleModel, update_cache = True):
+def build_related(articleModel, update_cache = False):
   cache_key = 'ummeli_featured_%s' % articleModel.__name__
-  print cache_key
 
   if not update_cache:
     return cache.get(cache_key)
 
-  d = datetime(2012, 7, 13)
-  #d = date.today()
+  #d = datetime(2012, 7, 13)
+  d = date.today()
   graph = nx.DiGraph()
 
   for a in articleModel.objects.filter(date__gte = d):
@@ -117,7 +116,7 @@ def build_related(articleModel, update_cache = True):
   r_articles = []
   ra_sorted = sorted(graph.adjacency_iter(), key=lambda (x,y): len(y.items()), reverse=True)
 
-  for a, nbrs in ra_sorted: # graph.adjacency_iter():
+  for a, nbrs in ra_sorted:
     if a.pk in bucket:
       continue
     else:
@@ -128,8 +127,7 @@ def build_related(articleModel, update_cache = True):
       r_articles.append([{'article': a,\
                         'related': [x for x,y in sorted(nbrs.items(),\
                                   key=lambda (x,y): y['weight'],\
-                                  reverse=True)[:5]]},\
-                        len(nbrs.items())])
+                                  reverse=True)[:5]]}])
 
   r_sorted = r_articles[:5]
 
