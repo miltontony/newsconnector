@@ -1,5 +1,5 @@
 from newsconnector.support.calais import Calais
-from newsconnector.support.utils import found_string
+from newsconnector.support.utils import found_string, build_related
 from newsconnector.models import *
 from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
@@ -12,11 +12,13 @@ import feedparser
 import lxml.html
 from lxml import etree
 
+
 def get_image_url(links):
     for link in links:
         if(link.type == 'image/jpeg'):
             return link.href
     return ''
+
 
 def get_instance(cls, dictArticle, source):
     a = None
@@ -26,7 +28,7 @@ def get_instance(cls, dictArticle, source):
         hash_str = ':'.join([dictArticle.title,  content, source])\
                       .encode('ascii', 'ignore')
         hash = md5_constructor(hash_str).hexdigest()
-        
+
         a, created = cls.objects.get_or_create(hash_key=hash)
         if created:
             a.title = dictArticle.title
@@ -69,7 +71,7 @@ def run_tasks(feeds, feedModel, keywordModel):
 
     if not data:
         return
-    
+
     print "Article count: %s" % len(new_articles)
 
     update_articles(new_articles, keywordModel)
@@ -85,6 +87,9 @@ def run_tasks(feeds, feedModel, keywordModel):
     print 'Update keywords for related articles'
 
     print 'Update complete.'
+
+    print 'Generating featured articles.'
+    build_related(feedModel, True)
 
 
 def remove_duplicate_articles():
@@ -119,7 +124,7 @@ def update_articles(articles_list, keywordModel):
             continue
 
         data = '%s %s' % (art.title, art.content)
-        
+
         if not data:
             continue
 

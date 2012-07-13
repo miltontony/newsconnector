@@ -3,6 +3,8 @@ import networkx as nx
 
 import re
 from django.db.models import Q
+from django.core.cache import cache
+
 
 def found_string(str1, str2):
   return ' ' + str1 + ' ' in ' ' + str2 + ' '
@@ -89,7 +91,11 @@ def get_query(query_string, search_fields):
   return query
 
 
-def build_related(articleModel):
+def build_related(articleModel, update_cache = False):
+  cache_key = 'ummeli_featured_%s' % articleModel.__name__
+  if not update_cache:
+    return cache.get(cache_key)
+
   #d = datetime(2012, 6, 13)
   d = date.today()
   graph = nx.DiGraph()
@@ -119,4 +125,8 @@ def build_related(articleModel):
                         len(nbrs.items())))
 
   r_sorted = sorted(r_articles, key=lambda (x,y): y, reverse=True)[:5]
+
+  cache_time = 4500 # time to live in seconds
+  cache.set(cache_key, r_sorted, cache_time)
+
   return r_sorted

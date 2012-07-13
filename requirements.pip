@@ -13,3 +13,4 @@ simplejson
 lxml
 networkx
 django-subdomains
+python-memcached

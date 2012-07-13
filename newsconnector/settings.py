@@ -137,3 +137,10 @@ CELERY_RESULT_BACKEND = "amqp"
 
 LOGIN_URL = '/admin/'
 #SESSION_COOKIE_DOMAIN = '.newsworld.co.za'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
