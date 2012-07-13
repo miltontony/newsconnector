@@ -27,7 +27,7 @@
 
 					{% include "read_more_block.html" with section_index=1 %}
 					</div>
-					{% include "featured_articles.html" with keywords=featuredNews section_index=1 %}
+					{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
 			</div>
 
 			<div id="tabs-finance">
@@ -38,7 +38,7 @@
 
 				{% include "read_more_block.html" with section_index=3 %}
 				</div>
-				{% include "featured_articles.html" with keywords=featuredFinance section_index=3 %}
+				{% include "featured_articles.html" with articles=featuredFinance section_index=3 %}
 			</div>
 
 			<div id="tabs-sports">
@@ -46,10 +46,10 @@
 				{% for n in sports %}
 				{% include "article_block.html" with article=n section_index=2 %}
 				{% endfor %}
-				
+
 				{% include "read_more_block.html" with section_index=2 %}
 				</div>
-				{% include "featured_articles.html" with keywords=featuredSports section_index=2 %}
+				{% include "featured_articles.html" with articles=featuredSports section_index=2 %}
 			</div>
 
 			<div id="tabs-entertainment">
@@ -57,10 +57,10 @@
 				{% for n in entertainment %}
 				{% include "article_block.html" with article=n section_index=4 %}
 				{% endfor %}
-				
+
 				{% include "read_more_block.html" with section_index=4 %}
 				</div>
-				{% include "featured_articles.html" with keywords=featuredEntertainment section_index=4 %}
+				{% include "featured_articles.html" with articles=featuredEntertainment section_index=4 %}
 			</div>
     </div>
   </fieldset>
@@ -132,7 +132,7 @@ function view_related(link){
 		});
 	});
 }
-	
+
 $(document).ready(function(){
 	$('#tabs').tabs();
 
@@ -148,12 +148,12 @@ $(document).ready(function(){
 	$('article.finance-cat label').click(function(){
 		$('li.tabs-finance a').click();
 	});
-		
+
 	$('#tabs ul li').hover(
 	   function(){ $(this).stop(true).addClass('hover', 100) },
 	   function(){ $(this).stop(true).removeClass('hover', 100) }
 	);
-	
+
 	$('#tabs').on('click', 'a.view-related', function(event) {
 	    event.preventDefault();
 	    view_related($(this));
@@ -164,7 +164,7 @@ $(document).ready(function(){
 		$('#read-related').fadeOut(300, function(){
 			$('#read-results').fadeIn(500);
 		});
-	});	
+	});
 	$('.read-more a').click(function(event){
 		event.preventDefault();
 		var href = $(this).attr('href');
@@ -191,6 +191,6 @@ $(document).ready(function(){
 			}
 		});
 	});
-});	
+});
 
 {% endblock %}

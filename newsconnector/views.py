@@ -2,7 +2,7 @@ from django.shortcuts import render,  redirect
 from operator import itemgetter, attrgetter
 
 from newsconnector.models import *
-from newsconnector.support.utils import get_query
+from newsconnector.support.utils import get_query, build_related
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -34,21 +34,21 @@ def search(request, articleModel = Article):
     news_top = None
     news = None
     query_string = None
-    
+
     if q:
         query_string = q.strip()
-        
+
         entry_query = get_query(query_string, ['title', 'content', ])
-        
+
         found_entries = articleModel.objects.filter(entry_query)\
                                             .order_by('-date')
-        
+
     else:
         found_entries = articleModel.objects.all().order_by('-date')[:10]
-        
+
     paginator = Paginator(found_entries[4:], 6)
     page = request.GET.get('page', 'none')
-    
+
     try:
         paged_news = paginator.page(page)
         page = int(page)
@@ -63,7 +63,7 @@ def search(request, articleModel = Article):
 
     news_top = found_entries[:4]
     news = paged_news
-    
+
     adjacent_pages = 3
     pages = paginator.num_pages
     page_numbers = range(max(1, page - adjacent_pages),\
@@ -106,7 +106,7 @@ def sports(request):
     min_date = date.today() - timedelta(days=7)
     yesterday = date.today() - timedelta(days=1)
     default_min_date = yesterday
-    
+
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date,
                                           'sites': SportsFeed.objects.all(),
@@ -120,7 +120,7 @@ def finance(request):
     min_date = date.today() - timedelta(days=7)
     yesterday = date.today() - timedelta(days=1)
     default_min_date = yesterday
-    
+
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date,
                                           'sites': FinanceFeed.objects.all(),
@@ -128,66 +128,66 @@ def finance(request):
                                           'id': 3,
                                           'latest': FinanceArticle.objects.all().order_by('-date')[:10]})
 
-def entertainment(request):    
+def entertainment(request):
     #min_date = (Article.objects.aggregate(date = Min('date'))['date']).date()
     min_date = date.today() - timedelta(days=7)
     yesterday = date.today() - timedelta(days=1)
     default_min_date = yesterday
-    
+
     return render(request, 'index.html', {'min_date': min_date,
                                           'default_min_date': default_min_date,
                                           'sites': EntertainmentFeed.objects.all(),
                                           'title': 'LATEST GOSSIP',
                                           'id': 4,
                                           'latest': EntertainmentArticle.objects.all().order_by('-date')[:10]})
-                      
+
 def get_featured_articles(keywordModel):
     return keywordModel.objects.filter(date_updated__gte=date.today())\
                                       .annotate(count=Count('article'))\
                                       .order_by('-count')[:5]
 
-def read(request):    
+def read(request):
     return render(request, 'read.html', {'sites': RssFeed.objects.all().distinct('name'),
                                          'news': NewsArticle.objects.all().order_by('-date')[:10],
                                          'sports': SportsArticle.objects.all().order_by('-date')[:10],
                                          'finance': FinanceArticle.objects.all().order_by('-date')[:10],
                                          'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10],
-                                         'featuredNews': get_featured_articles(NewsKeyword),
-                                         'featuredSports': get_featured_articles(SportsKeyword),
-                                         'featuredFinance': get_featured_articles(FinanceKeyword),
-                                         'featuredEntertainment': get_featured_articles(EntertainmentKeyword),
+                                         'featuredNews': build_related(NewsArticle),
+                                         'featuredSports': build_related(SportsArticle),
+                                         'featuredFinance': build_related(FinanceArticle),
+                                         'featuredEntertainment': build_related(EntertainmentArticle),
                                          })
 
 def read_more(request, category):
     page = int(request.GET.get('page', None))
     category = int(category)
-    
+
     if not page:
-        return HttpResponse(json.dumps({'error': 'page not selected'}), 
+        return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
-    
+
     articleModel = NewsArticle
-    
+
     if category == 2:
         articleModel = SportsArticle
     elif category == 3:
         articleModel = FinanceArticle
     if category == 4:
         articleModel = EntertainmentArticle
-    
+
     paginator = Paginator(articleModel.objects.all().order_by('-date'), 10)
     page = request.GET.get('page', 'none')
-    
+
     try:
         paged_news = paginator.page(page)
     except EmptyPage:
-        return HttpResponse(json.dumps({'error': 'page not found'}), 
+        return HttpResponse(json.dumps({'error': 'page not found'}),
                             mimetype='application/json')
-    
+
     data = json.dumps({'articles': [a.to_dto() for a in paged_news.object_list],
                        'has_next': paged_news.has_next(),
                        'next_page': paged_news.next_page_number()})
-                       
+
     return HttpResponse(data, mimetype='application/json')
 
 def related(request, pk, articleModel=NewsArticle, section_index=1):

@@ -1,7 +1,7 @@
 <div class="featured-articles">
     <h1><text>Featured</text></h1>
-    {% for k in keywords %}
-    {% with a=k.article_set.all.0 %}
+    {% for art, count in articles %}
+    {% with a=art.article %}
     <div class="featured-article">
         <h2>{{forloop.counter}}</h2>
         <a class="img" target="_blank" href="/related/{{section_index}}/{{a.id}}/">
@@ -15,7 +15,7 @@
         <a target="_blank" href="/related/{{section_index}}/{{a.id}}/">{{ a.title }}</a>
         <br/>
         <ul>
-        {% for s in k.article_set.all %}
+        {% for s in art.related %}
         <li>
         <small><a target="_blank" href="/related/{{section_index}}/{{s.id}}/">{{s.title}}</a></small>
         </li>
