@@ -1,7 +1,7 @@
 import os.path
 import djcelery
 
-DEBUG = False
+DEBUG = True #False
 TEMPLATE_DEBUG = DEBUG
 
 djcelery.setup_loader()

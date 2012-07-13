@@ -91,8 +91,10 @@ def get_query(query_string, search_fields):
   return query
 
 
-def build_related(articleModel, update_cache = False):
+def build_related(articleModel, update_cache = True):
   cache_key = 'ummeli_featured_%s' % articleModel.__name__
+  print cache_key
+
   if not update_cache:
     return cache.get(cache_key)
 
@@ -113,20 +115,26 @@ def build_related(articleModel, update_cache = False):
 
   bucket = []
   r_articles = []
-  for a, nbrs in graph.adjacency_iter():
+  ra_sorted = sorted(graph.adjacency_iter(), key=lambda (x,y): len(y.items()), reverse=True)
+
+  for a, nbrs in ra_sorted: # graph.adjacency_iter():
     if a.pk in bucket:
       continue
     else:
       bucket.append(a.pk)
-      r_articles.append(({'article': a,\
+      for r_, _dict in nbrs.items():
+        bucket.append(r_.pk)
+
+      r_articles.append([{'article': a,\
                         'related': [x for x,y in sorted(nbrs.items(),\
                                   key=lambda (x,y): y['weight'],\
                                   reverse=True)[:5]]},\
-                        len(nbrs.items())))
+                        len(nbrs.items())])
 
-  r_sorted = sorted(r_articles, key=lambda (x,y): y, reverse=True)[:5]
+  r_sorted = r_articles[:5]
 
   cache_time = 4500 # time to live in seconds
-  cache.set(cache_key, r_sorted, cache_time)
+  if r_sorted:
+    cache.set(cache_key, r_sorted, cache_time)
 
   return r_sorted
