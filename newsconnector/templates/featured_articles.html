@@ -18,7 +18,7 @@
         <ul>
         {% for s in art.related %}
         <li>
-        <a target="_blank" href="/related/{{section_index}}/{{s.id}}/">{{s.title}}</a>
+        <a target="_blank" href="{{s.link}}">{{s.title}}</a>
         </li>
         {% endfor %}
         </ul>
