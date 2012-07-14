@@ -46,11 +46,14 @@ def get_instance(cls, dictArticle, source):
         return a
 
     except etree.ParseError:
-        print dictArticle.description
+        #print dictArticle.description
+        pass
     except TypeError:
-        print 'Unable to save %s' % dictArticle.title
+        #print 'Unable to save %s' % dictArticle.title
+        pass
     except IntegrityError:
-        print 'Unable to save %s' % dictArticle.title
+        #print 'Unable to save %s' % dictArticle.title
+        pass
 
     if a:
         a.delete()
@@ -59,6 +62,7 @@ def get_instance(cls, dictArticle, source):
 
 @task(ignore_result=True)
 def run_tasks(feeds, feedModel, keywordModel):
+    print 'Update stories: %s' % feedModel.__name__
     new_articles = []
     for feed, source in feeds:
         for entry in feedparser.parse(feed).entries:
@@ -139,8 +143,7 @@ def update_articles(articles_list, keywordModel):
 
         print 'Keyword analysis complete.'
         print 'Save keywords.'
-        keywords = [a["name"].lower() for a in result.entities]
-        print 'Keywords found: %s' % keywords
+        keywords = (a["name"].lower() for a in result.entities)
 
         for k in keywords:
             if not keywordModel.objects.filter(keyword=k).exists():
@@ -149,18 +152,12 @@ def update_articles(articles_list, keywordModel):
                     a_k.save()
                     if not art.keywords.filter(pk=a_k.pk).exists():
                         art.keywords.add(a_k)
-                        print "[%s] added." % k
-                    else:
-                        print "Keyword [%s] already exists." % k
                 except IntegrityError:
-                    print k
+                    pass
             else:
                 a_k = keywordModel.objects.get(keyword=k)
                 if not art.keywords.filter(pk=a_k.pk).exists():
                     art.keywords.add(a_k)
-                    print "[%s] added." % k
-                else:
-                    print "Keyword [%s] already exists." % k
 
 
 def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
