@@ -1,11 +1,11 @@
-fieldset a, 
-fieldset a:visited, 
+fieldset a,
+fieldset a:visited,
 fieldset a:link{
 	color: #18E;
 	text-decoration: none;
 	cursor: pointer;
 }
-	
+
 #read-latest fieldset legend,
 .read-results fieldset legend{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
@@ -17,11 +17,11 @@ fieldset a:link{
 	padding: 0 5px;
 	font-family: serif;
 }
-	
+
 fieldset span a{
 	text-decoration: none;
 }
-	
+
 #read-latest fieldset,
 .read-results fieldset{
 	margin: 0 5px 0 5px;
@@ -31,23 +31,23 @@ fieldset span a{
 	border-left: none;
 }
 
-	
-fieldset span, 
-fieldset article, 
-fieldset article-content, 
+
+fieldset span,
+fieldset article,
+fieldset article-content,
 fieldset article-footer{
 	display: block;
 	padding: 5px;
 }
-	
+
 #read-latest{
 	color: #fff;
 }
-	
+
 .read-results article a{
 	color: #18E;
 }
-	
+
 .read-results article-footer a,
 .read-results article-footer a:link,
 .read-results article-footer a:visited{
@@ -61,7 +61,7 @@ fieldset article-footer{
 	font-weight: bold;
 	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
 }
-	
+
 .read-results article-content{
 	padding-top: 2px;
 	font-size: 1.1em;
@@ -69,12 +69,12 @@ fieldset article-footer{
 	color: #333;
 	max-width: 600px;
 }
-	
+
 #read-latest{
 	padding-top: 10px;
 	margin-bottom: 20px;
 }
-	
+
 #read-latest fieldset label a
 {
 	color: #fff;
@@ -90,14 +90,14 @@ fieldset article-footer{
 	color: #18E;
 	text-decoration: none;
 }
-	
 
-#read-latest article-content, 
+
+#read-latest article-content,
 #read-latest article-content a{
 	font-size: 1em;
 	color: #111;
 }
-	
+
 #read-latest article-content{
 	height: 160px;
 	padding: 5px;
@@ -105,13 +105,13 @@ fieldset article-footer{
 	font-size: 1.1em;
 	font-style: italic;
 }
-	
+
 #read-latest article-footer{
 	width: 100%;
 	color: #777;
         height: 30px;
 }
-	
+
 .read-results article-footer{
 	padding-top: 0;
 	color: #777;
@@ -122,13 +122,13 @@ fieldset article-footer{
 	text-shadow: 0px 1px 1px rgba(155, 155, 155, 0.6);
 	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 0px 2px 2px rgba(0,0,0,0.1);
 }
-	
+
 #read-latest fieldset label{
 	height: 25px;
 	line-height: 25px;
 	font-size: 1.1em;
 }
-		
+
 #read-latest fieldset article{
 	display: block;
 	float: left;
@@ -137,11 +137,11 @@ fieldset article-footer{
 	padding: 0;
 	margin-right: 2px;
 }
-	
+
 #read-pagination{
 	padding-left: 60px;
 }
-	
+
 #read-pagination a.active,
 #read-pagination a:hover,
 #read-pagination a.active:hover{
@@ -150,13 +150,13 @@ fieldset article-footer{
 	text-shadow: none;
 	box-shadow: none;
 }
-	
+
 #read-pagination a:hover{
 	background: #79bbdd;
 	color: #fff;
 	text-shadow: 1px 1px 1px rgba(83,140,170, 0.4);
 }
-	
+
 #read-pagination a.elipses{
 	background: none;
 	color: #fff;
@@ -164,7 +164,7 @@ fieldset article-footer{
 	text-shadow: 1px 1px 1px rgba(0,0,0, 0.7);
 	padding: 0 5px;
 }
-	
+
 #read-pagination a{
 	padding: 5px 10px;
 	text-decoration: none;
@@ -172,7 +172,7 @@ fieldset article-footer{
 	color: #000;
 	text-shadow: 1px 1px 1px rgba(255, 255,255,0.8);
 }
-	
+
 article h1{
 	font-size: 1.2em;
 	font-style: normal;
@@ -181,7 +181,7 @@ article h1{
 	padding: 2px 2px 5px 2px;
 	margin: 0;
 }
-	
+
 #read-latest article label{
 	font-family: 'Arial Narrow', Arial, sans-serif;
 	font-weight: bold;
@@ -196,7 +196,7 @@ article h1{
 	font-weight: bold;
 	font-size: 1.1em;
 }
-	
+
 #read-latest article.news-cat label,
 #tabs li.tabs-news.ui-tabs-selected,
 #tabs li.tabs-news.hover{
@@ -209,7 +209,7 @@ article h1{
 	background: linear-gradient(top, #367fc2 1%,#26417b 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
 }
-		
+
 #read-latest article.entertainment-cat label,
 #tabs li.tabs-entertainment.ui-tabs-selected,
 #tabs li.tabs-entertainment.hover{
@@ -228,20 +228,20 @@ article h1{
 	display: block;
 	color: #fff;
 }
-	
+
 #read-latest article.sports-cat label,
-#tabs li.tabs-sports.ui-tabs-selected a, 
-#tabs li.tabs-sports.hover a, 
-#tabs li.tabs-sports.ui-tabs-selected a:link, 
+#tabs li.tabs-sports.ui-tabs-selected a,
+#tabs li.tabs-sports.hover a,
+#tabs li.tabs-sports.ui-tabs-selected a:link,
 #tabs li.tabs-sports.ui-tabs-selected a:visited {
 	text-shadow: 1px 1px 1px rgba(255,255,255,0.8);
 	color: #333;
 }
-	
+
 #read-latest article.sports-cat label{
 	border-bottom: 1px solid #ccc;
 }
-	
+
 #read-latest article.sports-cat label,
 #tabs li.tabs-sports.ui-tabs-selected,
 #tabs li.tabs-sports.hover{
@@ -254,7 +254,7 @@ article h1{
 	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
 }
-	
+
 #read-latest article.finance-cat label,
 #tabs li.tabs-finance.ui-tabs-selected,
 #tabs li.tabs-finance.hover{
@@ -267,11 +267,11 @@ article h1{
 	background: linear-gradient(top, #21ba1a 1%,#116d0c 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21ba1a', endColorstr='#116d0c',GradientType=0 );
 }
-	
+
 .ui-tabs .ui-tabs-hide{
 	display: none;
 }
-		
+
 .ui-tabs .ui-tabs-nav li{
 	text-transform: uppercase;
 	display: block;
@@ -295,16 +295,16 @@ article h1{
 	background: linear-gradient(top, #777 1%,#111 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777', endColorstr='#111',GradientType=0 );
 }
-	
+
 .ui-tabs .ui-tabs-nav .ui-tabs-selected{
 	border-bottom: 4px double #fff;
 	top: 0;
 }
-	
+
 .ui-tabs .ui-tabs-nav .tabs-sports.ui-tabs-selected{
 	border-bottom: 4px double #ccc;
 }
-	
+
 .related-article-panel{
 	border-left: 1px solid #ccc;
 	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
@@ -320,15 +320,15 @@ article h1{
 .read-results .read-more span{
 	color: #18E;
 }
-	
+
 .read-more span{
 	width: 100%;
 }
-	
+
 div.read-more-spacer {
 	border-bottom: 2px dashed #ccc;
 }
-	
+
 div.read-more {
 	padding: 5px 0px;
 	text-align: center;
@@ -340,7 +340,7 @@ div.read-more {
 	background: -ms-linear-gradient(top, #fff 1%,#A8C9E4 100%);
 	background: linear-gradient(top, #fff 1%,#A8C9E4 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#A8C9E4',GradientType=0 );
-}	
+}
 
 .read-more-cont #read-more div.ui-tabs-panel{
 	width: 599px;
@@ -386,7 +386,7 @@ div.read-more {
 	display: none;
 }
 
-#tabs article img, 
+#tabs article img,
 #related-article article img{
 	float: left;
 	padding: 2px 5px 5px 5px;
@@ -412,17 +412,17 @@ div.read-more {
 }
 
 .featured-articles h1{
-	font-size: 12px;
-	border-top: 1px solid #34a5c2;
-	margin: 0 0 10px 0;
-	padding: 0;
-	font-weight: normal;
-	text-transform: uppercase;
+    font-size: 14px;
+    border-top: 1px solid #34a5c2;
+    margin: 0 0 20px 0;
+    padding: 5px 0 0 0;
+    font-weight: normal;
+    text-transform: uppercase;
 }
 
 .featured-articles h1 text{
-	background: #34a5c2;
-	padding: 0 50px 2px 5px;
+    background: #34a5c2;
+    padding: 5px 50px 5px 10px;
 }
 
 div.featured-article {
