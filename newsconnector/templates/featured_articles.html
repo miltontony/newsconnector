@@ -3,12 +3,11 @@
     {% for art, count in articles %}
     {% with a=art.article %}
     <div class="featured-article">
-        <h2>
-            {{a.title}}
+        <h2><label><a target="_blank" href="{{a.link}}">{{a.title}}</a></label>
             {% if a.image_url %}
-            <img src="{{a.image_url}}" width="58px"/>
+            <img src="{{a.image_url}}" height="58px"/>
             {% else %}
-            <img src="/static/images/news2.png" width="55px"/>
+            <img src="/static/images/news2.png" height="58px"/>
             {% endif %}
             </h2>
             <br style="clear:both"/>

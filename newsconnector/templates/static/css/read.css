@@ -441,27 +441,25 @@ div.featured-article {
 	clear: both;
 	dborder-bottom: 1px dotted #CCC;
 	padding-bottom: 10px;
-    font-size: 1.1em;
 }
 
 div.featured-article h2{
 	display: block;
 	width: 475px;
-	height: 65px;
-	line-height: 65px;
+	height: 30px;
+	line-height: 30px;
 	float: left;
 	text-align: center;
-	background: #CCC;
-	margin: 0 5px 0 0;
+	background: rgba(255, 255, 255, 0.3);
+	margin: 5px 0 25px 0;
 	font-size: 15px;
 	font-weight: bold;
 	font-family: arial;
-    color: #222;
 }
 
 div.featured-article img{
 	float: right;
-	margin: 2px 5px 0 0;
+	margin: -12px 0 0 0;
 }
 
 div.featured-article a{
@@ -480,10 +478,30 @@ div.featured-article ul{
 
 div.featured-article div.related{
 	width: 230px;
-    float: right;
+    float: left;
+    font-size: 1.1em;
 }
 
 div.featured-article div.main{
-    float: left;
+    float: right;
     width: 235px;
+    font-size: 1.2em;
+}
+
+div.featured-article h2 label a{
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+
+div.featured-article label{
+    width: 385px;
+    display: block;
+    float: left;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 0 0 0 5px;
+}
+
+div.featured-article li{
+    padding: 0 0 5px 0;
 }
