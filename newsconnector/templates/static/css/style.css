@@ -7,7 +7,7 @@
 	font-size: 30px;
 	line-height: 28px;
 }
-	
+
 #footer-sites{
 	width: 99%;
 	color: #fff;
@@ -81,7 +81,7 @@ body{
     top: 0;
     width: 99%;
 }
-    
+
 #just-read div a{
     text-decoration: none;
     color: white;
@@ -90,7 +90,7 @@ body{
     display: block;
     font-style: italic;
 }
-    
+
 #just-read div{
     text-align: center;
     width: 100px;
@@ -112,14 +112,6 @@ body{
 #header-cont{
 	width: 100%;
 	padding: 10px 0 20px 0;
-	background: #000;
-	background: -moz-linear-gradient(top, #000 1%, #090909 100%);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#000), color-stop(100%,#090909));
-	background: -webkit-linear-gradient(top, #000 1%,#090909 100%);
-	background: -o-linear-gradient(top, #000 1%,#090909 100%);
-	background: -ms-linear-gradient(top, #000 1%,#090909 100%);
-	background: linear-gradient(top, #000 1%,#090909 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000', endColorstr='#090909',GradientType=0 );
 	overflow: hidden;
 }
 
@@ -141,7 +133,7 @@ body{
 	background: #367fc2;
 	cursor: pointer;
 }
-	
+
 #search{
 	width: 80px;
 	height: 35px;
@@ -182,7 +174,7 @@ body{
 #keys ul li{
 	cursor: pointer;
 }
-	
+
 #loading{
 	color: white;
 	text-align: center;
@@ -190,7 +182,7 @@ body{
 	position: absolute;
 	left: 400px;
 }
-	
+
 #cat-nav{
 	position: absolute;
 	top: 2px;
@@ -226,7 +218,7 @@ body{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
 	border: 1px solid #26417b;
 }
-	
+
 #cat-nav #login{
 	color: #e1e1f8;
 	background: #21ba1a;
@@ -254,22 +246,22 @@ body{
 	border-radius: 0 5px 5px 0;
 	border: 1px solid #760d06;
 }
-	
+
 #cat-news.active{
 	border-radius: 5px 0 0 5px;
 }
-		
+
 #cat-nav #cat-news{
 	margin-left: 0;
 }
-	
+
 #top-nav{
 	position: absolute;
 	width: 99%;
 	top: 0;
 	z-index: 1;
 }
-	
+
 #top-nav div{
 	width: 300px;
 	margin: 0 auto;
@@ -278,7 +270,7 @@ body{
 	font-size: 11px;
 	font-weight: bold;
 }
-	
+
 #top-nav div a{
 	border: 1px solid #09090e;
 	border-top: none;
@@ -298,7 +290,7 @@ body{
 	background: linear-gradient(top, #000 1%,#666 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000', endColorstr='#666',GradientType=0 );
 }
-		
+
 #top-nav div a.active{
 	border: 1px solid #09090e;
 	border-top: none;
@@ -318,11 +310,11 @@ body{
 	background: linear-gradient(top, #760d06 1%,#e83325 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#760d06', endColorstr='#e83325',GradientType=0 );
 }
-	
+
 #top-nav div a.first{
 	border-radius: 0 0 0 10px;
 }
-	
+
 #top-nav div a.last{
 	border-radius: 0 0 10px 0;
 }
@@ -339,9 +331,9 @@ body{
 	left: 0;
 	margin: 5px;
 }
-.ac-container label, 
-.page_navigation, 
-#search-latest article label, 
+.ac-container label,
+.page_navigation,
+#search-latest article label,
 #search-pagination a{
 	font-family: 'Arial Narrow', Arial, sans-serif;
 	font-size: 11px;
@@ -364,9 +356,9 @@ body{
 	background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
 	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
-	box-shadow: 
-		0px 0px 0px 1px rgba(155,155,155,0.3), 
-		1px 0px 0px 0px rgba(255,255,255,0.9) inset, 
+	box-shadow:
+		0px 0px 0px 1px rgba(155,155,155,0.3),
+		1px 0px 0px 0px rgba(255,255,255,0.9) inset,
 		0px 2px 2px rgba(0,0,0,0.1);
 }
 
@@ -395,7 +387,7 @@ body{
 	cursor: default;
 }
 
-.ac-container .h1 label, 
+.ac-container .h1 label,
 .ac-container .h1 label:hover{
 	font-size: 14px;
 	color: #fff;
@@ -422,7 +414,7 @@ body{
 }
 
 .ac-container .h1 small{
-	font-size: 10px;	
+	font-size: 10px;
 }
 
 .ac-container label:hover{
@@ -433,8 +425,8 @@ body{
 	background: #c6e1ec;
 	color: #3d7489;
 	text-shadow: 0px 1px 1px rgba(255,255,255, 0.6);
-	box-shadow: 
-		0px 0px 0px 1px rgba(155,155,155,0.3), 
+	box-shadow:
+		0px 0px 0px 1px rgba(155,155,155,0.3),
 		0px 2px 2px rgba(0,0,0,0.1);
 }
 .ac-container label:hover:after,
@@ -445,7 +437,7 @@ body{
 	height: 24px;
 	right: 0px;
 	top: 3px;
-	background: transparent url(../images/arrow_down.png) no-repeat center center;	
+	background: transparent url(../images/arrow_down.png) no-repeat center center;
 }
 .ac-container input:checked + label:hover:after{
 	background-image: url(../images/arrow_up.png);
