@@ -131,8 +131,7 @@ def build_related(articleModel, update_cache = False):
 
   r_sorted = r_articles[:5]
 
-  cache_time = 4500 # time to live in seconds
   if r_sorted:
-    cache.set(cache_key, r_sorted, cache_time)
+    cache.set(cache_key, r_sorted)
 
   return r_sorted
