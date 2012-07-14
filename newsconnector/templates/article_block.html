@@ -3,7 +3,8 @@
     {% if article.image_url %}<img src="{{article.image_url}}" width="64px"/>{%endif%}
     <article-content>{{article.content}}</article-content>
     <article-footer>
-        {{article.date|date:"D, d M H:m"}} | 
+        <a target="_blank" href="{{article.link}}">more...</a><br/>
+        {{article.date|date:"D, d M H:m"}} |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
         <br style="clear:both"/>
     </article-footer>
