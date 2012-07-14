@@ -18,5 +18,7 @@ class Command(BaseCommand):
                      run_tasks.subtask((fin_feeds, FinanceArticle, FinanceKeyword)),\
                      run_tasks.subtask((e_feeds, EntertainmentArticle, EntertainmentKeyword))
                     ]
-        taskset = TaskSet(task_list)
-        taskset.apply_async()
+        taskset = TaskSet(tasks=task_list)
+        result = taskset.apply_async()
+        result.ready()
+        result.successful()

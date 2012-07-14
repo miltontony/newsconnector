@@ -62,38 +62,37 @@ def get_instance(cls, dictArticle, source):
 
 @task(ignore_result=True)
 def run_tasks(feeds, feedModel, keywordModel):
-    print 'Update stories: %s' % feedModel.__name__
+    print 'Update Started.'
+    print 'Updating: %s' % feedModel.__name__
     new_articles = []
     for feed, source in feeds:
         for entry in feedparser.parse(feed).entries:
             new_articles.append(get_instance(feedModel, entry, source))
-        print 'Fetched: %s' % feed
     print 'Fetching complete.'
     print 'Start OpenCalais keyword fetch.'
 
     data = ' '.join(['%s %s' % (a.title, a.content) for a in new_articles if a])
 
-    if not data:
-        return
+    if data:
+        print "Article count: %s" % len(new_articles)
 
-    print "Article count: %s" % len(new_articles)
+        update_articles(new_articles, keywordModel)
 
-    update_articles(new_articles, keywordModel)
+        # clean keywords
+        existing_slots = ['is', 'with']
+        for placeholder in keywordModel.objects.all():
+            if placeholder.keyword in existing_slots:
+                placeholder.delete()
+            else:
+                existing_slots.append(placeholder.keyword)
 
-    print 'clean up keywords'
-    existing_slots = ['is', 'with']
-    for placeholder in keywordModel.objects.all():
-        if placeholder.keyword in existing_slots:
-            placeholder.delete()
-        else:
-            existing_slots.append(placeholder.keyword)
-
-    print 'Update keywords for related articles'
-
-    print 'Update complete.'
+    else:
+        print '**No new articles. Update articles skipped.'
 
     print 'Generating featured articles.'
     build_related(feedModel, True)
+    print '-- Update Complete --'
+    return True
 
 
 def remove_duplicate_articles():
@@ -141,8 +140,6 @@ def update_articles(articles_list, keywordModel):
             print 'No keywords found for [%s]' % art.title
             continue
 
-        print 'Keyword analysis complete.'
-        print 'Save keywords.'
         keywords = (a["name"].lower() for a in result.entities)
 
         for k in keywords:
