@@ -144,5 +144,5 @@ def build_related(articleModel, update_cache=False):
     r_sorted = r_articles[:5]
 
     if len(r_sorted) > 0:
-        cache.set(cache_key, r_sorted)
+        cache.set(cache_key, r_sorted, 60*60*2)
         print 'Cache set.'
