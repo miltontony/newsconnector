@@ -67,7 +67,7 @@ fieldset article-footer{
 	font-size: 1.1em;
 	font-style: italic;
 	color: #333;
-	max-width: 550px;
+	max-width: 450px;
 }
 
 #read-latest{
@@ -389,15 +389,16 @@ div.read-more {
 }
 
 .tabs-container{
-	width: 58% !important;
+	width: 475px !important;
 	float: left;
 	background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
 }
 
 .featured-articles{
-	width: 40% !important;
+	width: 475px !important;
 	float: left;
 	margin-left: 10px;
+    margin-top: -30px;
 	height: 100%;
 	color: #fff;
 }
@@ -410,13 +411,26 @@ div.read-more {
 .featured-articles h1{
     font-size: 14px;
     border-top: 1px solid #34a5c2;
-    margin: 0 0 20px 0;
+    margin: 0 0 8px 0;
     padding: 5px 0 0 0;
     font-weight: normal;
     text-transform: uppercase;
 }
 
-.featured-articles h1 text{
+div.featured-articles h3 a{
+    color: #fff;
+}
+
+div.featured-articles h3{
+    font-size: 14px;
+    margin: 0;
+    padding: 0 0 5px 0;
+    font-weight: normal;
+    text-transform: uppercase;
+    display: block;
+}
+
+div.featured-articles h1 text{
     background: #34a5c2;
     padding: 5px 50px 5px 10px;
 }
@@ -425,31 +439,33 @@ div.featured-article {
 	display: block;
 	margin: 0 0 10px 0;
 	clear: both;
-	border-bottom: 1px dotted #CCC;
+	dborder-bottom: 1px dotted #CCC;
 	padding-bottom: 10px;
+    font-size: 1.1em;
 }
 
 div.featured-article h2{
 	display: block;
-	width: 57px;
-	height: 57px;
-	line-height: 55px;
+	width: 475px;
+	height: 65px;
+	line-height: 65px;
 	float: left;
 	text-align: center;
 	background: #CCC;
 	margin: 0 5px 0 0;
-	font-size: 35px;
+	font-size: 15px;
 	font-weight: bold;
 	font-family: arial;
+    color: #222;
 }
 
-div.featured-article a.img{
-	float: left;
-	margin: 0 5px 0 0;
+div.featured-article img{
+	float: right;
+	margin: 2px 5px 0 0;
 }
 
 div.featured-article a{
-	color: #fff;
+	color: #34A5C2;
 }
 
 div.featured-article ul{
@@ -459,10 +475,15 @@ div.featured-article ul{
 
 #tabs div.featured-article small a{
 	color: #34A5C2;
+    font-size: 10px;
 }
 
-div.featured-article div{
-	float: right;
-	width: 260px;
-	font-size: 14px;
+div.featured-article div.related{
+	width: 230px;
+    float: right;
+}
+
+div.featured-article div.main{
+    float: left;
+    width: 235px;
 }
