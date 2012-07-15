@@ -108,7 +108,7 @@ def build_related(articleModel, update_cache=False):
         return cache.get(cache_key)
 
     #d = datetime(2012, 7, 13)
-    d = date.today() - timedelta(days=1)
+    d = date.today()  # - timedelta(days=1)
     graph = nx.DiGraph()
 
     for a in articleModel.objects.filter(date__gte=d):
