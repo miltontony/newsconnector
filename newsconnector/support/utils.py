@@ -113,9 +113,10 @@ def build_related(articleModel, update_cache=False):
 
     for a in articleModel.objects.filter(date__gte=d):
         _count = a.keywords.count()
+        print 'key count: %s' % _count
         if _count > 1:
             _keywords = a.keywords.all()
-            for k in _keywords:
+            for k in _keywords[:5]:
                 for a_r in k.article_set.exclude(pk=a.pk).filter(date__gte=d):
                     matched = len([_k for _k in a_r.keywords\
                                                    .filter(pk__in=_keywords)])
