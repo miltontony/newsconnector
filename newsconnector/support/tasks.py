@@ -4,7 +4,7 @@ from newsconnector.models import *
 from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
 from time import mktime
-from datetime import datetime, timedelta, date
+from datetime import datetime
 
 from celery.task import task
 
@@ -62,120 +62,69 @@ def get_instance(cls, dictArticle, source):
 
 @task(ignore_result=True)
 def run_tasks(feeds, feedModel, keywordModel):
-    print 'Update Started.'
-    print 'Updating: %s' % feedModel.__name__
-    new_articles = []
-    for feed, source in feeds:
-        for entry in feedparser.parse(feed).entries:
-            new_articles.append(get_instance(feedModel, entry, source))
-    print 'Fetching complete.'
+    print '-- Update Started: %s --' % feedModel.__name__
+    print 'Fetching RSS feeds.'
+
+    new_articles = get_new_articles(feeds, feedModel)
+
     print 'Start OpenCalais keyword fetch.'
 
-    data = ' '.join(['%s %s' % (a.title, a.content) for a in new_articles if a])
+    data = ' '.join(['%s %s' % (a.title, a.content)\
+                        for a in new_articles if a])
 
     if data:
-        print "Article count: %s" % len(new_articles)
-
-        update_articles(new_articles, keywordModel)
-
-        # clean keywords
-        existing_slots = ['is', 'with']
-        for placeholder in keywordModel.objects.all():
-            if placeholder.keyword in existing_slots:
-                placeholder.delete()
-            else:
-                existing_slots.append(placeholder.keyword)
-
+        keywords = get_keywords(keywordModel, data)
+        print 'Keywords update complete.'
+        update_articles(keywords, new_articles)
+        print 'Article update complete.'
     else:
         print '**No new articles. Update articles skipped.'
 
     print 'Generating featured articles.'
     build_related(feedModel, True)
     print '-- Update Complete --'
-    return True
 
 
-def remove_duplicate_articles():
-    existing_slots = []
-    for placeholder in Article.objects.all().order_by('-date_added'):
-        hash_str = ':'.join([placeholder.title,  placeholder.content, placeholder.source])\
-                      .encode('ascii', 'ignore')
-        hash = md5_constructor(hash_str).hexdigest()
-        if hash in existing_slots:
-            placeholder.delete()
+def get_new_articles(feeds, feedModel):
+    for feed, source in feeds:
+        for entry in feedparser.parse(feed).entries:
+            yield get_instance(feedModel, entry, source)
+
+
+def get_keywords(keywordModel, data):
+    data = data.encode('ascii', 'ignore')
+    calais = Calais('r8krg8jjs9smep7c2z9jvzew')
+    result = calais.analyze(data)
+
+    temp_keys = []
+    if hasattr(result, 'entities'):
+        temp_keys = [a["name"].lower() for a in result.entities]
+
+    if hasattr(result, 'socialTag'):
+        temp_keys += [a["name"].lower() for a in result.socialTag]
+
+    keywords = list(set(temp_keys))
+
+    if len(keywords) == 0:
+        print '**No keywords to process.'
+
+    for k in keywords:
+        if not keywordModel.objects.filter(keyword=k).exists():
+            try:
+                a_k = keywordModel(keyword=k)
+                a_k.save()
+            except IntegrityError:
+                pass
         else:
-            existing_slots.append(hash)
+            a_k = keywordModel.objects.get(keyword=k)
+
+        yield a_k
 
 
-def update_hash():
-    existing_slots = []
-    for a in Article.objects.all().order_by('-date_added'):
-        hash_str = ':'.join([a.title,  a.content, a.source])\
-                      .encode('ascii', 'ignore')
-        hash = md5_constructor(hash_str).hexdigest()
-        if hash in existing_slots:
-            a.delete()
-        else:
-            existing_slots.append(hash)
-            a.hash = hash
-            a.save()
-
-
-def update_articles(articles_list, keywordModel):
-    for art in articles_list:
-        if not art:
-            continue
-
-        data = '%s %s' % (art.title, art.content)
-
-        if not data:
-            continue
-
-        data = data.encode('ascii', 'ignore')
-
-        calais = Calais('r8krg8jjs9smep7c2z9jvzew', submitter="python-calais newsconnector")
-        result = calais.analyze(data)
-
-        temp_keys = []
-        if hasattr(result, 'entities'):
-            temp_keys = [a["name"].lower() for a in result.entities]
-
-        if hasattr(result, 'socialTag'):
-            temp_keys += [a["name"].lower() for a in result.socialTag]
-
-        keywords = list(set(temp_keys))
-
-        if len(keywords) == 0:
-            print 'No keywords found for [%s]' % art.title
-            continue
-
-        for k in keywords:
-            if not keywordModel.objects.filter(keyword=k).exists():
-                try:
-                    a_k = keywordModel(keyword=k)
-                    a_k.save()
-                    if not art.keywords.filter(pk=a_k.pk).exists():
-                        art.keywords.add(a_k)
-                except IntegrityError:
-                    pass
-            else:
-                a_k = keywordModel.objects.get(keyword=k)
-                if not art.keywords.filter(pk=a_k.pk).exists():
-                    art.keywords.add(a_k)
-
-
-def update_keywords(keywordModel=NewsKeyword, articleModel=NewsArticle):
-    min_date = date.today() - timedelta(days=7)
-
-    for word in keywordModel.objects.exclude(keyword='the').distinct():
-        for a in articleModel.objects.filter(date_added__gt=min_date):
-            if found_string(word.keyword, ('%s %s' % (a.title, a.content)).lower()):
+def update_articles(keywords, new_articles):
+    for word in keywords:
+        for a in new_articles:
+            if found_string(word.keyword,\
+                            ('%s %s' % (a.title, a.content)).lower()):
                 if not a.keywords.filter(pk=word.pk).exists():
                     a.keywords.add(word)
-                    print "Added [%s] to [%s]" % (word.keyword, a.title)
-
-
-def manual_update_articles(keywordModel=NewsKeyword, articleModel=NewsArticle):
-    min_date = date.today() - timedelta(days=7)
-    l = [a for a in articleModel.objects.filter(date_added__gt=min_date)]
-    update_articles(l, keywordModel)
