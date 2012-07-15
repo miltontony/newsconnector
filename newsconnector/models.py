@@ -45,7 +45,7 @@ class Article(models.Model):
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'sdate': '%s' % self.date.isoformat(),
                 'keywords': [k.keyword for k in self.keywords.all()[:5]],
-                'matched': matched,
+                'matched': matched[:5],
                 'rank': len(matched),
                 'rankp': len(matched) / float(len(keywords)) * 100}
 
