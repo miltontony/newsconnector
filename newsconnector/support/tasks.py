@@ -140,7 +140,7 @@ def update_articles(articles_list, keywordModel):
             print 'No keywords found for [%s]' % art.title
             continue
 
-        keywords = (a["name"].lower() for a in result.entities)
+        keywords = list(set((a["name"].lower() for a in result.entities + result.socialTag)))
 
         for k in keywords:
             if not keywordModel.objects.filter(keyword=k).exists():

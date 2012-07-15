@@ -7,6 +7,7 @@ Last-Update: 01/12/2009
 import httplib, urllib, re
 import simplejson as json
 from StringIO import StringIO
+from xml.sax.saxutils import escape
 
 PARAMS_XML = """
 <c:params xmlns:c="http://s.opencalais.com/1/pred/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"> <c:processingDirectives %s> </c:processingDirectives> <c:userDirectives %s> </c:userDirectives> <c:externalMetadata %s> </c:externalMetadata> </c:params>
@@ -20,12 +21,12 @@ class AppURLopener(urllib.FancyURLopener):
     version = "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.0.5) Gecko/2008121623 Ubuntu/8.10 (intrepid)Firefox/3.0.5" # Lie shamelessly to Wikipedia.
 urllib._urlopener = AppURLopener()
 
-class Calais():
+class Calais(object):
     """
-    Python class that knows how to talk to the OpenCalais API.  Use the analyze() and analyze_url() methods, which return CalaisResponse objects.  
+    Python class that knows how to talk to the OpenCalais API.  Use the analyze() and analyze_url() methods, which return CalaisResponse objects.
     """
     api_key = None
-    processing_directives = {"contentType":"TEXT/RAW", "outputFormat":"application/json", "reltagBaseURL":None, "calculateRelevanceScore":"true", "enableMetadataType":None, "discardMetadata":None, "omitOutputtingOriginalText":"true"}
+    processing_directives = {"contentType":"TEXT/RAW", "outputFormat":"application/json", "reltagBaseURL":None, "calculateRelevanceScore":"true", "enableMetadataType":"SocialTags", "discardMetadata":None, "omitOutputtingOriginalText":"true"}
     user_directives = {"allowDistribution":"false", "allowSearch":"false", "externalID":None}
     external_metadata = {}
 
@@ -34,10 +35,10 @@ class Calais():
         self.user_directives["submitter"]=submitter
 
     def _get_params_XML(self):
-        return PARAMS_XML % (" ".join('c:%s="%s"' % (k,v) for (k,v) in self.processing_directives.items() if v), " ".join('c:%s="%s"' % (k,v) for (k,v) in self.user_directives.items() if v), " ".join('c:%s="%s"' % (k,v) for (k,v) in self.external_metadata.items() if v))
+        return PARAMS_XML % (" ".join('c:%s="%s"' % (k,escape(v)) for (k,v) in self.processing_directives.items() if v), " ".join('c:%s="%s"' % (k,escape(v)) for (k,v) in self.user_directives.items() if v), " ".join('c:%s="%s"' % (k,escape(v)) for (k,v) in self.external_metadata.items() if v))
 
     def rest_POST(self, content):
-        params = urllib.urlencode({'licenseID':self.api_key, 'content':content, 'paramsXML':self._get_params_XML()})
+        params = urllib.urlencode({'licenseID':self.api_key, 'content':content.encode('ascii', 'xmlcharrefreplace'), 'paramsXML':self._get_params_XML()})
         headers = {"Content-type":"application/x-www-form-urlencoded"}
         conn = httplib.HTTPConnection("api.opencalais.com:80")
         conn.request("POST", "/enlighten/rest/", params, headers)
@@ -48,7 +49,7 @@ class Calais():
 
     def get_random_id(self):
         """
-        Creates a random 10-character ID for your submission.  
+        Creates a random 10-character ID for your submission.
         """
         import string
         from random import choice
@@ -60,7 +61,7 @@ class Calais():
 
     def get_content_id(self, text):
         """
-        Creates a SHA1 hash of the text of your submission.  
+        Creates a SHA1 hash of the text of your submission.
         """
         import hashlib
         h = hashlib.sha1()
@@ -105,16 +106,16 @@ class Calais():
             raise ValueError("Only plaintext and HTML files are currently supported.  ")
         return self.analyze(content, content_type=content_type, external_id=fn)
 
-class CalaisResponse():
+class CalaisResponse(object):
     """
     Encapsulates a parsed Calais response and provides easy pythonic access to the data.
     """
     raw_response = None
     simplified_response = None
-    
+
     def __init__(self, raw_result):
         try:
-            self.raw_response = json.load(StringIO(raw_result))
+            self.raw_response = json.load(StringIO(raw_result.decode('utf-8', "[removed]")), encoding="utf-8")
         except:
             raise ValueError(raw_result)
         self.simplified_response = self._simplify_json(self.raw_response)
@@ -144,7 +145,7 @@ class CalaisResponse():
             return None
         info = self.doc['info']
         print "Calais Request ID: %s" % info['calaisRequestID']
-        if info.has_key('externalID'): 
+        if info.has_key('externalID'):
             print "External ID: %s" % info['externalID']
         if info.has_key('docTitle'):
             print "Title: %s " % info['docTitle']
