@@ -136,11 +136,18 @@ def update_articles(articles_list, keywordModel):
         calais = Calais('r8krg8jjs9smep7c2z9jvzew', submitter="python-calais newsconnector")
         result = calais.analyze(data)
 
-        if not hasattr(result, 'entities'):
+        temp_keys = []
+        if hasattr(result, 'entities'):
+            temp_keys = [a["name"].lower() for a in result.entities]
+
+        if hasattr(result, 'socialTag'):
+            temp_keys += [a["name"].lower() for a in result.socialTag]
+
+        keywords = list(set(temp_keys))
+
+        if len(keywords) == 0:
             print 'No keywords found for [%s]' % art.title
             continue
-
-        keywords = list(set((a["name"].lower() for a in result.entities + result.socialTag)))
 
         for k in keywords:
             if not keywordModel.objects.filter(keyword=k).exists():
