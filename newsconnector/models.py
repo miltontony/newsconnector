@@ -5,7 +5,7 @@ from datetime import datetime
 class Keyword(models.Model):
     keyword = models.TextField()
     date_updated = models.DateTimeField(auto_now = True, default = datetime.now())
-    
+
     def __unicode__(self):  # pragma: no cover
         return self.keyword
 
@@ -32,8 +32,8 @@ class Article(models.Model):
                 'image_url': self.image_url if self.image_url else '',
                 'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
-                'keywords': [k.keyword for k in self.keywords.all()]}
-    
+                'keywords': [k.keyword for k in self.keywords.all()[:5]]}
+
     def to_related_dto(self, keywords):
         matched = [k.keyword for k in self.keywords.filter(pk__in=keywords)]
         return {'title': self.title,
@@ -44,7 +44,7 @@ class Article(models.Model):
                 'id': self.pk,
                 'date': self.date.strftime('%a, %d %b %H:%M'),
                 'sdate': '%s' % self.date.isoformat(),
-                'keywords': [k.keyword for k in self.keywords.all()],
+                'keywords': [k.keyword for k in self.keywords.all()[:5]],
                 'matched': matched,
                 'rank': len(matched),
                 'rankp': len(matched) / float(len(keywords)) * 100}
@@ -55,7 +55,7 @@ class RssFeed(models.Model):
     url = models.URLField(default='')
     site = models.URLField(default='')
     name = models.TextField()
-    
+
     def __unicode__(self):  # pragma: no cover
         return self.name
 
@@ -80,14 +80,14 @@ class NewsKeyword(Keyword):
 
 class SportsKeyword(Keyword):
     pass
-   
+
 class FinanceKeyword(Keyword):
     pass
-   
+
 class EntertainmentKeyword(Keyword):
     pass
-        
-        
+
+
 #------ Feeds ----------
 class NewsFeed(RssFeed):
     pass
@@ -97,9 +97,9 @@ class SportsFeed(RssFeed):
 
 class FinanceFeed(RssFeed):
     pass
-    
+
 class EntertainmentFeed(RssFeed):
     pass
-    
 
-    
+
+
