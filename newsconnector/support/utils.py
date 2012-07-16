@@ -108,7 +108,7 @@ def build_related(articleModel, update_cache=False):
         return cache.get(cache_key)
 
     #d = datetime(2012, 7, 13)
-    d = date.today()  # - timedelta(days=1)
+    d = date.today()  - timedelta(days=1)
     graph = nx.DiGraph()
 
     for a in articleModel.objects.filter(date__gte=d):
@@ -145,5 +145,5 @@ def build_related(articleModel, update_cache=False):
     r_sorted = r_articles[:5]
 
     if len(r_sorted) > 0:
-        cache.set(cache_key, r_sorted, 60*60*2)
-        print 'Cache set.'
+        cache.set(cache_key, r_sorted, 60*60*4)
+        print 'Cache set: %s' % cache_key

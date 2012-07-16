@@ -1,2 +1,2 @@
 #!/bin/bash
-source ve/bin/activate && cd newsconnector && ./manage.py newsfeed_cron && deactivate
+source ve/bin/activate && cd newsconnector && ./manage.py newsfeed_cron 0 && deactivate

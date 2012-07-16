@@ -80,9 +80,14 @@ def run_tasks(feeds, feedModel, keywordModel):
     else:
         print '**No new articles. Update articles skipped.'
 
+    print '-- Update Complete --'
+
+
+@task(ignore_result=True)
+def run_build_related(feedModel):
     print 'Generating featured articles.'
     build_related(feedModel, True)
-    print '-- Update Complete --'
+    print '-- Build Related Complete --'
 
 
 def get_new_articles(feeds, feedModel):
