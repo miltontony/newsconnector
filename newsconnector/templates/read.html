@@ -171,20 +171,20 @@ $(document).ready(function(){
 		var target = $(this).parent().parent().find('#read-more');
 
 		var _ = $(this);
-		target.append('<a href="#section_top">Back to top</a><div class="read-more-spacer"></div>');
+		target.append('<a href="#section_top">Back to top</a>');
 		$.get(href, function(data) {
 			$.each(data.articles, function(i, value){
 				var artilce_image_url = value.image_url;
-				var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '';
+				var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '<img src="/static/images/news2.png" width="64px"/>';
 
 				target.append('<div id="tabs-news" class="ui-tabs-panel"><article>'+
-				'<a target="_blank" href="/related/'+_.attr('cat')+'/'+value.id+'/"><span>'+value.title+'</span></a>'+
 				image_tag +
-				'<article-content>'+value.content+'</article-content>'+
+				'<article-content>'+
+                '<a target="_blank" href="/related/'+_.attr('cat')+'/'+value.id+'/"><span>'+
+                value.title+'</span></a><br/>'+value.content+'<br/>'+
 				'<article-footer>'+value.date+' | '+
 				'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
-				'<br style="clear:both"/>'+
-				'</article-footer></article></div>');
+				'</article-footer></article-content><br style="clear:both"/></article></div>');
 				});
 			if(data.has_next){
 				_.attr('href','/more/'+_.attr('cat')+'/?page='+data.next_page);

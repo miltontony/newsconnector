@@ -1,11 +1,18 @@
 <article {% if forloop.first %}class="first-article"{% endif %}>
-    <a target="_blank" href="/related/{{section_index}}/{{article.pk}}/"><span>{{article.title}}</span></a>
-    {% if article.image_url %}<img src="{{article.image_url}}" width="64px"/>{%endif%}
-    <article-content>{{article.content}}</article-content>
-    <article-footer>
-        <a target="_blank" href="{{article.link}}">more...</a><br/>
-        {{article.date|date:"D, d M H:m"}} |
-        <a target="_blank" href="{{article.link}}">{{article.source}}</a>
-        <br style="clear:both"/>
-    </article-footer>
+    {% if article.image_url %}
+    <img src="{{article.image_url}}" width="64px"/>
+    {% else %}
+    <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
+    {%endif%}
+    <article-content>
+        <span><a target="_blank" href="/related/{{section_index}}/{{article.pk}}/">{{article.title}}</a></span>
+        <br/>
+        {{article.content}}
+        <br/>
+        <article-footer>
+            {{article.date|date:"D, d M H:m"}} |
+            <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+        </article-footer>
+    </article-content>
+    <br style="clear:both"/>
 </article>

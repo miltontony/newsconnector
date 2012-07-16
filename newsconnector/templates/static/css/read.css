@@ -31,11 +31,8 @@ fieldset span a{
 	border-left: none;
 }
 
-
-fieldset span,
 fieldset article,
-fieldset article-content,
-fieldset article-footer{
+fieldset article-content{
 	display: block;
 	padding: 5px;
 }
@@ -54,20 +51,29 @@ fieldset article-footer{
 	color: #18E;
 }
 
+.read-results span a:hover{
+    color: #18E;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.read-results span a{
+    color: #000;
+    text-shadow: 1px 1px 1px rgba(155, 155, 155, 0.2);
+}
+
 .read-results span{
 	padding-bottom: 0;
-	font-size: 1.2em;
+	font-size: 1.1em;
 	color: #111;
 	font-weight: bold;
-	text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
 }
 
 .read-results article-content{
-	padding-top: 2px;
+	padding-top: 0;
 	font-size: 1.1em;
-	font-style: italic;
 	color: #333;
-	max-width: 450px;
+	width: 380px;
+    float: left;
 }
 
 #read-latest{
@@ -109,12 +115,13 @@ fieldset article-footer{
 #read-latest article-footer{
 	width: 100%;
 	color: #777;
-        height: 30px;
+    height: 30px;
 }
 
 .read-results article-footer{
 	padding-top: 0;
 	color: #777;
+    font-size: 0.9em;
 }
 
 #read-latest label:hover {
@@ -332,10 +339,6 @@ div.read-more {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#A8C9E4',GradientType=0 );
 }
 
-.read-more-cont #read-more div.ui-tabs-panel{
-	width: 599px;
-}
-
 #read-related-close {
 	margin: 0 0 0 50px;
 	display: inline;
@@ -385,7 +388,13 @@ div.read-more {
 #tabs article img,
 #related-article article img{
 	float: left;
-	padding: 2px 5px 5px 5px;
+	margin: 2px 5px 5px 5px;
+    display: block;
+    border-radius: 5px;
+}
+
+article{
+    border-bottom: 1px solid #ccc;
 }
 
 .tabs-container{
