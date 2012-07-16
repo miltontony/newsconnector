@@ -107,7 +107,8 @@ def update_articles(articles_list, keywordModel):
             temp_keys = [a["name"].lower() for a in result.entities]
 
         if hasattr(result, 'socialTag'):
-            temp_keys += [a["name"].lower() for a in result.socialTag]
+            temp_keys += [a["name"].lower() for a in result.socialTag\
+                                            if a['importance'] == '1']
 
         keywords = list(set(temp_keys))
 
