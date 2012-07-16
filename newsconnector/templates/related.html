@@ -36,16 +36,13 @@
                     <br/>
                     {{a.content}}
                     <br/>
-                    <article-footer>{{a.date|date:"D, d M H:m"}}&nbsp;|&nbsp;
+                    <article-footer>{{a.date}}&nbsp;|&nbsp;
                     <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
+                    <div class="rank">{{a.rankp}}%</div>
                     </article-footer>
                     </article-content>
                     <br style="clear:both"/>
                 </article>
-                <div class="rank">{{a.rankp}}%</div>
-                    {% for m in a.matched %}
-                        <div class="matched-keyword">{{m}}</div>
-                    {% endfor %}
             </div>
             {% empty %}
             <div style="color:#fff">
