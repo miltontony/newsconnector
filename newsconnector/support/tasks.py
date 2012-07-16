@@ -73,9 +73,10 @@ def run_tasks(feeds, feedModel, keywordModel):
                         for a in new_articles if a])
 
     if data:
-        keywords = get_keywords(keywordModel, data)
-        print 'Keywords update complete.'
-        update_articles(keywords, new_articles)
+        #keywords = get_keywords(keywordModel, data)
+        #print 'Keywords update complete.'
+
+        update_articles(new_articles, keywordModel)
         print 'Article update complete.'
     else:
         print '**No new articles. Update articles skipped.'
@@ -96,40 +97,46 @@ def get_new_articles(feeds, feedModel):
             yield get_instance(feedModel, entry, source)
 
 
-def get_keywords(keywordModel, data):
-    data = data.encode('ascii', 'ignore')
-    calais = Calais('r8krg8jjs9smep7c2z9jvzew')
-    result = calais.analyze(data)
+def update_articles(articles_list, keywordModel):
+    for art in articles_list:
+        if not art:
+            continue
 
-    temp_keys = []
-    if hasattr(result, 'entities'):
-        temp_keys = [a["name"].lower() for a in result.entities]
+        data = '%s %s' % (art.title, art.content)
 
-    if hasattr(result, 'socialTag'):
-        temp_keys += [a["name"].lower() for a in result.socialTag]
+        if not data:
+            continue
 
-    keywords = list(set(temp_keys))
+        data = data.encode('ascii', 'ignore')
 
-    if len(keywords) == 0:
-        print '**No keywords to process.'
+        calais = Calais('r8krg8jjs9smep7c2z9jvzew')
+        result = calais.analyze(data)
 
-    for k in keywords:
-        if not keywordModel.objects.filter(keyword=k).exists():
-            try:
-                a_k = keywordModel(keyword=k)
-                a_k.save()
-            except IntegrityError:
-                pass
-        else:
-            a_k = keywordModel.objects.get(keyword=k)
+        temp_keys = []
+        if hasattr(result, 'entities'):
+            temp_keys = [a["name"].lower() for a in result.entities]
 
-        yield a_k
+        if hasattr(result, 'socialTag'):
+            temp_keys += [a["name"].lower() for a in result.socialTag]
 
+        keywords = list(set(temp_keys))
 
-def update_articles(keywords, new_articles):
-    for word in keywords:
-        for a in new_articles:
-            if found_string(word.keyword,\
-                            ('%s %s' % (a.title, a.content)).lower()):
-                if not a.keywords.filter(pk=word.pk).exists():
-                    a.keywords.add(word)
+        if len(keywords) == 0:
+            print '**No keywords to process.'
+            continue
+
+        print 'Keyword analysis complete.'
+
+        for k in keywords:
+            if not keywordModel.objects.filter(keyword=k).exists():
+                try:
+                    a_k = keywordModel(keyword=k)
+                    a_k.save()
+                    if not art.keywords.filter(pk=a_k.pk).exists():
+                        art.keywords.add(a_k)
+                except IntegrityError:
+                    pass
+            else:
+                a_k = keywordModel.objects.get(keyword=k)
+                if not art.keywords.filter(pk=a_k.pk).exists():
+                    art.keywords.add(a_k)
