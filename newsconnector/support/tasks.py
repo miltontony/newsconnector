@@ -124,7 +124,7 @@ def update_articles(articles_list, keywordModel):
                     a_k.save()
                     if not art.keywords.filter(pk=a_k.pk).exists():
                         art.keywords.add(a_k)
-                        print '[%s] Added keyword "%s"' % (art.title, k.keyword)
+                        print '[%s] Added keyword "%s"' % (art.title, a_k.keyword)
                 except IntegrityError:
                     pass
             else:
