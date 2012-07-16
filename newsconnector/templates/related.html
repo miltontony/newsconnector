@@ -10,20 +10,11 @@
     <fieldset style="border-top: none;">
         <div class="ui-tabs">
             <div id="related-article" class="related-article-panel" tabindex="100">
-                <article>
-                <a href="{{article.link}}"><span>{{article.title}}</span></a>
-                {% if article.image_url %}<img src="{{article.image_url}}" width="64px"/>
-                {% else %}<img src="/static/images/news.png" width="64px"/>
-                {% endif %}
-                <article-content>{{article.content}}</article-content>
-                <article-footer>{{article.date}}&nbsp;|&nbsp; 
-                <a target="_blank" href="{{article.link}}">{{article.source}}</a>
-                </article-footer>
-                </article>
+                {%  include "related_article_block.html" with article=article section_index=section_index %}
             </div>
             <div style="margin-bottom: 5px;" class="related-article-panel">
                 <article>
-                    <strong>Keywords:</strong> 
+                    <strong>Keywords:</strong>
                     {% for k in article.keywords %}
                     <div class="related-article-keyword">{{k}}</div>
                     {% endfor %}
@@ -35,18 +26,26 @@
             {% for a in articles %}
             <div class="related-article-panel">
                 <article>
-                    <a target="_blank" href="/related/{{section_index}}/{{a.id}}/"><span>{{a.title}}</span></a>
-                    <article-content>{{a.content}}</article-content>
+                    {% if article.image_url %}
+                    <img src="{{article.image_url}}" width="64px"/>
+                    {% else %}
+                    <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
+                    {%endif%}
+                    <article-content>
+                    <span><a target="_blank" href="/related/{{section_index}}/{{a.id}}/">{{a.title}}</a></span>
+                    <br/>
+                    {{a.content}}
+                    <br/>
                     <article-footer>{{a.date}}&nbsp;|&nbsp;
                     <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
-                    <div class="rank">{{a.rankp}}%</div>
-                    
+                    </article-footer>
+                    </article-content>
+                    <br style="clear:both"/>
+                </article>
+                <div class="rank">{{a.rankp}}%</div>
                     {% for m in a.matched %}
                         <div class="matched-keyword">{{m}}</div>
                     {% endfor %}
-
-                    </article-footer>
-                </article>
             </div>
             {% empty %}
             <div style="color:#fff">
@@ -60,7 +59,7 @@
 {% endblock %}
 
 {% block js %}
-    
+
 $(document).ready(function(){
     $('.rank')
       .each(function(){
@@ -72,6 +71,6 @@ $(document).ready(function(){
                     },
                     showText: false,
                   });});
-}); 
+});
 
 {% endblock %}

@@ -1,0 +1,18 @@
+<article {% if forloop.first %}class="first-article"{% endif %}>
+    {% if article.image_url %}
+    <img src="{{article.image_url}}" width="64px"/>
+    {% else %}
+    <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
+    {%endif%}
+    <article-content>
+        <span><a href="{{article.link}}">{{article.title}}</a></span>
+        <br/>
+        {{article.content}}
+        <br/>
+        <article-footer>
+            {{article.date|date:"D, d M H:m"}} |
+            <a href="{{article.link}}">{{article.source}}</a>
+        </article-footer>
+    </article-content>
+    <br style="clear:both"/>
+</article>

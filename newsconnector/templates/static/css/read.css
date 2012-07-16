@@ -385,8 +385,7 @@ div.read-more {
     border-radius: 2px 2px 0 0;
 }
 
-#tabs article img,
-#related-article article img{
+#read-related article img{
 	float: left;
 	margin: 2px 5px 5px 5px;
     display: block;
