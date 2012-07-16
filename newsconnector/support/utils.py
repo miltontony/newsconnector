@@ -147,3 +147,18 @@ def build_related(articleModel, update_cache=False):
     if len(r_sorted) > 0:
         cache.set(cache_key, r_sorted, 60*60*4)
         print 'Cache set: %s' % cache_key
+
+
+def delete_old_data():
+    from newsconnector.models import Article, Keyword
+
+    d = date.today() - timedelta(days=31)
+
+    print 'Articles: %s' % Article.objects.all().count()
+    print 'keywords: %s' % Article.objects.all().count()
+
+    Article.objects.filter(date_added__lt=d).delete()
+    Keyword.objects.filter(date_updated__lt=d).delete()
+
+    print 'Articles remaining: %s' % Article.objects.all().count()
+    print 'keywords remaining: %s' % Article.objects.all().count()
