@@ -27,7 +27,7 @@
             <div class="related-article-panel">
                 <article>
                     {% if article.image_url %}
-                    <img src="{{article.image_url}}" width="64px"/>
+                    <img src="{{a.image_url}}" width="64px"/>
                     {% else %}
                     <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
                     {%endif%}
@@ -36,7 +36,7 @@
                     <br/>
                     {{a.content}}
                     <br/>
-                    <article-footer>{{a.date}}&nbsp;|&nbsp;
+                    <article-footer>{{a.date|date:"D, d M H:m"}}&nbsp;|&nbsp;
                     <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
                     </article-footer>
                     </article-content>
