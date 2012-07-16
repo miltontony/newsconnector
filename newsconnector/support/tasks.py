@@ -97,7 +97,7 @@ def update_articles(articles_list, keywordModel):
 
         data = data.encode('ascii', 'ignore')
 
-        print 'Start OpenCalais keyword fetch.'
+        #print 'Start OpenCalais keyword fetch.'
 
         calais = Calais('r8krg8jjs9smep7c2z9jvzew')
         result = calais.analyze(data)
@@ -113,10 +113,10 @@ def update_articles(articles_list, keywordModel):
         keywords = list(set(temp_keys))
 
         if len(keywords) == 0:
-            print '**No keywords to process.'
+            #print '**No keywords to process.'
             continue
 
-        print 'Keyword analysis complete.'
+        #print 'Keyword analysis complete.'
 
         for k in keywords:
             if not keywordModel.objects.filter(keyword=k).exists():
@@ -125,7 +125,7 @@ def update_articles(articles_list, keywordModel):
                     a_k.save()
                     if not art.keywords.filter(pk=a_k.pk).exists():
                         art.keywords.add(a_k)
-                        print '[%s] Added keyword "%s"' % (art.title, a_k.keyword)
+                        #print '[%s] Added keyword "%s"' % (art.title, a_k.keyword)
                 except IntegrityError:
                     pass
             else:
