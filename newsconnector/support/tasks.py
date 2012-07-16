@@ -64,22 +64,10 @@ def get_instance(cls, dictArticle, source):
 def run_tasks(feeds, feedModel, keywordModel):
     print '-- Update Started: %s --' % feedModel.__name__
     print 'Fetching RSS feeds.'
-
     new_articles = get_new_articles(feeds, feedModel)
 
-    print 'Start OpenCalais keyword fetch.'
-
-    data = ' '.join(['%s %s' % (a.title, a.content)\
-                        for a in new_articles if a])
-
-    if data:
-        #keywords = get_keywords(keywordModel, data)
-        #print 'Keywords update complete.'
-
-        update_articles(new_articles, keywordModel)
-        print 'Article update complete.'
-    else:
-        print '**No new articles. Update articles skipped.'
+    update_articles(new_articles, keywordModel)
+    print 'Article update complete.'
 
     print '-- Update Complete --'
 
@@ -108,6 +96,8 @@ def update_articles(articles_list, keywordModel):
             continue
 
         data = data.encode('ascii', 'ignore')
+
+        print 'Start OpenCalais keyword fetch.'
 
         calais = Calais('r8krg8jjs9smep7c2z9jvzew')
         result = calais.analyze(data)
