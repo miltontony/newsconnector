@@ -114,6 +114,10 @@ def build_related(articleModel, update_cache=False):
     for a in articleModel.objects.filter(date__gte=d):
         _count = a.keywords.count()
         if _count > 1:
+            if _count == 2 and\
+                a.keywords.filter(keyword__in=['south africa', 'politics'])\
+                            .count() == 2:
+                continue
             _keywords = a.keywords.all()
             for k in _keywords:
                 for a_r in k.article_set.exclude(pk=a.pk).filter(date__gte=d):
