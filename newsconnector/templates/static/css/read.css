@@ -308,10 +308,6 @@ article h1{
 	position: relative;
 }
 
-.ui-tabs .first-article{
-	border-top: 1px solid #ccc;
-}
-
 .read-results .read-more span,
 .read-results .read-more span,
 .read-results .read-more span{
@@ -394,13 +390,14 @@ div.read-more {
 }
 
 article{
-    border-bottom: 1px solid #ccc;
+    background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
+    border-radius: 20px 0;
+    margin: 2px 0;
 }
 
 .tabs-container{
 	width: 475px !important;
 	float: left;
-	background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
 }
 
 .featured-articles{
