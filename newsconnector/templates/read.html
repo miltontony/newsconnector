@@ -136,6 +136,12 @@ function view_related(link){
 $(document).ready(function(){
 	$('#tabs').tabs();
 
+    $('article').mouseover(function(){
+        $(this).find('div.overlay').stop(true).addClass('show', 200);
+    }).mouseout(function(){
+        $(this).find('div.overlay').stop(true).removeClass('show', 200);
+    });
+
 	$('article.news-cat label').click(function(){
 		$('li.tabs-news a').click();
 	});

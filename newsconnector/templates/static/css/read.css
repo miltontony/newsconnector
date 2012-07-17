@@ -393,6 +393,48 @@ article{
     background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
     border-radius: 20px 0;
     margin: 2px 0;
+    position: relative;
+}
+
+article .overlay a:hover{
+    color: #18E;
+}
+
+article .overlay a{
+    color: #fff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+article .overlay{
+    position: absolute;
+    bottom: 0px;
+    display: none;
+    height: 30px;
+    background: #CCC;
+    background: rgba(0,0,0,0.6);
+    width: 100%;
+    left: 0;
+    border-radius: 0 0 20px 0;
+}
+article .show{
+    display: block !important;
+}
+
+article .overlay .goto, article .overlay .related-button {
+    padding: 5px 0 0 10px;
+    position: relative;
+    display: block;
+    float: left;
+}
+
+article .overlay .goto{
+    margin-left: 120px;
+}
+
+article .overlay .related-button{
+    margin-left: 50px;
 }
 
 .tabs-container{
