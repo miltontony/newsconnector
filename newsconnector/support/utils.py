@@ -115,7 +115,9 @@ def build_related(articleModel, update_cache=False):
         _count = a.keywords.count()
         if _count > 1:
             if _count == 2 and\
-                a.keywords.filter(keyword__in=['south africa', 'politics'])\
+                a.keywords.filter(keyword__in=['south africa',\
+                                                'politics',\
+                                                'social issues'])\
                             .count() == 2:
                 continue
             _keywords = a.keywords.all()
