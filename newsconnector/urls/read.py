@@ -38,5 +38,5 @@ urlpatterns = patterns('',
     url(r'^related/1/(?P<pk>\w+)/$', views.related, {'tag': 'NewsArticle', 'section_index': 1},name='related_news', ),
     url(r'^related/2/(?P<pk>\w+)/$', views.related, {'tag': 'SportsArticle', 'section_index': 2},name='related_sports', ),
     url(r'^related/3/(?P<pk>\w+)/$', views.related, {'tag': 'FinanceArticle', 'section_index': 3},name='related_finance', ),
-    url(r'^related/4/(?P<pk>\w+)/$', views.related, {'ag': 'EntertainmentArticle', 'section_index': 4},name='related_entertainment', ),
+    url(r'^related/4/(?P<pk>\w+)/$', views.related, {'tag': 'EntertainmentArticle', 'section_index': 4},name='related_entertainment', ),
 )

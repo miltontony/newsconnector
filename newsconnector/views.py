@@ -210,13 +210,15 @@ def related(request, pk, tag='NewsArticle', section_index=1):
         break
 
     n_articles = []
-    max_score = articles[0]._meta.score
 
-    for a in articles:
-        if a.hash_key == pk:
-            continue
-        a.score = (a._meta.score / max_score) * 100
-        n_articles.append(from_es_dto(a))
+    if len(list(articles)) > 0:
+        max_score = articles[0]._meta.score
+
+        for a in articles:
+            if a.hash_key == pk:
+                continue
+            a.score = (a._meta.score / max_score) * 100
+            n_articles.append(from_es_dto(a))
 
     data = {'articles': n_articles,
             'article': from_es_dto(article),
