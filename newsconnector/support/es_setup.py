@@ -47,7 +47,7 @@ def setup():
 
     conn.put_mapping("article", {'properties': mapping})
 
-    d = date.today() - timedelta(days=14)
+    d = date.today() - timedelta(days=7)
     print '0%'
     for a in NewsArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
