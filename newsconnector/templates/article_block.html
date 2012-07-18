@@ -5,18 +5,18 @@
     <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
     {%endif%}
     <article-content>
-        <span><a target="_blank" href="/related/{{section_index}}/{{article.pk}}/">{{article.title}}</a></span>
+        <span><a target="_blank" href="{{article.link}}/">{{article.title}}</a></span>
         <br/>
         {{article.content}}
         <br/>
         <article-footer>
-            {{article.date|date:"D, d M H:m"}} |
+            {{article.date}} |
             <a target="_blank" href="{{article.link}}">{{article.source}}</a>
         </article-footer>
     </article-content>
     <div class="overlay">
         <a class="goto" target="_blank" href="{{article.link}}">{{article.source}}</a>
-        <a class="related-button" target="_blank" href="/related/{{section_index}}/{{article.pk}}/">View Related</a>
+        <a class="related-button" target="_blank" href="/related/{{section_index}}/{{article.hash_key}}/">View Related</a>
     </div>
     <br style="clear:both"/>
 </article>

@@ -13,6 +13,9 @@ from django.http import HttpResponse
 
 from datetime import date, timedelta, datetime
 
+from pyes import *
+conn = ES('127.0.0.1:9200')
+
 
 def health(request):
     return HttpResponse("")
@@ -146,12 +149,19 @@ def get_featured_articles(keywordModel):
                                       .annotate(count=Count('article'))\
                                       .order_by('-count')[:5]
 
+def get_articles(tag):
+    q = TermQuery("tag", tag)
+    results = conn.search(Search(q, start=0, size=10),\
+                        indexes = ["newsworld"],
+                        sort='date:desc')
+    return results
+
 def read(request):
     return render(request, 'read.html', {'sites': RssFeed.objects.all().distinct('name'),
-                                         'news': NewsArticle.objects.all().order_by('-date')[:10],
-                                         'sports': SportsArticle.objects.all().order_by('-date')[:10],
-                                         'finance': FinanceArticle.objects.all().order_by('-date')[:10],
-                                         'entertainment': EntertainmentArticle.objects.all().order_by('-date')[:10],
+                                         'news': get_articles('NewsArticle'),
+                                         'sports': get_articles('SportsArticle'),
+                                         'finance': get_articles('FinanceArticle'),
+                                         'entertainment': get_articles('EntertainmentArticle'),
                                          'featuredNews': build_related(NewsArticle),
                                          'featuredSports': build_related(SportsArticle),
                                          'featuredFinance': build_related(FinanceArticle),
@@ -159,47 +169,56 @@ def read(request):
                                          })
 
 def read_more(request, category):
-    page = int(request.GET.get('page', None))
+    page = int(request.GET.get('page', 1))
     category = int(category)
 
     if not page:
         return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
 
-    articleModel = NewsArticle
+    tag = 'NewsArticle'
 
     if category == 2:
-        articleModel = SportsArticle
+        tag = 'SportsArticle'
     elif category == 3:
-        articleModel = FinanceArticle
+        tag = 'FinanceArticle'
     if category == 4:
-        articleModel = EntertainmentArticle
+        tag = 'EntertainmentArticle'
 
-    paginator = Paginator(articleModel.objects.all().order_by('-date'), 10)
-    page = request.GET.get('page', 'none')
-
-    try:
-        paged_news = paginator.page(page)
-    except EmptyPage:
-        return HttpResponse(json.dumps({'error': 'page not found'}),
-                            mimetype='application/json')
-
-    data = json.dumps({'articles': [a.to_dto() for a in paged_news.object_list],
-                       'has_next': paged_news.has_next(),
-                       'next_page': paged_news.next_page_number()})
+    q = TermQuery("tag", tag)
+    results = conn.search(Search(q, start=(page - 1) * 10, size=10),\
+                        indexes = ["newsworld"],
+                        sort='date:desc')
+    results.count()
+    data = json.dumps({'articles': [a for a in results],
+                       'has_next': True,
+                       'next_page': page + 1})
 
     return HttpResponse(data, mimetype='application/json')
 
-def related(request, pk, articleModel=NewsArticle, section_index=1):
-    keywords = [i.pk for i in articleModel.objects.get(pk=pk).keywords.all()]
-    l = articleModel.objects.filter(keywords__in=keywords)\
-                               .exclude(pk=pk)\
-                               .distinct('date', 'pk')\
-                               .order_by('-date', 'pk')[:20]
-    articles = [a.to_related_dto(keywords) for a in l]
-    s_articles = sorted(articles, key=itemgetter('rank', 'sdate'), reverse=True)
+def related(request, pk, tag='NewsArticle', section_index=1):
+    q = TermQuery("hash_key", pk)
+    results = conn.search(Search(q, start=0, size=1), indexes = ["newsworld"])
+    articles = None
+    article = None
+    for r in results:
+        article = r
+        q = TermsQuery("keywords", r.keywords)
+        articles = conn.search(Search(q, start=0, size=11),\
+                                indexes = ["newsworld"],
+                                sort='_score,date:desc')
+        break
 
-    data = {'articles': s_articles,
-            'article': articleModel.objects.get(pk=pk).to_dto(),
+    n_articles = []
+    max_score = articles[0]._meta.score
+
+    for a in articles:
+        if a.hash_key == pk:
+            continue
+        a.score = (a._meta.score / max_score) * 100
+        n_articles.append(a)
+
+    data = {'articles': n_articles,
+            'article': article,
             'section_index': section_index}
     return render(request, 'related.html', data)
