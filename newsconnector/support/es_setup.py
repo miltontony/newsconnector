@@ -51,14 +51,20 @@ def setup():
     print '0%'
     for a in NewsArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
+    conn.refresh()
     print '25%'
+
     for a in SportsArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
+    conn.refresh()
     print '50%'
+
     for a in FinanceArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
+    conn.refresh()
     print '75%'
+
     for a in EntertainmentArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
-    print '100%'
     conn.refresh()
+    print '100%'
