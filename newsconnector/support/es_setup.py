@@ -47,7 +47,7 @@ def setup():
 
     conn.put_mapping("article", {'properties': mapping})
 
-    d = date.today() - timedelta(days=5)
+    d = date.today() - timedelta(days=14)
     print '0%'
     for a in NewsArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
@@ -58,7 +58,7 @@ def setup():
     for a in FinanceArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
     print '75%'
-    for a in EntertainmentArticle.filter(date__gte=d).order_by('-date'):
+    for a in EntertainmentArticle.objects.filter(date__gte=d).order_by('-date'):
         conn.index(a.to_json(), 'newsworld', 'article')
     print '100%'
     conn.refresh()
