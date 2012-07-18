@@ -167,3 +167,16 @@ def delete_old_data():
 
     print 'Articles remaining: %s' % Article.objects.all().count()
     print 'keywords remaining: %s' % Keyword.objects.all().count()
+
+
+from django.utils.timesince import timesince
+def from_es_dto(obj):
+    return {'title': obj.title,
+            'score': obj.score,
+            'link': obj.link,
+            'content': obj.content,
+            'source': obj.source,
+            'image_url': obj.image_url,
+            'hash_key': obj.hash_key,
+            'date': timesince(datetime.strptime(obj.date[:19], "%Y-%m-%dT%H:%M:%S")),
+            'keywords': obj.keywords[:5]}

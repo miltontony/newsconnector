@@ -2,7 +2,7 @@ from django.shortcuts import render,  redirect
 from operator import itemgetter, attrgetter
 
 from newsconnector.models import *
-from newsconnector.support.utils import get_query, build_related
+from newsconnector.support.utils import *
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -154,7 +154,7 @@ def get_articles(tag):
     results = conn.search(Search(q, start=0, size=10),\
                         indexes = ["newsworld"],
                         sort='date:desc')
-    return results
+    return [from_es_dto(a) for a in results]
 
 def read(request):
     return render(request, 'read.html', {'sites': RssFeed.objects.all().distinct('name'),
@@ -190,7 +190,7 @@ def read_more(request, category):
                         indexes = ["newsworld"],
                         sort='date:desc')
     results.count()
-    data = json.dumps({'articles': [a for a in results],
+    data = json.dumps({'articles': [from_es_dto(a) for a in results],
                        'has_next': True,
                        'next_page': page + 1})
 
@@ -216,9 +216,9 @@ def related(request, pk, tag='NewsArticle', section_index=1):
         if a.hash_key == pk:
             continue
         a.score = (a._meta.score / max_score) * 100
-        n_articles.append(a)
+        n_articles.append(from_es_dto(a))
 
     data = {'articles': n_articles,
-            'article': article,
+            'article': from_es_dto(article),
             'section_index': section_index}
     return render(request, 'related.html', data)
