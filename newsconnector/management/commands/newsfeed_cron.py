@@ -43,11 +43,11 @@ class Command(BaseCommand):
         task_list = [
             run_tasks.subtask((news_feeds, NewsArticle)),\
             run_tasks.subtask((sports_feeds, SportsArticle),\
-                options={'eta':now + timedelta(seconds=60 * 2)}),\
+                options={'eta':now + timedelta(seconds=60 * 5)}),\
             run_tasks.subtask((fin_feeds, FinanceArticle),\
-                options={'eta':now + timedelta(seconds=60 * 4)}),\
+                options={'eta':now + timedelta(seconds=60 * 7)}),\
             run_tasks.subtask((e_feeds, EntertainmentArticle),\
-                options={'eta':now + timedelta(seconds=60 * 6)})
+                options={'eta':now + timedelta(seconds=60 * 9)})
         ]
         taskset = TaskSet(tasks=task_list)
         result = taskset.apply_async()
