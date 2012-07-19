@@ -1,20 +1,20 @@
 from newsconnector.support.calais import Calais
 from newsconnector.support.utils import build_related
 from newsconnector.models import *
-from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
 from time import mktime
 from datetime import datetime
 
 from celery.task import task
 
+import sys
 import feedparser
 import lxml.html
-from lxml import etree
 from pyes import *
 
 
 conn = ES('127.0.0.1:9200')
+
 
 def get_image_url(links):
     for link in links:
@@ -47,11 +47,8 @@ def get_instance(cls, dictArticle, source):
             return article
         return None
 
-    except etree.ParseError:
-        pass
-    except TypeError:
-        pass
-    except IntegrityError:
+    except:
+        print "Unexpected error:", sys.exc_info()[0]
         pass
 
     return None
@@ -84,35 +81,39 @@ def get_new_articles(feeds, feedModel):
 
 def update_articles(articles_list):
     for art in articles_list:
-        if not art:
-            continue
+        try:
+            if not art:
+                continue
 
-        data = '%s %s' % (art['title'], art['content'])
+            data = '%s %s' % (art['title'], art['content'])
 
-        if not data:
-            continue
+            if not data:
+                continue
 
-        data = data.encode('ascii', 'ignore')
+            data = data.encode('ascii', 'ignore')
 
-        #print 'Start OpenCalais keyword fetch.'
+            #print 'Start OpenCalais keyword fetch.'
 
-        calais = Calais('r8krg8jjs9smep7c2z9jvzew')
-        result = calais.analyze(data)
+            calais = Calais('r8krg8jjs9smep7c2z9jvzew')
+            result = calais.analyze(data)
 
-        temp_keys = []
-        if hasattr(result, 'entities'):
-            temp_keys = [a["name"].lower() for a in result.entities]
+            temp_keys = []
+            if hasattr(result, 'entities'):
+                temp_keys = [a["name"].lower() for a in result.entities]
 
-        if hasattr(result, 'socialTag'):
-            temp_keys += [a["name"].lower() for a in result.socialTag\
-                                            if a['importance'] == '1']
+            if hasattr(result, 'socialTag'):
+                temp_keys += [a["name"].lower() for a in result.socialTag\
+                                                if a['importance'] == '1']
 
-        keywords = list(set(temp_keys))
+            keywords = list(set(temp_keys))
 
-        if len(keywords) > 0:
-            art['keywords'] = keywords
+            if len(keywords) > 0:
+                art['keywords'] = keywords
 
-        conn.index(art, 'newsworld', 'article')
-        #print art
+            conn.index(art, 'newsworld', 'article')
+            #print art
+        except:
+            print "Unexpected error:", sys.exc_info()[0]
+            pass
 
     conn.refresh()
