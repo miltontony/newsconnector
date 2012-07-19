@@ -46,6 +46,8 @@ def setup():
                          'type': u'string'}}
 
     conn.put_mapping("article", {'properties': mapping})
+    conn.refresh()
+    return
 
     d = date.today() - timedelta(days=4)
     print '0%'

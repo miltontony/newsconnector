@@ -178,5 +178,5 @@ def from_es_dto(obj):
             'source': obj.source,
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
-            'date': timesince(datetime.strptime(obj.date[:19], "%Y-%m-%dT%H:%M:%S")),
+            'date': '%s ago' % timesince(obj.date),
             'keywords': obj.keywords[:5]}

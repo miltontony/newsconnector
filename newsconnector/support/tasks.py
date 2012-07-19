@@ -1,5 +1,5 @@
 from newsconnector.support.calais import Calais
-from newsconnector.support.utils import found_string, build_related
+from newsconnector.support.utils import build_related
 from newsconnector.models import *
 from django.db import IntegrityError
 from django.utils.hashcompat import md5_constructor
@@ -11,7 +11,10 @@ from celery.task import task
 import feedparser
 import lxml.html
 from lxml import etree
+from pyes import *
 
+
+conn = ES('127.0.0.1:9200')
 
 def get_image_url(links):
     for link in links:
@@ -29,44 +32,38 @@ def get_instance(cls, dictArticle, source):
                       .encode('ascii', 'ignore')
         hash = md5_constructor(hash_str).hexdigest()
 
-        a, created = cls.objects.get_or_create(hash_key=hash)
+        a, created = cls.objects.get_or_create(link=dictArticle.link)
         if created:
-            a.title = dictArticle.title
-            a.link = dictArticle.link
-            a.content = content
-            a.source = source
-            a.image_url = get_image_url(dictArticle.links)
-            a.date = datetime.fromtimestamp(mktime(dictArticle.updated_parsed))
-            a.save()
-            return a
-        #don't save blanks
-        if not a.title or not a.link:
-            a.delete()
-            return None
-        return a
+            article = {'title': dictArticle.title,
+            'link': dictArticle.link,
+            'hash_key': hash,
+            'content': content,
+            'source': source,
+            'tag': cls.__name__,
+            'image_url': get_image_url(dictArticle.links),
+            'date': '%s' %\
+                    datetime.fromtimestamp(mktime(dictArticle.updated_parsed))\
+                            .isoformat()}
+            return article
+        return None
 
     except etree.ParseError:
-        #print dictArticle.description
         pass
     except TypeError:
-        #print 'Unable to save %s' % dictArticle.title
         pass
     except IntegrityError:
-        #print 'Unable to save %s' % dictArticle.title
         pass
 
-    if a:
-        a.delete()
     return None
 
 
 @task(ignore_result=True)
-def run_tasks(feeds, feedModel, keywordModel):
+def run_tasks(feeds, feedModel):
     print '-- Update Started: %s --' % feedModel.__name__
     print 'Fetching RSS feeds.'
     new_articles = get_new_articles(feeds, feedModel)
 
-    update_articles(new_articles, keywordModel)
+    update_articles(new_articles)
     print 'Article update complete.'
 
     print '-- Update Complete --'
@@ -85,12 +82,12 @@ def get_new_articles(feeds, feedModel):
             yield get_instance(feedModel, entry, source)
 
 
-def update_articles(articles_list, keywordModel):
+def update_articles(articles_list):
     for art in articles_list:
         if not art:
             continue
 
-        data = '%s %s' % (art.title, art.content)
+        data = '%s %s' % (art['title'], art['content'])
 
         if not data:
             continue
@@ -112,23 +109,10 @@ def update_articles(articles_list, keywordModel):
 
         keywords = list(set(temp_keys))
 
-        if len(keywords) == 0:
-            #print '**No keywords to process.'
-            continue
+        if len(keywords) > 0:
+            art['keywords'] = keywords
 
-        #print 'Keyword analysis complete.'
+        conn.index(art, 'newsworld', 'article')
+        #print art
 
-        for k in keywords:
-            if not keywordModel.objects.filter(keyword=k).exists():
-                try:
-                    a_k = keywordModel(keyword=k)
-                    a_k.save()
-                    if not art.keywords.filter(pk=a_k.pk).exists():
-                        art.keywords.add(a_k)
-                        #print '[%s] Added keyword "%s"' % (art.title, a_k.keyword)
-                except IntegrityError:
-                    pass
-            else:
-                a_k = keywordModel.objects.get(keyword=k)
-                if not art.keywords.filter(pk=a_k.pk).exists():
-                    art.keywords.add(a_k)
+    conn.refresh()

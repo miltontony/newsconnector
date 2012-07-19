@@ -14,11 +14,11 @@ class Command(BaseCommand):
 
         task_list = [run_build_related.subtask((NewsArticle,)),\
                      run_build_related.subtask((SportsArticle,),\
-                        options={'eta':now + timedelta(seconds=60 * 5)}),\
+                        options={'eta':now + timedelta(seconds=60 * 2)}),\
                      run_build_related.subtask((FinanceArticle,),\
-                        options={'eta':now + timedelta(seconds=60 * 10)}),\
+                        options={'eta':now + timedelta(seconds=60 * 4)}),\
                      run_build_related.subtask((EntertainmentArticle,),\
-                        options={'eta':now + timedelta(seconds=60 * 15)})
+                        options={'eta':now + timedelta(seconds=60 * 6)})
                     ]
         taskset = TaskSet(tasks=task_list)
         result = taskset.apply_async()
@@ -41,13 +41,12 @@ class Command(BaseCommand):
         now = datetime.now()
 
         task_list = [
-            run_tasks.subtask((news_feeds, NewsArticle, NewsKeyword)),\
-            run_tasks.subtask((sports_feeds, SportsArticle, SportsKeyword),\
+            run_tasks.subtask((news_feeds, NewsArticle)),\
+            run_tasks.subtask((sports_feeds, SportsArticle),\
                 options={'eta':now + timedelta(seconds=60 * 5)}),\
-            run_tasks.subtask((fin_feeds, FinanceArticle, FinanceKeyword),\
+            run_tasks.subtask((fin_feeds, FinanceArticle),\
                 options={'eta':now + timedelta(seconds=60 * 10)}),\
-            run_tasks.subtask((e_feeds, EntertainmentArticle,\
-                                EntertainmentKeyword),\
+            run_tasks.subtask((e_feeds, EntertainmentArticle),\
                 options={'eta':now + timedelta(seconds=60 * 15)})
         ]
         taskset = TaskSet(tasks=task_list)
