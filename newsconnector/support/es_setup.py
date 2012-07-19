@@ -28,7 +28,7 @@ def setup():
               u'content': {'index': 'analyzed',
                          'type': u'string',
                          "term_vector": "with_positions_offsets"},
-              u'keywords': {'index': 'analyzed',
+              u'keywords': {'index': 'not_analyzed',
                          'index_name': 'keyword',
                          'type': u'string'},
               u'link': {'index': 'no',

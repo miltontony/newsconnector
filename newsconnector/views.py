@@ -150,8 +150,8 @@ def get_featured_articles(keywordModel):
                                       .order_by('-count')[:5]
 
 def get_articles(tag):
-    q = TermQuery("tag", tag)
-    results = conn.search(Search(q, start=0, size=10),\
+    f = TermFilter("tag", tag)
+    results = conn.search(Search(filter=f, start=0, size=10),\
                         indexes = ["newsworld"],
                         sort='date:desc')
     return [from_es_dto(a) for a in results]
@@ -185,8 +185,8 @@ def read_more(request, category):
     if category == 4:
         tag = 'EntertainmentArticle'
 
-    q = TermQuery("tag", tag)
-    results = conn.search(Search(q, start=(page - 1) * 10, size=10),\
+    f = TermFilter("tag", tag)
+    results = conn.search(Search(filter=f, start=(page - 1) * 10, size=10),\
                         indexes = ["newsworld"],
                         sort='date:desc')
     results.count()
@@ -197,8 +197,8 @@ def read_more(request, category):
     return HttpResponse(data, mimetype='application/json')
 
 def related(request, pk, tag='NewsArticle', section_index=1):
-    q = TermQuery("hash_key", pk)
-    results = conn.search(Search(q, start=0, size=1), indexes = ["newsworld"])
+    f = TermFilter("hash_key", pk)
+    results = conn.search(Search(filter=f, start=0, size=1), indexes = ["newsworld"])
     articles = None
     article = None
     for r in results:
