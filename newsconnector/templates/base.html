@@ -32,7 +32,7 @@
   <div id="header">
     <a href="/"><img src="{{STATIC_URL}}images/newsworld.png"/></a>
   </div>
-  <div id="search-form">
+  <div id="search-form" style="display:none">
   <form action="{% url search %}">
   <input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
   <input type="submit" id="search" value="Search"/>
