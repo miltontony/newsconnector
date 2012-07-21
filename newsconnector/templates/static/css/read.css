@@ -327,7 +327,7 @@ div.article .show{
     display: block !important;
 }
 
-div.article .overlay .goto, article .overlay .related-button {
+div.article .overlay .goto, div.article .overlay .related-button {
     padding: 5px 0 0 10px;
     position: relative;
     display: block;
