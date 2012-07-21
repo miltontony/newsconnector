@@ -31,12 +31,12 @@ def delete_keyword(request, pk):
 def search(request, articleModel=Article):
     q = request.GET.get('q', None)
 
-    q1 = TextQuery("content", q, boost=2.0, operator='or')
-    q2 = TextQuery("title", q, boost=1.8, operator='or')
+    q1 = TextQuery("content", q, operator='or')
+    q2 = TextQuery("title", q, operator='or')
     q3 = TextQuery("keyword", q, operator='or')
     query = BoolQuery(should=[q1, q2, q3])
     results = conn.search(Search(query=query, start=0, size=10),\
-                            indexes=["newsworld"], sort='_score,date:desc')
+                            indexes=["newsworld"], sort='date:desc')
 
     return render(request, 'browse.html',
                             {'sites': RssFeed.objects.all().distinct('name'),
