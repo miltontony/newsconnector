@@ -29,19 +29,19 @@ fieldset{
 	border-left: none;
 }
 
-fieldset article,
-fieldset article-content{
+fieldset div.article,
+fieldset div.article-content{
 	display: block;
 	padding: 5px;
 }
 
-.read-results article a{
+.read-results div.article a{
 	color: #18E;
 }
 
-.read-results article-footer a,
-.read-results article-footer a:link,
-.read-results article-footer a:visited{
+.read-results div.article-footer a,
+.read-results div.article-footer a:link,
+.read-results div.article-footer a:visited{
 	color: #18E;
 }
 
@@ -62,7 +62,7 @@ fieldset article-content{
 	font-weight: bold;
 }
 
-article article-content{
+div.article div.article-content{
 	padding-top: 0;
 	font-size: 1.1em;
 	color: #333;
@@ -70,7 +70,7 @@ article article-content{
     float: left;
 }
 
-article article-footer{
+div.article div.article-footer{
 	padding-top: 0;
 	color: #777;
     font-size: 0.9em;
@@ -112,7 +112,7 @@ article article-footer{
 	text-shadow: 1px 1px 1px rgba(255, 255,255,0.8);
 }
 
-article h1{
+div.article h1{
 	font-size: 1.2em;
 	font-style: normal;
 	font-weight: bold;
@@ -130,7 +130,6 @@ article h1{
 	background: -o-linear-gradient(top, #367fc2 1%,#26417b 100%);
 	background: -ms-linear-gradient(top, #367fc2 1%,#26417b 100%);
 	background: linear-gradient(top, #367fc2 1%,#26417b 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
 }
 
 #tabs li.tabs-entertainment.ui-tabs-selected,
@@ -142,7 +141,6 @@ article h1{
 	background: -o-linear-gradient(top, #e83325 1%,#760d06 100%);
 	background: -ms-linear-gradient(top, #e83325 1%,#760d06 100%);
 	background: linear-gradient(top, #e83325 1%,#760d06 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e83325', endColorstr='#760d06',GradientType=0 );
 }
 
 #tabs ul.ui-tabs-nav li a{
@@ -168,7 +166,6 @@ article h1{
 	background: -o-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
 	background: -ms-linear-gradient(top, #ffffff 1%,#eaeaea 100%);
 	background: linear-gradient(top, #ffffff 1%,#eaeaea 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
 }
 
 #tabs li.tabs-finance.ui-tabs-selected,
@@ -180,7 +177,6 @@ article h1{
 	background: -o-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
 	background: -ms-linear-gradient(top, #21ba1a 1%,#116d0c 100%);
 	background: linear-gradient(top, #21ba1a 1%,#116d0c 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21ba1a', endColorstr='#116d0c',GradientType=0 );
 }
 
 .ui-tabs .ui-tabs-hide{
@@ -207,7 +203,6 @@ article h1{
 	background: -o-linear-gradient(top, #777 1%,#111 100%);
 	background: -ms-linear-gradient(top, #777 1%,#111 100%);
 	background: linear-gradient(top, #777 1%,#111 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#777', endColorstr='#111',GradientType=0 );
 }
 
 .related-article-panel{
@@ -240,7 +235,6 @@ div.read-more {
 	background: -o-linear-gradient(top, #fff 1%,#A8C9E4 100%);
 	background: -ms-linear-gradient(top, #fff 1%,#A8C9E4 100%);
 	background: linear-gradient(top, #fff 1%,#A8C9E4 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#A8C9E4',GradientType=0 );
 }
 
 #read-related-close {
@@ -289,37 +283,37 @@ div.read-more {
     border-radius: 2px 2px 0 0;
 }
 
-#tabs article img,
-#search-results article img,
-#read-related article img{
+#tabs div.article img,
+#search-results div.article img,
+#read-related div.article img{
 	float: left;
 	margin: 2px 5px 5px 5px;
     display: block;
     border-radius: 5px;
 }
 
-article.first-article {
+div.first-article {
     margin-top: 0;
 }
 
-article{
+div.article{
     background: #EBEEF3 url(/static/images/bgnoise_lg.jpg);
     margin: 0 0 1px 0;
     position: relative;
 }
 
-article .overlay a:hover{
+div.article .overlay a:hover{
     color: #18E;
 }
 
-article .overlay a{
+div.article .overlay a{
     color: #fff;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
     font-weight: bold;
     font-size: 1.1em;
 }
 
-article .overlay{
+div.article .overlay{
     position: absolute;
     bottom: 0px;
     display: none;
@@ -329,22 +323,22 @@ article .overlay{
     width: 100%;
     left: 0;
 }
-article .show{
+div.article .show{
     display: block !important;
 }
 
-article .overlay .goto, article .overlay .related-button {
+div.article .overlay .goto, article .overlay .related-button {
     padding: 5px 0 0 10px;
     position: relative;
     display: block;
     float: left;
 }
 
-article .overlay .goto{
+div.article .overlay .goto{
     margin-left: 120px;
 }
 
-article .overlay .related-button{
+div.article .overlay .related-button{
     margin-left: 50px;
 }
 
@@ -463,4 +457,8 @@ div.featured-article label{
 
 div.featured-article li{
     padding: 0 0 5px 0;
+}
+
+div.related-link-ie{
+    display: none;
 }

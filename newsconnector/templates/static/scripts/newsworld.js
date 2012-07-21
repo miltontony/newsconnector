@@ -19,9 +19,9 @@ $(document).ready(function(){
        function(){ $(this).stop(true).removeClass('hover', 100) }
     );
 
-    $('#tabs, #search-results').on('mouseover', 'article', function(event) {
+    $('#tabs, #search-results').on('mouseover', '.article', function(event) {
         $(this).find('div.overlay').stop(true).addClass('show', 100);
-    }).on('mouseout', 'article', function(event) {
+    }).on('mouseout', '.article', function(event) {
         $(this).find('div.overlay').stop(true).removeClass('show', 100);
     });
 

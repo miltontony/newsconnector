@@ -9,46 +9,51 @@
 <div class="read-results" id="read-related">
     <fieldset style="border-top: none;">
         <div class="ui-tabs">
+            <div class="related-container">
             <div id="related-article" class="related-article-panel" tabindex="100">
                 {%  include "related_article_block.html" with article=article section_index=section_index %}
             </div>
             <div style="margin-bottom: 5px;" class="related-article-panel">
-                <article>
+                <div class="article">
                     <strong>Keywords:</strong>
                     {% for k in article.keywords %}
                     <div class="related-article-keyword">{{k}}</div>
                     {% endfor %}
-                </article>
+                </div>
+            </div>
             </div>
         <br/>
         <fieldset>
             <legend>Related articles</legend>
+            <div class="related-container">
             {% for a in articles %}
             <div class="related-article-panel">
-                <article>
+                <div class="article">
                     {% if article.image_url %}
                     <img src="{{a.image_url}}" width="64px"/>
                     {% else %}
                     <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
                     {%endif%}
-                    <article-content>
+                    <div class="article-content">
                     <span><a target="_blank" href="{{a.link}}">{{a.title}}</a></span>
                     <br/>
                     {{a.content}}
                     <br/>
-                    <article-footer>{{a.date}}&nbsp;|&nbsp;
+                    <div class="article-footer">{{a.date}}&nbsp;|&nbsp;
                     <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
                     <div class="rank">{{a.score}}%</div>
-                    </article-footer>
-                    </article-content>
+                    </div>
+                    </div>
                     <br style="clear:both"/>
-                </article>
+                </div>
             </div>
             {% empty %}
             <div style="color:#fff">
                 0 related articles.
             </div>
             {% endfor %}
+            <br style="clear:both"/>
+        </div>
         </fieldset>
         </div>
     </fieldset>
