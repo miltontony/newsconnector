@@ -33,10 +33,10 @@ def search(request, articleModel=Article):
 
     q1 = TextQuery("content", q, operator='or')
     q2 = TextQuery("title", q, operator='or')
-    q3 = TextQuery("keyword", q, operator='or')
+    q3 = TextQuery("keyword", q, boost=0.5, operator='or')
     query = BoolQuery(should=[q1, q2, q3])
     results = conn.search(Search(query=query, start=0, size=10),\
-                            indexes=["newsworld"], sort='date:desc')
+                            indexes=["newsworld"], sort='_score,date:desc')
 
     return render(request, 'browse.html',
                             {'sites': RssFeed.objects.all().distinct('name'),
