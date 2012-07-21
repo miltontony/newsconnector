@@ -50,7 +50,7 @@ fieldset div.article-content{
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-.read-results span a{
+.read-results div.article span a{
     color: #000;
     text-shadow: 1px 1px 1px rgba(155, 155, 155, 0.2);
 }
