@@ -6,17 +6,16 @@
 {% endblock %}
 
 {% block content %}
-
-<div id="search-results">
-  <fieldset>
+<fieldset>
     <legend> Results for &ndash; &ldquo;{{q}}&rdquo;</legend>
-    <div>
-    {% for n in news %}
-    {% include "article_block.html" with article=n %}
-    {% endfor %}
+    <div id="search-results">
+        <div>
+        {% for n in news %}
+        {% include "article_block.html" with article=n %}
+        {% endfor %}
+        </div>
     </div>
-  </fieldset>
-</div>
+</fieldset>
 
 <div id="search-pagination">
 	{% if paged_news.has_previous %}
