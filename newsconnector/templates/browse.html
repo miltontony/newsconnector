@@ -1,48 +1,23 @@
 {% extends "base.html" %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/results.css" />
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
 {% endblock %}
 
 {% block content %}
-<div id="search-latest">
-  <fieldset>
-    <legend>Latest</legend>
-    {% for n in news_top %}
-	<article>
-		<a target="_blank" href="{{n.link}}"><label>{{n.title|truncatechars:37 }}</label></a>
-		<article-content>
-		{{n.content}}
-		</article-content>
-		<article-footer>
-			{{n.date|date:"D, d M H:m"}}<br/>
-			<a href="{{n.link}}">{{n.source}}</a>
-		</article-footer>
-	</article>
-    {% endfor %}
-  </fieldset>
-</div>
 
-{% if news %}
 <div id="search-results">
   <fieldset>
-    <legend> Results &ndash; Page {{paged_news.number}} of {{paged_news.paginator.num_pages}}</legend>
+    <legend> Results for &ndash; &ldquo;{{q}}&rdquo;</legend>
     <div>
     {% for n in news %}
-	<article>
-		<a target="_blank" href="{{n.link}}"><span>{{n.title}}</span></a>
-		<article-content>{{n.content}}</article-content>
-		<article-footer>
-			{{n.date|date:"D, d M H:m"}} | 
-			<a href="{{n.link}}">{{n.source}}</a>
-		</article-footer>
-	</article>
+    {% include "article_block.html" with article=n %}
     {% endfor %}
     </div>
   </fieldset>
 </div>
-{% endif %}
-	
+
 <div id="search-pagination">
 	{% if paged_news.has_previous %}
 	<a href="?q={{q}}&page={{ paged_news.previous_page_number }}">&lt;</a>
@@ -65,9 +40,9 @@
 {% endblock %}
 
 {% block js %}
-	
+
 $(document).ready(function(){
 	//$('#article-details').pajinate();
-});	
+});
 
 {% endblock %}

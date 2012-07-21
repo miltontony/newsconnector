@@ -6,8 +6,7 @@ fieldset a:link{
 	cursor: pointer;
 }
 
-#read-latest fieldset legend,
-.read-results fieldset legend{
+fieldset legend{
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
 	color: #fff;
 	text-transform: uppercase;
@@ -22,8 +21,7 @@ fieldset span a{
 	text-decoration: none;
 }
 
-#read-latest fieldset,
-.read-results fieldset{
+fieldset{
 	margin: 0 5px 0 5px;
 	padding: 10px 0;
 	border-right: none;
@@ -35,10 +33,6 @@ fieldset article,
 fieldset article-content{
 	display: block;
 	padding: 5px;
-}
-
-#read-latest{
-	color: #fff;
 }
 
 .read-results article a{
@@ -68,7 +62,7 @@ fieldset article-content{
 	font-weight: bold;
 }
 
-.read-results article-content{
+article article-content{
 	padding-top: 0;
 	font-size: 1.1em;
 	color: #333;
@@ -76,74 +70,12 @@ fieldset article-content{
     float: left;
 }
 
-#read-latest{
-	padding-top: 10px;
-	margin-bottom: 20px;
-}
-
-#read-latest fieldset label a
-{
-	color: #fff;
-}
-
-#read-latest article{
-    background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
-}
-
-#read-latest article-footer a,
-#read-latest article-footer a:link,
-#read-latest article-footer a:visited{
-	color: #18E;
-	text-decoration: none;
-}
-
-
-#read-latest article-content,
-#read-latest article-content a{
-	font-size: 1em;
-	color: #111;
-}
-
-#read-latest article-content{
-	height: 160px;
-	padding: 5px;
-	#font-family: Cambria, Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
-	font-size: 1.1em;
-	font-style: italic;
-}
-
-#read-latest article-footer{
-	width: 100%;
-	color: #777;
-    height: 30px;
-}
-
-.read-results article-footer{
+article article-footer{
 	padding-top: 0;
 	color: #777;
     font-size: 0.9em;
 }
 
-#read-latest label:hover {
-	background: #C6E1EC;
-	text-shadow: 0px 1px 1px rgba(155, 155, 155, 0.6);
-	box-shadow: 0px 0px 0px 1px rgba(155,155,155,0.3), 0px 2px 2px rgba(0,0,0,0.1);
-}
-
-#read-latest fieldset label{
-	height: 25px;
-	line-height: 25px;
-	font-size: 1.1em;
-}
-
-#read-latest fieldset article{
-	display: block;
-	float: left;
-	width: 224px;
-	border: 1px solid #CCC;
-	padding: 0;
-	margin-right: 2px;
-}
 
 #read-pagination{
 	padding-left: 60px;
@@ -189,22 +121,6 @@ article h1{
 	margin: 0;
 }
 
-#read-latest article label{
-	font-family: 'Arial Narrow', Arial, sans-serif;
-	font-weight: bold;
-	text-transform: uppercase;
-	padding: 5px;
-	position: relative;
-	z-index: 20;
-	display: block;
-	cursor: pointer;
-	color: #fff;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.8);
-	font-weight: bold;
-	font-size: 1.1em;
-}
-
-#read-latest article.news-cat label,
 #tabs li.tabs-news.ui-tabs-selected,
 #tabs li.tabs-news.hover{
 	background: #367fc2;
@@ -217,7 +133,6 @@ article h1{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#367fc2', endColorstr='#26417b',GradientType=0 );
 }
 
-#read-latest article.entertainment-cat label,
 #tabs li.tabs-entertainment.ui-tabs-selected,
 #tabs li.tabs-entertainment.hover{
 	background: #e83325;
@@ -236,7 +151,6 @@ article h1{
 	color: #fff;
 }
 
-#read-latest article.sports-cat label,
 #tabs li.tabs-sports.ui-tabs-selected a,
 #tabs li.tabs-sports.hover a,
 #tabs li.tabs-sports.ui-tabs-selected a:link,
@@ -245,11 +159,6 @@ article h1{
 	color: #333;
 }
 
-#read-latest article.sports-cat label{
-	border-bottom: 1px solid #ccc;
-}
-
-#read-latest article.sports-cat label,
 #tabs li.tabs-sports.ui-tabs-selected,
 #tabs li.tabs-sports.hover{
 	background: #ffffff;
@@ -262,7 +171,6 @@ article h1{
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eaeaea',GradientType=0 );
 }
 
-#read-latest article.finance-cat label,
 #tabs li.tabs-finance.ui-tabs-selected,
 #tabs li.tabs-finance.hover{
 	background: #21ba1a;
@@ -375,13 +283,14 @@ div.read-more {
 	display: none;
 }
 
-#tabs{
+#tabs, #search-results{
     background: rgba(215, 224, 241, 0.1);
     padding: 10px;
     border-radius: 2px 2px 0 0;
 }
 
 #tabs article img,
+#search-results article img,
 #read-related article img{
 	float: left;
 	margin: 2px 5px 5px 5px;

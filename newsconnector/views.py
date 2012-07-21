@@ -31,58 +31,20 @@ def delete_keyword(request, pk):
     return redirect('/')
 
 
-def search(request, articleModel = Article):
+def search(request, articleModel=Article):
     q = request.GET.get('q', None)
-    found_entries = None
-    news_top = None
-    news = None
-    query_string = None
 
-    if q:
-        query_string = q.strip()
-
-        entry_query = get_query(query_string, ['title', 'content', ])
-
-        found_entries = articleModel.objects.filter(entry_query)\
-                                            .order_by('-date')
-
-    else:
-        found_entries = articleModel.objects.all().order_by('-date')[:10]
-
-    paginator = Paginator(found_entries[4:], 6)
-    page = request.GET.get('page', 'none')
-
-    try:
-        paged_news = paginator.page(page)
-        page = int(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        paged_news = paginator.page(1)
-        page = 1
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        paged_news = paginator.page(paginator.num_pages)
-        page = int(paginator.num_pages)
-
-    news_top = found_entries[:4]
-    news = paged_news
-
-    adjacent_pages = 3
-    pages = paginator.num_pages
-    page_numbers = range(max(1, page - adjacent_pages),\
-                         min(pages, page + adjacent_pages) + 1)
+    q1 = TextQuery("content", q, boost=2.0, operator='or')
+    q2 = TextQuery("title", q, boost=1.8, operator='or')
+    q3 = TextQuery("keyword", q, operator='or')
+    query = BoolQuery(should=[q1, q2, q3])
+    results = conn.search(Search(query=query, start=0, size=10),\
+                            indexes=["newsworld"], sort='_score,date:desc')
 
     return render(request, 'browse.html',
                             {'sites': RssFeed.objects.all().distinct('name'),
-                            'query_string': query_string,
                             'q': q,
-                            'news_top': news_top,
-                            'news': news,
-                            'paged_news': paged_news,
-                            'article_count': found_entries.count(),
-                            'pages': page_numbers,
-                            'show_first': 1 not in page_numbers,
-                            'show_last': pages not in page_numbers,
+                            'news': results,
                             })
 
 
@@ -115,7 +77,9 @@ def sports(request):
                                           'sites': SportsFeed.objects.all(),
                                           'title': 'LATEST SPORTS NEWS',
                                           'id': 2,
-                                          'latest': SportsArticle.objects.all().order_by('-date')[:10]})
+                                          'latest': SportsArticle
+                                                    .objects.all()
+                                                    .order_by('-date')[:10]})
 
 
 def finance(request):
@@ -168,22 +132,12 @@ def read(request):
                                          'featuredEntertainment': build_related(EntertainmentArticle),
                                          })
 
-def read_more(request, category):
+def read_more(request, tag):
     page = int(request.GET.get('page', 1))
-    category = int(category)
 
     if not page:
         return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
-
-    tag = 'NewsArticle'
-
-    if category == 2:
-        tag = 'SportsArticle'
-    elif category == 3:
-        tag = 'FinanceArticle'
-    if category == 4:
-        tag = 'EntertainmentArticle'
 
     f = TermFilter("tag", tag)
     results = conn.search(Search(filter=f, start=(page - 1) * 10, size=10),\
@@ -196,7 +150,7 @@ def read_more(request, category):
 
     return HttpResponse(data, mimetype='application/json')
 
-def related(request, pk, tag='NewsArticle', section_index=1):
+def related(request, pk):
     f = TermFilter("hash_key", pk)
     results = conn.search(Search(filter=f, start=0, size=1), indexes = ["newsworld"])
     articles = None
@@ -221,6 +175,5 @@ def related(request, pk, tag='NewsArticle', section_index=1):
             n_articles.append(from_es_dto(a))
 
     data = {'articles': n_articles,
-            'article': from_es_dto(article),
-            'section_index': section_index}
+            'article': from_es_dto(article)}
     return render(request, 'related.html', data)

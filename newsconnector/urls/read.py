@@ -7,7 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', views.read, name='index'),
-    url(r'^more/(?P<category>\d+)/$', views.read_more, name='read_more'),
+    url(r'^more/(?P<tag>\w+)/$', views.read_more, name='read_more'),
     url(r'^search/$', views.search, name='search', ),
     url(r'', include('newsconnector.urls.base')),
 
@@ -35,8 +35,6 @@ urlpatterns = patterns('',
         {'articleModel': EntertainmentArticle},
         name='entertainment_search', ),
 
-    url(r'^related/1/(?P<pk>\w+)/$', views.related, {'tag': 'NewsArticle', 'section_index': 1},name='related_news', ),
-    url(r'^related/2/(?P<pk>\w+)/$', views.related, {'tag': 'SportsArticle', 'section_index': 2},name='related_sports', ),
-    url(r'^related/3/(?P<pk>\w+)/$', views.related, {'tag': 'FinanceArticle', 'section_index': 3},name='related_finance', ),
-    url(r'^related/4/(?P<pk>\w+)/$', views.related, {'tag': 'EntertainmentArticle', 'section_index': 4},name='related_entertainment', ),
+    url(r'^related/(?P<pk>\w+)/$',
+        views.related, name='related', ),
 )

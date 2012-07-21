@@ -2,7 +2,8 @@
 
 {% block head %}
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
 {% endblock %}
 
 {% block content %}
@@ -22,10 +23,10 @@
 			<div id="tabs-news">
 					<div class="tabs-container">
 					{% for n in news %}
-					{%	include "article_block.html" with article=n section_index=1 %}
+					{%	include "article_block.html" with article=n %}
 					{% endfor %}
 
-					{% include "read_more_block.html" with section_index=1 %}
+					{% include "read_more_block.html" with tag='NewsArticle' %}
 					</div>
 					{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
 			</div>
@@ -36,7 +37,7 @@
 				{% include "article_block.html" with article=n section_index=3 %}
 				{% endfor %}
 
-				{% include "read_more_block.html" with section_index=3 %}
+				{% include "read_more_block.html" with tag='FinanceArticle' %}
 				</div>
 				{% include "featured_articles.html" with articles=featuredFinance section_index=3 %}
 			</div>
@@ -47,7 +48,7 @@
 				{% include "article_block.html" with article=n section_index=2 %}
 				{% endfor %}
 
-				{% include "read_more_block.html" with section_index=2 %}
+				{% include "read_more_block.html" with tag='SportsArticle' %}
 				</div>
 				{% include "featured_articles.html" with articles=featuredSports section_index=2 %}
 			</div>
@@ -58,7 +59,7 @@
 				{% include "article_block.html" with article=n section_index=4 %}
 				{% endfor %}
 
-				{% include "read_more_block.html" with section_index=4 %}
+				{% include "read_more_block.html" with tag='EntertainmentArticle' %}
 				</div>
 				{% include "featured_articles.html" with articles=featuredEntertainment section_index=4 %}
 			</div>
@@ -75,133 +76,4 @@
 	<fieldset style="border-top: none;"><div class="ui-tabs"></div>
 	</fieldset>
 </div>
-{% endblock %}
-
-{% block js %}
-
-function view_related(link){
-	var target = $('#read-related .ui-tabs').html('')
-	$.get(link.attr('href'), function(data) {
-		$('#read-related-title').html(data.article.title);
-		var keys = $('<div/>');
-		$.each(data.article.keywords,function(i,value){
-			keys.append('<div class="related-article-keyword">'+value+'</div>')
-		});
-
-		var artilce_image_url = data.article.image_url != '' ? data.article.image_url : '/static/images/news.png';
-		var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '';
-
-		target.append('<div id="related-article" class="related-article-panel" tabindex="100"><article>'+
-			'<a target="_blank" href="'+data.article.link+'"><span>'+data.article.title+'</span></a>'+
-			image_tag +
-			'<article-content>'+data.article.content+'</article-content>'+
-			'<article-footer>'+data.article.date+' | '+
-			'<a target="_blank" href="'+data.article.link+'">'+data.article.source+'</a>'+
-			'</article-footer></article></div>');
-		target.append('<div style="margin-bottom: 5px;" class="related-article-panel"><article>'+
-			'<strong>Keywords:</strong> '+keys.html()+
-			'</article></div>');
-		$.each(data.articles, function(i, value){
-			var matched_keys = $('<div/>');
-			$.each(value.matched,function(i,value){
-				matched_keys.append('<div class="matched-keyword">'+value+'</div>')
-			});
-			target.append('<div class="related-article-panel"><article>'+
-			'<a target="_blank" href="'+value.link+'"><span>'+value.title+'</span></a>'+
-			'<article-content>'+value.content+'</article-content>'+
-			'<article-footer>'+value.date+' | '+
-			'<a target="_blank" href="'+value.link+'">'+value.source+'</a><br/>'+
-			'<div class="rank">'+value.rankp+'%</div>'+
-			matched_keys.html()+
-			'</article-footer></article></div>');
-			});
-		target.find('.rank')
-			  .each(function(){
-			  	$(this).progressBar({boxImage:'/static/images/progressbar.gif',
-							barImage: {
-								0:  '/static/images/progressbg_red.gif',
-								40: '/static/images/progressbg_orange.gif',
-								70: '/static/images/progressbg_green.gif'
-							},
-							showText: false
-						  });});
-		$('#read-results').fadeOut(300, function(){
-			$('#read-related').fadeIn(500, function(){
-				$.scrollTo('#read-related-close');
-			});
-		});
-	});
-}
-
-$(document).ready(function(){
-	$('#tabs').tabs();
-
-	$('article.news-cat label').click(function(){
-		$('li.tabs-news a').click();
-	});
-	$('article.sports-cat label').click(function(){
-		$('li.tabs-sports a').click();
-	});
-	$('article.entertainment-cat label').click(function(){
-		$('li.tabs-entertainment a').click();
-	});
-	$('article.finance-cat label').click(function(){
-		$('li.tabs-finance a').click();
-	});
-
-	$('#tabs ul li').hover(
-	   function(){ $(this).stop(true).addClass('hover', 100) },
-	   function(){ $(this).stop(true).removeClass('hover', 100) }
-	);
-
-    $('#tabs').on('mouseover', 'article', function(event) {
-        $(this).find('div.overlay').stop(true).addClass('show', 200);
-    }).on('mouseout', 'article', function(event) {
-        $(this).find('div.overlay').stop(true).removeClass('show', 200);
-    });
-
-	$('#tabs').on('click', 'a.view-related', function(event) {
-	    event.preventDefault();
-	    view_related($(this));
-	});
-
-	$('#read-related-close').click(function(event){
-		event.preventDefault();
-		$('#read-related').fadeOut(300, function(){
-			$('#read-results').fadeIn(500);
-		});
-	});
-	$('a.read-more').click(function(event){
-		event.preventDefault();
-		var href = $(this).attr('href');
-		var target = $(this).parent().parent().find('#read-more');
-
-		var _ = $(this);
-		target.append('<a href="#section_top">Back to top</a>');
-		$.get(href, function(data) {
-			$.each(data.articles, function(i, value){
-				var artilce_image_url = value.image_url;
-				var image_tag = artilce_image_url != '' ? '<img src="'+artilce_image_url+'" width="64px"/>' : '<img src="/static/images/news2.png" width="64px"/>';
-
-				target.append('<div id="tabs-news" class="ui-tabs-panel"><article>'+
-				image_tag +
-				'<article-content>'+
-                '<span><a target="_blank" href="'+value.link+'">'+
-                value.title+'</a></span><br/>'+value.content+'<br/>'+
-				'<article-footer>'+value.date+' | '+
-				'<a target="_blank" href="'+value.link+'">'+value.source+'</a>'+
-				'</article-footer></article-content>'+
-                '<div class="overlay">'+
-                '<a class="goto" target="_blank" href="'+value.link+'">'+value.source+'</a>'+
-                '<a class="related-button" target="_blank"'+
-                'href="/related/'+_.attr('cat')+'/'+value.hash_key+'/">View Related</a></div>'+
-                '<br style="clear:both"/></article></div>');
-				});
-			if(data.has_next){
-				_.attr('href','/more/'+_.attr('cat')+'/?page='+data.next_page);
-			}
-		});
-	});
-});
-
 {% endblock %}
