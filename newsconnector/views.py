@@ -65,7 +65,8 @@ def get_featured_articles(resultset):
                     'human interest', 'year of birth missing', 'state media',\
                     'president', 'environment', 'the sunday times',\
                     'weather', 'international relations', 'education',
-                    'sports','tennis']
+                    'sports', 'tennis', 'geography', 'mass media', 'labor',\
+                    'singers', 'usd']
     terms = [t for t in resultset.facets.keywords.terms\
                 if t['term'] not in ignore_terms\
                     and '_' not in t['term']\
