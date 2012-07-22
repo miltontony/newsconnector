@@ -64,22 +64,33 @@ def get_featured_articles(resultset):
     ignore_terms = ['politics', 'south africa', 'social issues',\
                     'human interest', 'year of birth missing', 'state media',\
                     'president', 'environment', 'the sunday times',\
-                    'weather', 'international relations', 'education']
+                    'weather', 'international relations', 'education',
+                    'sports','tennis']
     terms = [t for t in resultset.facets.keywords.terms\
                 if t['term'] not in ignore_terms\
                     and '_' not in t['term']\
                     and 'people' not in t['term']]
+
+    seen = []
     for k in terms:
         f = TermFilter("keyword", k['term'])
         articles = conn.search(Search(filter=f, start=0, size=10),\
                             indexes=["newsworld"],
                             sort='date:desc')
         if any(articles):
-            bucket.append({'keyword': k['term'],
+            feature = {'keyword': k['term'],
                             'articles': [from_es_dto(a)\
                                             for a in articles[:5]\
                                                 if a]
-                        })
+                        }
+            found = False
+            for x in feature['articles']:
+                if x['hash_key'] in seen:
+                    found = True
+                    break
+            if not found:
+                bucket.append(feature)
+                seen += [y['hash_key'] for y in feature['articles']]
 
     #TODO:remove articles that appear in multiple buckets
     return bucket[:5]
@@ -91,8 +102,6 @@ def read(request):
     finance = get_articles('FinanceArticle')
     entertainment = get_articles('EntertainmentArticle')
 
-    featuredNews = get_featured_articles(news)
-
     return render(request,
                 'read.html',
                 {'sites': RssFeed.objects.all().distinct('name'),
@@ -100,10 +109,10 @@ def read(request):
                  'sports': [from_es_dto(a) for a in sports],
                  'finance': [from_es_dto(a) for a in finance],
                  'entertainment': [from_es_dto(a) for a in entertainment],
-                 'featuredNews': featuredNews,
-                 'featuredSports': build_related(SportsArticle),
-                 'featuredFinance': build_related(FinanceArticle),
-                 'featuredEntertainment': build_related(EntertainmentArticle),
+                 'featuredNews': get_featured_articles(news),
+                 'featuredSports': get_featured_articles(sports),
+                 'featuredFinance': get_featured_articles(finance),
+                 'featuredEntertainment': get_featured_articles(entertainment),
                  })
 
 

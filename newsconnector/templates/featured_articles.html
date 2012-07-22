@@ -4,7 +4,7 @@
     {% with related=x.articles %}
     <div class="featured-article">
         <h2 style="text-transform:capitalize"><label>{{x.keyword}}</label>
-            {% if a.image_url %}
+            {% if related.0.image_url %}
             <img src="{{related.0.image_url}}" height="58px"/>
             {% else %}
             <img src="/static/images/news2.png" height="58px"/>
