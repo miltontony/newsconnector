@@ -45,29 +45,62 @@ def search(request, articleModel=Article):
                             })
 
 
-def get_featured_articles(keywordModel):
-    return keywordModel.objects.filter(date_updated__gte=date.today())\
-                                      .annotate(count=Count('article'))\
-                                      .order_by('-count')[:5]
-
-
 def get_articles(tag):
-    f = TermFilter("tag", tag)
-    results = conn.search(Search(filter=f, start=0, size=10),\
+    min = date.today() - timedelta(days=1)
+    max = date.today() + timedelta(days=1)
+
+    q = FilteredQuery(TermFilter("tag", tag),
+            RangeFilter(qrange=ESRange('date',
+                min, max, include_upper=False)))
+    f = Search(query=q, start=0, size=10)
+    f.facet.add_term_facet('keywords', size=50)
+    return conn.search(f,\
                         indexes=["newsworld"],
                         sort='date:desc')
-    return [from_es_dto(a) for a in results]
+
+
+def get_featured_articles(resultset):
+    bucket = []
+    ignore_terms = ['politics', 'south africa', 'social issues',\
+                    'human interest', 'year of birth missing', 'state media',\
+                    'president', 'environment', 'the sunday times',\
+                    'weather', 'international relations', 'education']
+    terms = [t for t in resultset.facets.keywords.terms\
+                if t['term'] not in ignore_terms\
+                    and '_' not in t['term']\
+                    and 'people' not in t['term']]
+    for k in terms:
+        f = TermFilter("keyword", k['term'])
+        articles = conn.search(Search(filter=f, start=0, size=10),\
+                            indexes=["newsworld"],
+                            sort='date:desc')
+        if any(articles):
+            bucket.append({'keyword': k['term'],
+                            'articles': [from_es_dto(a)\
+                                            for a in articles[:5]\
+                                                if a]
+                        })
+
+    #TODO:remove articles that appear in multiple buckets
+    return bucket[:5]
 
 
 def read(request):
+    news = get_articles('NewsArticle')
+    sports = get_articles('SportsArticle')
+    finance = get_articles('FinanceArticle')
+    entertainment = get_articles('EntertainmentArticle')
+
+    featuredNews = get_featured_articles(news)
+
     return render(request,
                 'read.html',
                 {'sites': RssFeed.objects.all().distinct('name'),
-                 'news': get_articles('NewsArticle'),
-                 'sports': get_articles('SportsArticle'),
-                 'finance': get_articles('FinanceArticle'),
-                 'entertainment': get_articles('EntertainmentArticle'),
-                 'featuredNews': build_related(NewsArticle),
+                 'news': [from_es_dto(a) for a in news],
+                 'sports': [from_es_dto(a) for a in sports],
+                 'finance': [from_es_dto(a) for a in finance],
+                 'entertainment': [from_es_dto(a) for a in entertainment],
+                 'featuredNews': featuredNews,
                  'featuredSports': build_related(SportsArticle),
                  'featuredFinance': build_related(FinanceArticle),
                  'featuredEntertainment': build_related(EntertainmentArticle),

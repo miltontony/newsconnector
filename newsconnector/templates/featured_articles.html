@@ -1,36 +1,36 @@
 <div class="featured-articles">
-    <h1><text>Featured</text></h1>
-    {% for art, count in articles %}
-    {% with a=art.article %}
+    <h1><text>Trending Today</text></h1>
+    {% for x in articles %}
+    {% with related=x.articles %}
     <div class="featured-article">
-        <h2><label><a target="_blank" href="{{a.link}}">{{a.title}}</a></label>
+        <h2 style="text-transform:capitalize"><label>{{x.keyword}}</label>
             {% if a.image_url %}
-            <img src="{{a.image_url}}" height="58px"/>
+            <img src="{{related.0.image_url}}" height="58px"/>
             {% else %}
             <img src="/static/images/news2.png" height="58px"/>
             {% endif %}
             </h2>
             <br style="clear:both"/>
         <div class="main">
-            {{ a.content }}
+            {{ related.0.content }}
             <br/>
             <br/>
             <small>
-            <a target="_blank" href="{{a.link}}">Full story...</a> | {{a.source}}
+            <a target="_blank" href="{{related.0.link}}">Full story...</a> | {{related.0.source}}
             </small>
         </div>
         <div class="related">
         <ul>
-        {% for s in art.related %}
+        {% for s in related %}
         <li>
         <a target="_blank" href="{{s.link}}">{{s.title}}</a>
         </li>
         {% endfor %}
         </ul>
         </div>
-        <br style="display:block; clear:both"/>
     </div>
     {% endwith %}
     {% endfor %}
+    <br style="display:block; clear:both"/>
 </div>
 <br style="clear:both"/>
