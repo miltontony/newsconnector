@@ -170,11 +170,14 @@ def delete_old_data():
 
 
 from django.utils.timesince import timesince
+from django.template.defaultfilters import truncatewords
+
+
 def from_es_dto(obj):
     return {'title': obj.title,
             'score': obj.score,
             'link': obj.link,
-            'content': obj.content,
+            'content': truncatewords(obj.content, 50),
             'source': obj.source,
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
