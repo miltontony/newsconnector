@@ -52,7 +52,7 @@ def get_articles(tag):
     q = FilteredQuery(TermFilter("tag", tag),
             RangeFilter(qrange=ESRange('date',
                 min, max, include_upper=False)))
-    f = Search(query=q, start=0, size=10)
+    f = Search(query=q, start=0, size=20)
     f.facet.add_term_facet('keywords', size=50)
     return conn.search(f,\
                         indexes=["newsworld"],
@@ -125,7 +125,7 @@ def read_more(request, tag):
                             mimetype='application/json')
 
     f = TermFilter("tag", tag)
-    results = conn.search(Search(filter=f, start=(page - 1) * 10, size=10),\
+    results = conn.search(Search(filter=f, start=(page - 1) * 20, size=20),\
                         indexes=["newsworld"],
                         sort='date:desc')
     results.count()
