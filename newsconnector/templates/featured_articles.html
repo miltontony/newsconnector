@@ -12,6 +12,7 @@
             </h2>
             <br style="clear:both"/>
         <div class="main">
+            <b>{{s.title}}<b><br/>
             {{ related.0.content }}
             <br/>
             <br/>
@@ -22,9 +23,11 @@
         <div class="related">
         <ul>
         {% for s in related %}
+        {% if not s == related.0 %}
         <li>
         <a target="_blank" href="{{s.link}}">{{s.title}}</a>
         </li>
+        {% endif %}
         {% endfor %}
         </ul>
         </div>
