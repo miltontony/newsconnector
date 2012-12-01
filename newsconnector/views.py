@@ -99,21 +99,21 @@ def get_featured_articles(resultset):
 
 def read(request):
     news = get_articles('NewsArticle')
-    sports = get_articles('SportsArticle')
-    finance = get_articles('FinanceArticle')
-    entertainment = get_articles('EntertainmentArticle')
+    #sports = get_articles('SportsArticle')
+    #finance = get_articles('FinanceArticle')
+    #entertainment = get_articles('EntertainmentArticle')
 
     return render(request,
                 'read.html',
                 {'sites': RssFeed.objects.all().distinct('name'),
                  'news': [from_es_dto(a) for a in news],
-                 'sports': [from_es_dto(a) for a in sports],
-                 'finance': [from_es_dto(a) for a in finance],
-                 'entertainment': [from_es_dto(a) for a in entertainment],
+                 #'sports': [from_es_dto(a) for a in sports],
+                 #'finance': [from_es_dto(a) for a in finance],
+                 #'entertainment': [from_es_dto(a) for a in entertainment],
                  'featuredNews': get_featured_articles(news),
-                 'featuredSports': get_featured_articles(sports),
-                 'featuredFinance': get_featured_articles(finance),
-                 'featuredEntertainment': get_featured_articles(entertainment),
+                 #'featuredSports': get_featured_articles(sports),
+                 #'featuredFinance': get_featured_articles(finance),
+                 #'featuredEntertainment': get_featured_articles(entertainment),
                  })
 
 
