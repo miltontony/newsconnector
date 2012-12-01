@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 
 {% block head %}
+<script type="text/javascript">
+newsworld = {
+    'finance_readmore_href': "{% url read_more 'FinanceArticle' %}",
+    'sports_readmore_href': "{% url read_more 'SportsArticle' %}",
+    'entertainment_readmore_href': "{% url read_more 'EntertainmentArticle' %}",
+}
+</script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />

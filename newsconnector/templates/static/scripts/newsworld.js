@@ -31,12 +31,9 @@ $(document).ready(function(){
             $('#read-results').fadeIn(500);
         });
     });
-    $('a.read-more').click(function(event){
-        event.preventDefault();
-        var href = $(this).attr('href');
-        var target = $(this).parent().parent().find('#read-more');
-
-        var _ = $(this);
+    function load_more(href, sender){
+        _ = sender
+        var target = sender.parent().parent().find('#read-more');
         target.append('<a href="#section_top">Back to top</a>');
         $.get(href, function(data) {
             $.each(data.articles, function(i, value){
@@ -61,5 +58,14 @@ $(document).ready(function(){
                 _.attr('href','/more/'+_.attr('tag')+'/?page='+data.next_page);
             }
         });
+    }
+    $('a.read-more').click(function(event){
+        event.preventDefault();
+        var href = $(this).attr('href');
+        load_more(href, $(this));
     });
+
+    load_more(newsworld.finance_readmore_href, $('#tabs-finance a.read-more'));
+    load_more(newsworld.sports_readmore_href, $('#tabs-sports a.read-more'));
+    load_more(newsworld.entertainment_readmore_href, $('#tabs-entertainment a.read-more'));
 });
