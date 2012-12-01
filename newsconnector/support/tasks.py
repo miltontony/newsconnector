@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 from celery.task import task, TaskSet
 
-import sys
+import sys, traceback
 import feedparser
 import lxml.html
 from pyes import *
@@ -55,6 +55,9 @@ def get_instance(cls, dictArticle, source):
     a = None
 
     try:
+        if not dictArticle.description:
+            return
+
         content = lxml.html.fromstring(dictArticle.description).text_content()
         hash_str = ':'.join([dictArticle.title,  content, source])\
                       .encode('ascii', 'ignore')
@@ -76,8 +79,10 @@ def get_instance(cls, dictArticle, source):
         return None
 
     except:
-        print "Unexpected error:", sys.exc_info()[0]
-        pass
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        print "Unexpected error:", exc_type
+        print "Unexpected error:", exc_value
+        traceback.print_tb(exc_traceback)
 
     return None
 
@@ -141,7 +146,9 @@ def update_articles(articles_list):
             conn.index(art, 'newsworld', 'article')
             #print art
         except:
-            print "Unexpected error:", sys.exc_info()[0]
-            pass
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            print "Unexpected error:", exc_type
+            print "Unexpected error:", exc_value
+            traceback.print_tb(exc_traceback)
 
     conn.refresh()
