@@ -3,7 +3,7 @@ nose
 django-nose
 South
 requests
-django-celery
+django-celery>=3
 supervisor==3.0a10
 gunicorn==0.13.4
 psycopg2

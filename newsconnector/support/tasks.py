@@ -3,9 +3,9 @@ from newsconnector.support.utils import build_related
 from newsconnector.models import *
 from django.utils.hashcompat import md5_constructor
 from time import mktime
-from datetime import datetime
+from datetime import datetime, timedelta
 
-from celery.task import task
+from celery.task import task, TaskSet
 
 import sys
 import feedparser
@@ -14,6 +14,34 @@ from pyes import *
 
 
 conn = ES('127.0.0.1:9200')
+
+
+@task(ignore_result=True)
+def update_feeds():
+    news_feeds = [(feed.url, feed.name)\
+                        for feed in NewsFeed.objects.all()]
+    sports_feeds = [(feed.url, feed.name)\
+                    for feed in SportsFeed.objects.all()]
+    fin_feeds = [(feed.url, feed.name)\
+                    for feed in FinanceFeed.objects.all()]
+    e_feeds = [(feed.url, feed.name)\
+                    for feed in EntertainmentFeed.objects.all()]
+
+    now = datetime.now()
+
+    task_list = [
+        run_tasks.subtask((news_feeds, NewsArticle)),\
+        run_tasks.subtask((sports_feeds, SportsArticle),\
+            options={'eta':now + timedelta(seconds=60 * 5)}),\
+        run_tasks.subtask((fin_feeds, FinanceArticle),\
+            options={'eta':now + timedelta(seconds=60 * 7)}),\
+        run_tasks.subtask((e_feeds, EntertainmentArticle),\
+            options={'eta':now + timedelta(seconds=60 * 9)})
+    ]
+    taskset = TaskSet(tasks=task_list)
+    result = taskset.apply_async()
+    result.ready()
+    result.successful()
 
 
 def get_image_url(links):

@@ -8,6 +8,18 @@ djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
+from datetime import timedelta
+CELERYBEAT_SCHEDULE = {
+    'update-feed-articles': {
+        'task': 'newsconnector.support.tasks.update_feeds',
+        'schedule': timedelta(minutes=30),
+    },
+}
+CELERY_TIMEZONE = 'UTC'
+CELERY_IMPORTS = ("newsconnector.support.tasks",)
+CELERY_RESULT_BACKEND = "amqp"
+
+
 def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
     return os.path.join(PROJECT_ROOT, *args)
@@ -131,9 +143,6 @@ LOGGING = {
         },
     }
 }
-
-CELERY_IMPORTS = ("newsconnector.support.tasks",)
-CELERY_RESULT_BACKEND = "amqp"
 
 LOGIN_URL = '/admin/'
 #SESSION_COOKIE_DOMAIN = '.newsworld.co.za'
