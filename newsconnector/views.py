@@ -111,9 +111,9 @@ def read(request):
                  #'finance': [from_es_dto(a) for a in finance],
                  #'entertainment': [from_es_dto(a) for a in entertainment],
                  'featuredNews': get_featured_articles(news),
-                 #'featuredSports': get_featured_articles(sports),
-                 #'featuredFinance': get_featured_articles(finance),
-                 #'featuredEntertainment': get_featured_articles(entertainment),
+                 'featuredSports': get_featured_articles(sports),
+                 'featuredFinance': get_featured_articles(finance),
+                 'featuredEntertainment': get_featured_articles(entertainment),
                  })
 
 
