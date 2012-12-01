@@ -65,7 +65,7 @@ $(document).ready(function(){
         load_more(href, $(this));
     });
 
-    load_more(newsworld.finance_readmore_href, $('#tabs-finance a.read-more'));
-    load_more(newsworld.sports_readmore_href, $('#tabs-sports a.read-more'));
-    load_more(newsworld.entertainment_readmore_href, $('#tabs-entertainment a.read-more'));
+    //load_more(newsworld.finance_readmore_href, $('#tabs-finance a.read-more'));
+    //load_more(newsworld.sports_readmore_href, $('#tabs-sports a.read-more'));
+    //load_more(newsworld.entertainment_readmore_href, $('#tabs-entertainment a.read-more'));
 });
