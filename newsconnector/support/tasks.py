@@ -3,11 +3,12 @@ from newsconnector.support.utils import build_related
 from newsconnector.models import *
 from django.utils.hashcompat import md5_constructor
 from time import mktime
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from celery.task import task, TaskSet
 
-import sys, traceback
+import sys
+import traceback
 import feedparser
 import lxml.html
 from pyes import *
@@ -27,16 +28,11 @@ def update_feeds():
     e_feeds = [(feed.url, feed.name)\
                     for feed in EntertainmentFeed.objects.all()]
 
-    now = datetime.now()
-
     task_list = [
         run_tasks.subtask((news_feeds, NewsArticle)),\
-        run_tasks.subtask((sports_feeds, SportsArticle),\
-            options={'eta':now + timedelta(seconds=60 * 5)}),\
-        run_tasks.subtask((fin_feeds, FinanceArticle),\
-            options={'eta':now + timedelta(seconds=60 * 7)}),\
-        run_tasks.subtask((e_feeds, EntertainmentArticle),\
-            options={'eta':now + timedelta(seconds=60 * 9)})
+        run_tasks.subtask((sports_feeds, SportsArticle)),\
+        run_tasks.subtask((fin_feeds, FinanceArticle)),\
+        run_tasks.subtask((e_feeds, EntertainmentArticle))
     ]
     taskset = TaskSet(tasks=task_list)
     result = taskset.apply_async()
