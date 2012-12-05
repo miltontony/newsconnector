@@ -54,9 +54,9 @@ def get_articles(tag):
                 min, max, include_upper=False)))
     f = Search(query=q, start=0, size=20)
     f.facet.add_term_facet('keywords', size=50)
-    return conn.search(f,\
+    return list(conn.search(f,\
                         indexes=["newsworld"],
-                        sort='date:desc')
+                        sort='date:desc'))
 
 
 def get_featured_articles(resultset):
