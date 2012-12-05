@@ -18,4 +18,4 @@ def static():
 def deploy():
     with cd(env.path):
         run('git pull')
-        run('sudo supervisorctl restart all' % env)
+        run('sudo supervisorctl restart newsconnector:')
