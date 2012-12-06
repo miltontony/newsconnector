@@ -66,10 +66,16 @@ def get_featured_articles(resultset):
                     'president', 'environment', 'the sunday times',\
                     'weather', 'international relations', 'education',
                     'sports', 'tennis', 'geography', 'mass media', 'labor',\
-                    'singers', 'usd']
+                    'singers', 'usd', 'Business_Finance',\
+                    'Disaster_Accident', 'Education', 'Entertainment_Culture',\
+                    'Environment', 'Health_Medical_Pharma',\
+                    'Hospitality_Recreation', 'Human Interest', 'Labor',\
+                    'Law_Crime', 'Politics', 'Religion_Belief',\
+                    'Social Issues', 'Sports', 'Technology_Internet',\
+                    'Weather', 'War_Conflict', 'Other']
+
     terms = [t for t in resultset.facets.keywords.terms\
-                if t['term'] not in ignore_terms\
-                    and '_' not in t['term']\
+                if t['term'].lower() not in [a.lower() for a in ignore_terms]\
                     and 'people' not in t['term']]
 
     seen = []
