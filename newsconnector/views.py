@@ -1,13 +1,12 @@
 from django.shortcuts import render,  redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
-from django.db.models import Count
 from django.http import HttpResponse
 
 import json
-from datetime import date
 
 from newsconnector.models import *
+from newsconnector.data import store
 from newsconnector.support.utils import *
 from pyes import *
 
@@ -45,86 +44,23 @@ def search(request, articleModel=Article):
                             })
 
 
-def get_articles(tag):
-    min = date.today() - timedelta(days=1)
-    max = date.today() + timedelta(days=1)
-
-    q = FilteredQuery(TermFilter("tag", tag),
-            RangeFilter(qrange=ESRange('date',
-                min, max, include_upper=False)))
-    f = Search(query=q, start=0, size=20)
-    f.facet.add_term_facet('keywords', size=50)
-    return conn.search(f,\
-                        indexes=["newsworld"],
-                        sort='date:desc')
-
-
-def get_featured_articles(resultset):
-    bucket = []
-    ignore_terms = ['politics', 'south africa', 'social issues',\
-                    'human interest', 'year of birth missing', 'state media',\
-                    'president', 'environment', 'the sunday times',\
-                    'weather', 'international relations', 'education',
-                    'sports', 'tennis', 'geography', 'mass media', 'labor',\
-                    'singers', 'usd', 'Business_Finance',\
-                    'Disaster_Accident', 'Education', 'Entertainment_Culture',\
-                    'Environment', 'Health_Medical_Pharma',\
-                    'Hospitality_Recreation', 'Human Interest', 'Labor',\
-                    'Law_Crime', 'Politics', 'Religion_Belief',\
-                    'Social Issues', 'Sports', 'Technology_Internet',\
-                    'Weather', 'War_Conflict', 'Other']
-
-    terms = [t for t in resultset.facets.keywords.terms\
-                if t['term'].lower() not in [a.lower() for a in ignore_terms]\
-                    and 'people' not in t['term']]
-
-    seen = []
-    for k in terms:
-        f = TermFilter("keyword", k['term'])
-        articles = conn.search(Search(filter=f, start=0, size=10),\
-                            indexes=["newsworld"],
-                            sort='date:desc')
-        if any(articles):
-            feature = {'keyword': k['term'],
-                            'articles': [from_es_dto(a)\
-                                            for a in articles[:5]\
-                                                if a]
-                        }
-            found = False
-            for x in feature['articles']:
-                if x['hash_key'] in seen:
-                    found = True
-                    break
-            if not found:
-                bucket.append(feature)
-                seen += [y['hash_key'] for y in feature['articles']]
-
-    #TODO:remove articles that appear in multiple buckets
-    return bucket[:5]
-
-
 def featured_articles(tag):
     return get_featured_articles(get_articles(tag))
 
 
 def read(request):
-    news = get_articles('NewsArticle')
-    sports = get_articles('SportsArticle')
-    finance = get_articles('FinanceArticle')
-    entertainment = get_articles('EntertainmentArticle')
-
     return render(request,
-                'read.html',
-                {'sites': RssFeed.objects.all().distinct('name'),
-                 'news': [from_es_dto(a) for a in news],
-                 'sports': [from_es_dto(a) for a in sports],
-                 'finance': [from_es_dto(a) for a in finance],
-                 'entertainment': [from_es_dto(a) for a in entertainment],
-                 'featuredNews': get_featured_articles(news),
-                 'featuredSports': get_featured_articles(sports),
-                 'featuredFinance': get_featured_articles(finance),
-                 'featuredEntertainment': get_featured_articles(entertainment),
-                 })
+            'read.html',
+            {'sites': RssFeed.objects.all().distinct('name'),
+             'news': store.get_articles('NewsArticle'),
+             'sports': store.get_articles('SportsArticle'),
+             'finance': store.get_articles('FinanceArticle'),
+             'entertainment': store.get_articles('EntertainmentArticle'),
+             'featuredNews': store.get_featured_articles('NewsArticle'),
+             'featuredSports': store.get_featured_articles('SportsArticle'),
+             'featuredFinance': store.get_featured_articles('FinanceArticle'),
+             'featuredEntertainment': store.get_featured_articles('EntertainmentArticle'),
+             })
 
 
 def read_more(request, tag):
