@@ -16,7 +16,7 @@ CELERYBEAT_SCHEDULE = {
     },
     'update-articles-view-cache': {
         'task': 'newsconnector.support.tasks.update_articles_view_cache',
-        'schedule': timedelta(minutes=15),
+        'schedule': timedelta(minutes=5),
     },
 }
 CELERY_TIMEZONE = 'UTC'
