@@ -22,4 +22,6 @@ def reload():
 def deploy():
     with cd(env.path):
         run('git pull')
+        run('sudo supervisorctl stop celery')
+        run('ve/bin/python %(path)s/newsconnector/manage.py celery purge' % env)
         run('sudo supervisorctl restart all')
