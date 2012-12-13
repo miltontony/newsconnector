@@ -153,6 +153,20 @@ def update_articles(articles_list):
     conn.refresh()
 
 
+def from_es_dto(obj):
+    from django.template.defaultfilters import truncatewords
+
+    return {'title': obj.title,
+            'score': obj.score,
+            'link': obj.link,
+            'content': truncatewords(obj.content, 50),
+            'source': obj.source,
+            'image_url': obj.image_url,
+            'hash_key': obj.hash_key,
+            'date': obj.date.isoformat(),
+            'keywords': obj.keywords}
+
+
 @task(ignore_result=True)
 def update_articles_view_cache():
     r = redis.StrictRedis(host='localhost', port=6379, db=0)

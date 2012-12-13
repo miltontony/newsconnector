@@ -169,10 +169,10 @@ def delete_old_data():
     print 'keywords remaining: %s' % Keyword.objects.all().count()
 
 
-from django.template.defaultfilters import truncatewords
-
-
 def from_es_dto(obj):
+    from django.utils.timesince import timesince
+    from django.template.defaultfilters import truncatewords
+
     return {'title': obj.title,
             'score': obj.score,
             'link': obj.link,
@@ -180,5 +180,5 @@ def from_es_dto(obj):
             'source': obj.source,
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
-            'date': obj.date.isoformat(),
+            'date': '%s ago' % timesince(obj.date),
             'keywords': obj.keywords}
