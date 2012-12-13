@@ -10,7 +10,7 @@
         {{article.content}}
         <br/>
         <div class="article-footer">
-            {{article.date}} |
+            {{article.date|timesince}} |
             <a target="_blank" href="{{article.link}}">{{article.source}}</a>
             <div class="related-link-ie">| <a target="_blank" href="{% url related article.hash_key %}">View Related</a></div>
         </div>
