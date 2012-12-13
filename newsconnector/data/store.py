@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 def update_date(obj):
-    obj['date'] = datetime.strptime(obj['date'], 'YYYY-MM-DDTHH:MM:SS.mmmmmm')
+    obj['date'] = datetime.strptime(obj['date'], 'YYYY-MM-DDTHH:MM:SS')
     return obj
 
 
