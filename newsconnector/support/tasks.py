@@ -201,9 +201,15 @@ def get_articles(tag):
                 min, max, include_upper=False)))
     f = Search(query=q, start=0, size=20)
     f.facet.add_term_facet('keywords', size=50)
-    return conn.search(f,\
-                        indexes=["newsworld"],
-                        sort='date:desc')
+    r = conn.search(f, indexes=["newsworld"], sort='date:desc')
+
+    alt_q = FilteredQuery(TermFilter("tag", tag),
+            RangeFilter(qrange=ESRange('date')))
+    alt_f = Search(query=alt_q, start=0, size=20)
+    alt_f.facet.add_term_facet('keywords', size=50)
+    alt_r = conn.search(f, indexes=["newsworld"], sort='date:desc')
+
+    return r or alt_r
 
 
 def get_featured_articles(resultset):
