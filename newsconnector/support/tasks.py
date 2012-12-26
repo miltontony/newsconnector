@@ -207,7 +207,7 @@ def get_articles(tag):
             RangeFilter(qrange=ESRange('date')))
     alt_f = Search(query=alt_q, start=0, size=20)
     alt_f.facet.add_term_facet('keywords', size=50)
-    alt_r = conn.search(f, indexes=["newsworld"], sort='date:desc')
+    alt_r = conn.search(alt_f, indexes=["newsworld"], sort='date:desc')
 
     return r or alt_r
 
