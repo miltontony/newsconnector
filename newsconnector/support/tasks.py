@@ -6,7 +6,7 @@ from django.utils.hashcompat import md5_constructor
 from time import mktime
 from datetime import datetime, date
 
-from celery.task import task, TaskSet
+from celery.task import task
 
 import sys
 import traceback
@@ -31,16 +31,17 @@ def update_feeds():
     e_feeds = [(feed.url, feed.name)\
                     for feed in EntertainmentFeed.objects.all()]
 
-    task_list = [
-        run_tasks.subtask((news_feeds, NewsArticle)),\
-        run_tasks.subtask((sports_feeds, SportsArticle)),\
-        run_tasks.subtask((fin_feeds, FinanceArticle)),\
-        run_tasks.subtask((e_feeds, EntertainmentArticle))
-    ]
-    taskset = TaskSet(tasks=task_list)
-    result = taskset.apply_async()
-    result.ready()
-    result.successful()
+    run_tasks(news_feeds, NewsArticle)
+    update_articles_view_cache('NewsArticle')
+
+    run_tasks(sports_feeds, SportsArticle)
+    update_articles_view_cache('SportsArticle')
+
+    run_tasks(fin_feeds, FinanceArticle)
+    update_articles_view_cache('FinanceArticle')
+
+    run_tasks(e_feeds, EntertainmentArticle)
+    update_articles_view_cache('EntertainmentArticle')
 
 
 def get_image_url(links):
@@ -86,7 +87,6 @@ def get_instance(cls, dictArticle, source):
     return None
 
 
-@task(ignore_result=True)
 def run_tasks(feeds, feedModel):
     print '-- Update Started: %s --' % feedModel.__name__
     print 'Fetching RSS feeds.'
@@ -96,13 +96,6 @@ def run_tasks(feeds, feedModel):
     print 'Article update complete.'
 
     print '-- Update Complete --'
-
-
-@task(ignore_result=True)
-def run_build_related(feedModel):
-    print 'Generating featured articles.'
-    build_related(feedModel, True)
-    print '-- Build Related Complete --'
 
 
 def get_new_articles(feeds, feedModel):
@@ -167,29 +160,13 @@ def from_es_dto(obj):
             'keywords': obj.keywords}
 
 
-@task(ignore_result=True)
-def update_articles_view_cache():
+def update_articles_view_cache(tag):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-    news = get_articles('NewsArticle')
-    sports = get_articles('SportsArticle')
-    finance = get_articles('FinanceArticle')
-    entertainment = get_articles('EntertainmentArticle')
-
-    featuredNews = get_featured_articles(news)
-    featuredSports = get_featured_articles(sports)
-    featuredFinance = get_featured_articles(finance)
-    featuredEntertainment = get_featured_articles(entertainment)
-
-    r.set('NewsArticle', json.dumps([from_es_dto(a) for a in news]))
-    r.set('SportsArticle', json.dumps([from_es_dto(a) for a in sports]))
-    r.set('FinanceArticle', json.dumps([from_es_dto(a) for a in finance]))
-    r.set('EntertainmentArticle', json.dumps([from_es_dto(a) for a in entertainment]))
-
-    r.set('featured_NewsArticle', json.dumps(featuredNews))
-    r.set('featured_SportsArticle', json.dumps(featuredSports))
-    r.set('featured_FinanceArticle', json.dumps(featuredFinance))
-    r.set('featured_EntertainmentArticle', json.dumps(featuredEntertainment))
+    articles = get_articles(tag)
+    featuredNews = get_featured_articles(articles)
+    r.set(tag, json.dumps([from_es_dto(a) for a in articles]))
+    r.set('featured_%s' % tag, json.dumps(featuredNews))
 
 
 def get_articles(tag):

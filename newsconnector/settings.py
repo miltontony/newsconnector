@@ -14,10 +14,6 @@ CELERYBEAT_SCHEDULE = {
         'task': 'newsconnector.support.tasks.update_feeds',
         'schedule': timedelta(minutes=30),
     },
-    'update-articles-view-cache': {
-        'task': 'newsconnector.support.tasks.update_articles_view_cache',
-        'schedule': timedelta(minutes=5),
-    },
 }
 CELERY_TIMEZONE = 'UTC'
 CELERY_IMPORTS = ("newsconnector.support.tasks",)
