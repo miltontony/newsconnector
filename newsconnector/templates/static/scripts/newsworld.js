@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    $('#tabs').tabs();
+    //$('#tabs').tabs();
 
     $('div.article.news-cat label').click(function(){
         $('li.tabs-news a').click();

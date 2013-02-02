@@ -10,70 +10,63 @@ newsworld = {
 </script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
 {% endblock %}
 
 {% block content %}
 
-<div class="read-results" id="read-results">
-  <a name="section_top"></a>
-  <fieldset>
-  	<legend>Latest News</legend>
-    <div id="tabs">
-			<ul>
-			<li class="tabs-news"><a href="#tabs-news">Local News</a></li>
-			<li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
-			<li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
-			<li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
-			</ul>
+<div class="row read-results" id="tabs">
+    <a name="section_top"></a>
+    <div class="tab-content">
+    <div class="tab-pane active" id="tabs-news">
+    		<div class="span6">
+                <h4 class="well well-small">Latest News</h4>
+    		{% for n in news %}
+    		{%	include "article_block.html" with article=n %}
+    		{% endfor %}
 
-			<div id="tabs-news">
-					<div class="tabs-container">
-					{% for n in news %}
-					{%	include "article_block.html" with article=n %}
-					{% endfor %}
-
-					{% include "read_more_block.html" with tag='NewsArticle' %}
-					</div>
-					{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
-			</div>
-
-			<div id="tabs-finance">
-				<div class="tabs-container">
-				{% for n in finance %}
-				{% include "article_block.html" with article=n section_index=3 %}
-				{% endfor %}
-
-				{% include "read_more_block.html" with tag='FinanceArticle' %}
-				</div>
-				{% include "featured_articles.html" with articles=featuredFinance section_index=3 %}
-			</div>
-
-			<div id="tabs-sports">
-				<div class="tabs-container">
-				{% for n in sports %}
-				{% include "article_block.html" with article=n section_index=2 %}
-				{% endfor %}
-
-				{% include "read_more_block.html" with tag='SportsArticle' %}
-				</div>
-				{% include "featured_articles.html" with articles=featuredSports section_index=2 %}
-			</div>
-
-			<div id="tabs-entertainment">
-				<div class="tabs-container">
-				{% for n in entertainment %}
-				{% include "article_block.html" with article=n section_index=4 %}
-				{% endfor %}
-
-				{% include "read_more_block.html" with tag='EntertainmentArticle' %}
-				</div>
-				{% include "featured_articles.html" with articles=featuredEntertainment section_index=4 %}
-			</div>
+    		{% include "read_more_block.html" with tag='NewsArticle' %}
+    		</div>
+    		{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
     </div>
-    <br style="clear:both"/>
-  </fieldset>
+
+    <div class="tab-pane" id="tabs-finance">
+    	<div class="span6">
+            <h4 class="well well-small">Latest Finanical News</h4>
+    	{% for n in finance %}
+    	{% include "article_block.html" with article=n section_index=3 %}
+    	{% endfor %}
+
+    	{% include "read_more_block.html" with tag='FinanceArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredFinance section_index=3 %}
+    </div>
+
+    <div class="tab-pane" id="tabs-sports">
+    	<div class="span6">
+            <h4 class="well well-small">Latest Sports News</h4>
+    	{% for n in sports %}
+    	{% include "article_block.html" with article=n section_index=2 %}
+    	{% endfor %}
+
+    	{% include "read_more_block.html" with tag='SportsArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredSports section_index=2 %}
+    </div>
+
+    <div class="tab-pane" id="tabs-entertainment">
+    	<div class="span6">
+            <h4 class="well well-small">Latest E! News</h4>
+    	{% for n in entertainment %}
+    	{% include "article_block.html" with article=n section_index=4 %}
+    	{% endfor %}
+
+    	{% include "read_more_block.html" with tag='EntertainmentArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredEntertainment section_index=4 %}
+    </div>
+    </div>
 </div>
+
 <div class="read-results" id="read-related" style="display:none">
 	<div style="margin-bottom: -10px">
 		<a id="read-related-close" href="#">Close</a>
@@ -84,4 +77,15 @@ newsworld = {
 	<fieldset style="border-top: none;"><div class="ui-tabs"></div>
 	</fieldset>
 </div>
+{% endblock %}
+
+{% block js%}
+<script type="text/javascript">
+$(function(){
+    $('#tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+    });
+});
+</script>
 {% endblock %}

@@ -1,17 +1,24 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta name="description" lang="en-us" content="NewsWorld - South Africa's biggest online news resource!"/>
 <title>::News World::</title>
+<link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/new_style.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+<!--
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/smoothness/jquery.ui.core.css" />
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css?version=0.1" />
-<!--[if IE]>
-    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/ie.css?version=0.1" />
-<![endif]-->
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.1.7.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery-ui.1.8.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
 <script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.scrollTo-1.4.2-min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery-ui.1.8.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+-->
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.1.7.min.js"></script>
+<script src="{{STATIC_URL}}scripts/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
 {% block head %}
 {% endblock %}
 <script type="text/javascript">
@@ -30,20 +37,42 @@
 </script>
 </head>
 <body>
-<div id="container">
-<div id="header-cont">
-  <div id="header">
-    <a href="/"><img src="{{STATIC_URL}}images/newsworld.png"/></a>
-  </div>
-  <div id="search-form">
-  <form action="{% url search %}">
-  <input type="search" name="q" id="filter" results=5 autosave=save_key autofocus placeholder="Search..." value="{{q}}"/>
-  <input type="submit" id="search" value="Search"/>
-  </form>
-  </div>
+<!-- Navbar
+================================================== -->
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+   <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+   </a>
+   <a class="brand" href="{% url index %}">NewsWorld</a>
+   <div class="nav-collapse" id="main-menu">
+    <ul id="tabs" class="nav nav-tabs">
+        <li class="tabs-news active"><a href="#tabs-news">Local News</a></li>
+        <li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
+        <li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
+        <li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
+    </ul>
+    </div>
+
+    <form class="navbar-search pull-right" action="{% url search %}">
+      <div class="input-append">
+        <input placeholder="Search.." name="q" type="text" class="span2 search-query" value="{{q}}"/>
+      </div>
+    </form>
 </div>
+</div>
+</div>
+
+<div class="container">
+    <br/>
+    <br/>
+<section>
 {% block content %}
 {% endblock %}
+</section>
 </div>
 <br/>
 <div id="footer-sites">
@@ -53,8 +82,7 @@
 {% endfor %}
 <div>
 </body>
-<script type="text/javascript">
+
 {% block js %}
 {% endblock %}
-</script>
 </html>

@@ -1,39 +1,34 @@
-<div class="featured-articles">
-    <h1><text>Trending Today</text></h1>
+<div class="span6 featured-articles">
+    <h4 class="well well-small">Trending Today</h4>
     {% for x in articles %}
     {% with related=x.articles %}
-    <div class="featured-article">
-        <h2 style="text-transform:capitalize"><label>{{x.keyword}}</label>
-            {% if related.0.image_url %}
-            <img src="{{related.0.image_url}}" height="58px"/>
-            {% else %}
-            <img src="/static/images/news2.png" height="58px"/>
-            {% endif %}
-            </h2>
-            <br style="clear:both"/>
-        <div class="main">
-            <a target="_blank" href="{{related.0.link}}" style="line-height:20px;">{{related.0.title}}</a><br/>
+
+    <div class="row">
+    <div class="box span6">
+    <div class="box-header well">
+        <h2 style="text-transform:capitalize">{{x.keyword}}</h2>
+    </div>
+    <div class="box-content">
+        <div class="span3">
+        <ul>
+        {% for s in related %}
+        {% if not s == related.0 %}
+        <li><a target="_blank" href="{{s.link}}">{{s.title}}</a></li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+        </div>
+        <div style="margin-left: 5px;" class="span3">
+            <h4 class="media-heading">{{related.0.title}}</h4>
             {{ related.0.content }}
-            <br/>
             <br/>
             <small>
             <a target="_blank" href="{{related.0.link}}">Full story...</a> | {{related.0.source}}
             </small>
         </div>
-        <div class="related">
-        <ul>
-        {% for s in related %}
-        {% if not s == related.0 %}
-        <li>
-        <a target="_blank" href="{{s.link}}">{{s.title}}</a>
-        </li>
-        {% endif %}
-        {% endfor %}
-        </ul>
-        </div>
+    </div>
+    </div>
     </div>
     {% endwith %}
     {% endfor %}
-    <br style="display:block; clear:both"/>
 </div>
-<br style="clear:both"/>
