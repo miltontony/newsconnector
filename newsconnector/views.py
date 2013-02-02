@@ -34,7 +34,7 @@ def search(request, articleModel=Article):
     q2 = TextQuery("title", q, operator='or')
     q3 = TextQuery("keyword", q, boost=0.5, operator='or')
     query = BoolQuery(should=[q1, q2, q3])
-    results = conn.search(Search(query=query, start=0, size=10),\
+    results = conn.search(Search(query=query, start=0, size=20),\
                             indexes=["newsworld"], sort='date:desc,_score')
 
     return render(request, 'browse.html',
