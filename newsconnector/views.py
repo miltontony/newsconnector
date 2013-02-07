@@ -75,13 +75,7 @@ def read_more(request, tag):
                         indexes=["newsworld"],
                         sort='date:desc')
     results.count()
-    data = json.dumps({'articles': [from_es_dto(a) for a in results],
-                       'has_next': True,
-                       'next_page': page + 1})
-
     return render(request, 'readmore_articles.html', {'articles': [from_es_dto(a) for a in results]})
-
-    return HttpResponse(data, mimetype='application/json')
 
 
 def related(request, pk):
