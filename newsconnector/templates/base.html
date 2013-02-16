@@ -3,9 +3,9 @@
 <head>
 <meta name="description" lang="en-us" content="NewsWorld - South Africa's biggest online news resource!"/>
 <title>::News World::</title>
-<link href="{{STATIC_URL}}css/bootstrap.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
 <link href="{{STATIC_URL}}css/new_style.css" rel="stylesheet">
-<link href="{{STATIC_URL}}css/bootstrap-responsive.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/bootstrap-responsive.min.css" rel="stylesheet">
 <!--
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/smoothness/jquery.ui.core.css" />
 <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css?version=0.1" />
@@ -76,15 +76,14 @@
 <section>
 {% block content %}
 {% endblock %}
+<div class="clearfix"></div>
+<div class="row">
+    <div class="text-center">
+    <a target="_blank" href="http://tonym.co.za">&copy; TonyM  {% now "Y" %}</a>
+    </div>
+</div>
 </section>
 </div>
-<br/>
-<div id="footer-sites">
-.
-{% for site in sites %}
-<a target="_blank" href="{{site.site}}">{{site.name}}</a> .
-{% endfor %}
-<div>
 </body>
 
 <script type="text/javascript">
