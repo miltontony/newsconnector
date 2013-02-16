@@ -205,7 +205,7 @@ div.article h1{
 	background: linear-gradient(top, #777 1%,#111 100%);
 }
 
-.related-article-panel{
+.related-article-keywords{
 	border-left: 1px solid #ccc;
 	background: #ebeef3 url(/static/images/bgnoise_lg.jpg);
 	position: relative;

@@ -1,27 +1,5 @@
 $(function(){
-    //$('#tabs').tabs();
-    /*
-
-    $('div.article.news-cat label').click(function(){
-        $('li.tabs-news a').click();
-    });
-    $('div.article.sports-cat label').click(function(){
-        $('li.tabs-sports a').click();
-    });
-    $('div.article.entertainment-cat label').click(function(){
-        $('li.tabs-entertainment a').click();
-    });
-    $('div.article.finance-cat label').click(function(){
-        $('li.tabs-finance a').click();
-    });
-    */
-    /*
-    $('#tabs ul li').hover(
-       function(){ $(this).stop(true).addClass('hover', 100) },
-       function(){ $(this).stop(true).removeClass('hover', 100) }
-    );*/
-
-    $('#tabs, #search-results').on('mouseover', '.article', function(event) {
+    $('#tabs, #search-results, .articles').on('mouseover', '.article', function(event) {
         $(this).find('div.overlay').stop(true).addClass('show', 100);
     }).on('mouseout', '.article', function(event) {
         $(this).find('div.overlay').stop(true).removeClass('show', 100);

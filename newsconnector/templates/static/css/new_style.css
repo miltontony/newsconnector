@@ -1,3 +1,35 @@
+.related-article-keywords{
+    margin: 5px 0 5px 70px;
+}
+
+.related-article-keyword,
+.matched-keyword{
+    display: inline;
+    background: #333;
+    padding: 3px 7px;
+    border-radius: 7px;
+    color: white;
+    font-size: 12px;
+    margin: 0 2px;
+    white-space: nowrap;
+    line-height: 25px;
+}
+
+.matched-keyword{
+    background: #777;
+    color: white;
+    line-height: 30px;
+    margin: 0 3px 0 0;
+}
+
+.rank {
+    margin-top: 3px;
+}
+
+.rank span{
+    display: none;
+}
+
 .related-link-ie{
     display: none;
 }

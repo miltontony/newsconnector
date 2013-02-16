@@ -13,6 +13,12 @@
     <div class="article-footer">
         {{article.date}} ago |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+        <div class="rank">{{article.score}}%</div>
+    </div>
+
+    <div class="overlay">
+        <a class="goto" target="_blank" href="{{article.link}}">{{article.source}}</a>
+        <a class="related-button" target="_blank" href="{% url related article.hash_key %}">View Related</a>
     </div>
   </div>
 </div>

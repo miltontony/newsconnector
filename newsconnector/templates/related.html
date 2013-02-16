@@ -1,67 +1,39 @@
 {% extends "base.html" %}
 
 {% block head %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
 <script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css" />
+{% endblock %}
+
+{% block menu %}
+<ul class="nav nav-tabs"></ul>
 {% endblock %}
 
 {% block content %}
-<div class="read-results" id="read-related">
-    <fieldset style="border-top: none;">
-        <div class="ui-tabs">
-            <div class="related-container">
-            <div id="related-article" class="related-article-panel" tabindex="100">
-                {%  include "related_article_block.html" with article=article section_index=section_index %}
-            </div>
-            <div style="margin-bottom: 5px;" class="related-article-panel">
-                <div class="article">
-                    <strong>Keywords:</strong>
-                    {% for k in article.keywords %}
-                    <div class="related-article-keyword">{{k}}</div>
-                    {% endfor %}
-                </div>
-            </div>
-            </div>
-        <br/>
-        <fieldset>
-            <legend>Related articles</legend>
-            <div class="related-container">
-            {% for a in articles %}
-            <div class="related-article-panel">
-                <div class="article">
-                    {% if article.image_url %}
-                    <img src="{{a.image_url}}" width="64px"/>
-                    {% else %}
-                    <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
-                    {%endif%}
-                    <div class="article-content">
-                    <span><a target="_blank" href="{{a.link}}">{{a.title}}</a></span>
-                    <br/>
-                    {{a.content}}
-                    <br/>
-                    <div class="article-footer">{{a.date}}&nbsp;|&nbsp;
-                    <a target="_blank" href="{{a.link}}">{{a.source}}</a><br/>
-                    <div class="rank">{{a.score}}%</div>
-                    </div>
-                    </div>
-                    <br style="clear:both"/>
-                </div>
-            </div>
-            {% empty %}
-            <div style="color:#fff">
-                0 related articles.
-            </div>
+<br/>
+<div class="row">
+    <div class="span8">
+    {%  include "related_article_block.html" with article=article %}
+    <div class="related-article-keywords">
+            {% for k in article.keywords %}
+            <div class="related-article-keyword">{{k}}</div>
             {% endfor %}
-            <br style="clear:both"/>
-        </div>
-        </fieldset>
-        </div>
-    </fieldset>
+    </div>
+    </div>
+
+    <h4 class="well well-small span8">Related articles</h4>
+    <div class="span6 articles">
+    {% for a in articles %}
+        {%  include "related_article_block_score.html" with article=a %}
+    {% empty %}
+    <div>0 related articles.</div>
+    {% endfor %}
+    </div>
 </div>
 {% endblock %}
 
 {% block js %}
-
+<script type="text/javascript">
 $(document).ready(function(){
     $('.rank')
       .each(function(){
@@ -74,5 +46,5 @@ $(document).ready(function(){
                     showText: false,
                   });});
 });
-
+</script>
 {% endblock %}

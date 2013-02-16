@@ -9,19 +9,18 @@
 {% endblock %}
 
 {% block content %}
-<fieldset>
-    <legend>Results</legend>
-    <div id="search-results">
-        <div class="span6">
-        {% if news %}
-        {% include "readmore_articles.html" with articles=news %}
-        {% else %}
-        <span style="color:#fff">
-            Your search for &ldquo;{{q}}&rdquo; did not return any results.
-        </span>
-        {% endif %}
-    </div>
-</fieldset>
+<div class="row">
+<h4 class="span6 well well-small">Results</h4>
+<div id="search-results" class="articles">
+    <div class="span6">
+    {% if news %}
+    {% include "readmore_articles.html" with articles=news %}
+    {% else %}
+    <span style="color:#fff">
+        Your search for &ldquo;{{q}}&rdquo; did not return any results.
+    </span>
+    {% endif %}
+</div>
 
 <div id="search-pagination">
 	{% if paged_news.has_previous %}
@@ -41,5 +40,6 @@
 	{% if paged_news.has_next %}
 	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
 	{% endif %}
+</div>
 </div>
 {% endblock %}
