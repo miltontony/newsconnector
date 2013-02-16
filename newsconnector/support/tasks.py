@@ -202,11 +202,14 @@ def get_featured_articles(resultset):
                     'Hospitality_Recreation', 'Human Interest', 'Labor',\
                     'Law_Crime', 'Politics', 'Religion_Belief',\
                     'Social Issues', 'Sports', 'Technology_Internet',\
-                    'Weather', 'War_Conflict', 'Other']
+                    'Weather', 'War_Conflict', 'Other', 'Television',\
+                    'Music']
 
     terms = [t for t in resultset.facets.keywords.terms\
                 if t['term'].lower() not in [a.lower() for a in ignore_terms]\
-                    and 'people' not in t['term']]
+                    and 'people' not in t['term'].lower()\
+                    and 'television' not in t['term'].lower()\
+                    and 'geography' not in t['term'].lower()]
 
     seen = []
     for k in terms:
