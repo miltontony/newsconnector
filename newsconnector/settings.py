@@ -153,3 +153,6 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+IGNORABLE_404_ENDS = ('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi',
+    '.php')
