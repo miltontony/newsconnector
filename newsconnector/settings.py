@@ -1,7 +1,7 @@
 import os.path
 import djcelery
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 djcelery.setup_loader()
@@ -154,5 +154,8 @@ CACHES = {
     }
 }
 
-IGNORABLE_404_ENDS = ('mail.pl', 'mailform.pl', 'mail.cgi', 'mailform.cgi',
-    '.php')
+import re
+IGNORABLE_404_URLS = (
+    re.compile(r'\.(php|cgi)$'),
+    re.compile(r'^/phpmyadmin/'),
+)
