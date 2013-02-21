@@ -153,9 +153,3 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
-
-import re
-IGNORABLE_404_URLS = (
-    re.compile(r'\.(php|cgi)$'),
-    re.compile(r'^/phpmyadmin/'),
-)
