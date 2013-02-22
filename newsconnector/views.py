@@ -51,7 +51,7 @@ def featured_articles(tag):
 def read(request):
     return render(request,
             'read.html',
-            {'sites': RssFeed.objects.all().distinct('name'),
+            {
              'news': store.get_articles('NewsArticle'),
              'sports': store.get_articles('SportsArticle'),
              'finance': store.get_articles('FinanceArticle'),
