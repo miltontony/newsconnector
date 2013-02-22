@@ -27,7 +27,6 @@ def abspath(*args):
 ADMINS = (
      ('Milton', 'madandat@gmail.com'),
 )
-
 MANAGERS = ADMINS
 
 DATABASES = {
@@ -48,6 +47,9 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+ROOT_URLCONF = 'newsconnector.urls.read'
+LOGIN_URL = '/admin/'
+
 MEDIA_ROOT = abspath('media')
 MEDIA_URL = '/media/'
 STATIC_ROOT = abspath('static')
@@ -60,42 +62,7 @@ STATICFILES_DIRS = (
     abspath('templates/static'),
 )
 
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
-
 SECRET_KEY = 'q^(q(olk1k)z$+(tqbqm1xq1c(v8=6jtp6s2ikx7xaiwv1$_^1'
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
-MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'subdomains.middleware.SubdomainURLRoutingMiddleware',
-)
-
-ROOT_URLCONF = 'newsconnector.urls'
-REMOVE_WWW_FROM_DOMAIN = True
-
-SUBDOMAIN_URLCONFS = {
-    # The format for these is 'subdomain': 'urlconf'
-    None: 'newsconnector.urls.read',
-    'www': 'newsconnector.urls.read',
-    'news': 'newsconnector.urls.read',
-    #'sports': 'newsconnector.urls.sports',
-    #'finance': 'newsconnector.urls.finance',
-    #'entertainment': 'newsconnector.urls.entertainment',
-    #'e': 'newsconnector.urls.entertainment',
-    'read': 'newsconnector.urls.read',
-    'justread': 'newsconnector.urls.read',
-}
 
 TEMPLATE_DIRS = (
     "templates",
@@ -123,6 +90,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.i18n",
     "django.core.context_processors.media",
     "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
     "django.core.context_processors.request",
 )
 
@@ -144,8 +113,6 @@ LOGGING = {
     }
 }
 
-LOGIN_URL = '/admin/'
-#SESSION_COOKIE_DOMAIN = '.newsworld.co.za'
 
 CACHES = {
     'default': {
