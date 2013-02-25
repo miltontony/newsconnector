@@ -30,6 +30,9 @@ def delete_keyword(request, pk):
 def search(request, articleModel=Article):
     q = request.GET.get('q', None)
 
+    if not q or not q.stip():
+        return redirect('/')
+
     q1 = TextQuery("content", q, operator='or')
     q2 = TextQuery("title", q, operator='or')
     q3 = TextQuery("keyword", q, boost=0.5, operator='or')
