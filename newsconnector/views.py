@@ -66,6 +66,21 @@ def read(request):
              })
 
 
+def read_json(request):
+    data = json.dumps({
+        'news': [from_es_dict_dto(a) for a in store.get_articles('NewsArticle')],
+        'sports': [from_es_dict_dto(a) for a in store.get_articles('SportsArticle')],
+        'finance': [from_es_dict_dto(a) for a in store.get_articles('FinanceArticle')],
+        'entertainment': [from_es_dict_dto(a) for a in store.get_articles('EntertainmentArticle')],
+        #'fNews': [from_es_dto(a) for a in store.get_featured_articles('NewsArticle')],
+        #'fSports': [from_es_dto(a) for a in store.get_featured_articles('SportsArticle')],
+        #'fFinance': [from_es_dto(a) for a in store.get_featured_articles('FinanceArticle')],
+        #'fEntertainment': [from_es_dto(a) for a in store.get_featured_articles('EntertainmentArticle')],
+    })
+
+    return HttpResponse(data, mimetype='application/json')
+
+
 def read_more(request, tag):
     page = int(request.GET.get('page', 1))
 

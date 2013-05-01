@@ -12,6 +12,9 @@ urlpatterns = patterns('',
     url(r'^search/$', views.search, name='search', ),
     url(r'', include('newsconnector.urls.base')),
 
+    #mobile api
+    url(r'^api/home/$', views.read_json),
+
     #url(r'^news/$', views.news, name='news'),
     url(r'^news/search/$',
         views.search,
