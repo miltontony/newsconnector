@@ -117,9 +117,9 @@ def api_read_more(request, tag):
     return HttpResponse(json.dumps({
         'articles': [from_es_dto(a) for a in results],
         'cat': cat,
-    },
+    }),
         mimetype='application/json'
-    ))
+    )
 
 
 def related(request, pk):
