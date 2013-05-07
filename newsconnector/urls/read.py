@@ -8,12 +8,17 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', views.read, name='index'),
     url(r'^more/(?P<tag>\w+)/$', views.read_more, name='read_more'),
-    url(r'^featured/(?P<tag>\w+)/$', views.featured_articles, name='featured_articles'),
+    url(r'^featured/(?P<tag>\w+)/$', views.featured_articles,
+        name='featured_articles'),
     url(r'^search/$', views.search, name='search', ),
     url(r'', include('newsconnector.urls.base')),
 
     #mobile api
-    url(r'^api/home/$', views.read_json),
+    url(r'^api/news/$', views.api_read_more, {'tag': 'NewsArticle'}),
+    url(r'^api/sports/$', views.api_read_more, {'tag': 'SportsArticle'}),
+    url(r'^api/finance/$', views.api_read_more, {'tag': 'FinanceArticle'}),
+    url(r'^api/entertainment/$', views.api_read_more,
+        {'tag': 'EntertainmentArticle'}),
 
     #url(r'^news/$', views.news, name='news'),
     url(r'^news/search/$',

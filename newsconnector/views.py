@@ -96,6 +96,32 @@ def read_more(request, tag):
     return render(request, 'readmore_articles.html', {'articles': [from_es_dto(a) for a in results]})
 
 
+def api_read_more(request, tag):
+    page = int(request.GET.get('page', 1))
+
+    cat = 1
+    if tag == 'NewsArticle':
+        cat = 1
+    elif tag == 'SportsArticle':
+        cat = 2
+    elif tag == 'FinanceArticle':
+        cat = 3
+    else:
+        cat = 4
+
+    f = TermFilter("tag", tag)
+    results = conn.search(Search(filter=f, start=(page - 1) * 20, size=40),
+                        indexes=["newsworld"],
+                        sort='date:desc')
+    results.count()
+    return HttpResponse(json.dumps({
+        'articles': [from_es_dto(a) for a in results],
+        'cat': cat,
+    },
+        mimetype='application/json'
+    ))
+
+
 def related(request, pk):
     f = TermFilter("hash_key", pk)
     s = Search(filter=f, start=0, size=1)
