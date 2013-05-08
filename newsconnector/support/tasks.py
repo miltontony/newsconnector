@@ -72,9 +72,9 @@ def get_instance(cls, dictArticle, source):
             'source': source,
             'tag': cls.__name__,
             'image_url': get_image_url(dictArticle.links),
-            'date': '%s' %\
-                    datetime.fromtimestamp(mktime(dictArticle.updated_parsed))\
-                            .isoformat()}
+            'date': '%s' %
+                datetime.fromtimestamp(mktime(dictArticle.published_parsed))
+                        .isoformat()}
             return article
         return None
 
