@@ -1,6 +1,5 @@
-from django.http import HttpResponse
-
 import json
+import redis
 
 from newsconnector.models import *
 from newsconnector.support.utils import *
