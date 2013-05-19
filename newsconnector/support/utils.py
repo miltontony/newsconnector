@@ -84,7 +84,11 @@ def from_es_dto(obj):
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
             'date': '%s ago' % timesince(obj.date),
-            'keywords': obj.keywords}
+            'date_iso': obj.date.isoformat(),
+            'keywords': obj.keywords,
+            'similar': [],
+            'seen': [],
+            }
 
 
 def from_es_dict_dto(obj):

@@ -14,11 +14,17 @@ urlpatterns = patterns('',
     url(r'', include('newsconnector.urls.base')),
 
     #mobile api
-    url(r'^api/news/$', views.api_read_more, {'tag': 'NewsArticle'}),
-    url(r'^api/sports/$', views.api_read_more, {'tag': 'SportsArticle'}),
-    url(r'^api/finance/$', views.api_read_more, {'tag': 'FinanceArticle'}),
-    url(r'^api/entertainment/$', views.api_read_more,
+    url(r'^api/news/$', 'newsconnector.mobile.views.api_read_more',
+        {'tag': 'NewsArticle'}),
+    url(r'^api/sports/$', 'newsconnector.mobile.views.api_read_more',
+        {'tag': 'SportsArticle'}),
+    url(r'^api/finance/$', 'newsconnector.mobile.views.api_read_more',
+        {'tag': 'FinanceArticle'}),
+    url(r'^api/entertainment/$', 'newsconnector.mobile.views.api_read_more',
         {'tag': 'EntertainmentArticle'}),
+
+    url(r'^api/news/hashed/$', 'newsconnector.mobile.views.api_read_more_hashed',
+        {'tag': 'NewsArticle'}),
 
     #url(r'^news/$', views.news, name='news'),
     url(r'^news/search/$',
