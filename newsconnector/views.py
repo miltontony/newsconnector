@@ -110,7 +110,7 @@ def api_read_more(request, tag):
         cat = 4
 
     f = TermFilter("tag", tag)
-    results = conn.search(Search(filter=f, start=(page - 1) * 20, size=40),
+    results = conn.search(Search(filter=f, start=(page - 1) * 40, size=40),
                         indexes=["newsworld"],
                         sort='date:desc')
     results.count()
