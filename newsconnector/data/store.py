@@ -29,5 +29,4 @@ def get_featured_articles(tag):
 def get_hashed_articles(tag):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     articles = r.get('similar_%s' % tag)
-    j_articles = json.loads(articles) if articles else None
-    return [update_date(a) for a in j_articles]
+    return json.loads(articles) if articles else None
