@@ -38,7 +38,7 @@ def build(tag):
             seen.append(a['hash_key'])
 
     for a in history:
-        a['similar'] = sorted(a['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"))
+        a['similar'] = sorted(a['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
