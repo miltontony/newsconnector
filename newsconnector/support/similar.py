@@ -25,15 +25,11 @@ def build(tag):
             if sim_ratio >= 0.6 and a['hash_key'] not in h['seen']:
                 h['similar'].insert(0, a)
                 h['seen'].append(a['hash_key'])
+                seen = append_related(seen, tag, h, a, 70)
                 seen.append(a['hash_key'])
 
         if a['hash_key'] not in seen:
-            related = is_related(a['hash_key'], tag)
-            for r in related:
-                if r['hash_key'] not in a['seen']:
-                    a['similar'].append(r)
-                    a['seen'].append(r['hash_key'])
-                    seen.append(r['hash_key'])
+            seen = append_related(seen, tag, a, a, 40)
             history.append(a)
             seen.append(a['hash_key'])
 
@@ -44,7 +40,17 @@ def build(tag):
     r.set('similar_%s' % tag, json.dumps(history))
 
 
-def is_related(pk, tag):
+def append_related(seen, tag, target, current, min_ratio):
+    related = is_related(current['hash_key'], tag, min_ratio)
+    for r in related:
+        if r['hash_key'] not in target['seen']:
+            target['similar'].append(r)
+            target['seen'].append(r['hash_key'])
+            seen.append(r['hash_key'])
+    return seen
+
+
+def is_related(pk, tag, min_ratio=40):
     f = TermFilter("hash_key", pk)
     s = Search(filter=f, start=0, size=1)
     results = conn.search(s, indexes=["newsworld"])
@@ -68,7 +74,7 @@ def is_related(pk, tag):
                 if a.hash_key == pk:
                     continue
                 a.score = (a._meta.score / max_score) * 100
-                if a.score >= 40:
+                if a.score >= min_ratio:
                     n_articles.append(from_es_dto(a))
     except:
         pass
