@@ -23,9 +23,6 @@ urlpatterns = patterns('',
     url(r'^api/entertainment/$', 'newsconnector.mobile.views.api_read_more',
         {'tag': 'EntertainmentArticle'}),
 
-    url(r'^api/news/hashed/$', 'newsconnector.mobile.views.api_read_more_hashed',
-        {'tag': 'NewsArticle'}),
-
     #url(r'^news/$', views.news, name='news'),
     url(r'^news/search/$',
         views.search,
