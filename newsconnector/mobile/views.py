@@ -1,13 +1,6 @@
 from django.http import HttpResponse
-
-import json
-
-from newsconnector.models import *
-from newsconnector.support.utils import *
 from newsconnector.data import store
-from pyes import *
-
-conn = ES('127.0.0.1:9200')
+import json
 
 
 def api_read_more(request, tag):
