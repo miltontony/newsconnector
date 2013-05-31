@@ -28,6 +28,27 @@ def api_read_more(request, tag):
         mimetype='application/json'
     )
 
+
+def api_get_headlines(request, tag):
+    cat = 1
+    if tag == 'NewsArticle':
+        cat = 1
+    elif tag == 'SportsArticle':
+        cat = 2
+    elif tag == 'FinanceArticle':
+        cat = 3
+    else:
+        cat = 4
+
+    articles = store.get_headlines(tag)[:3]
+
+    return HttpResponse(json.dumps({
+        'articles': [update_date(a) for a in articles],
+        'cat': cat,
+    }),
+        mimetype='application/json'
+    )
+
 def update_date(obj):
     from django.utils.timesince import timesince
     d = datetime.strptime(obj['date_iso'][:19], '%Y-%m-%dT%H:%M:%S')
