@@ -42,6 +42,9 @@ def build(tag):
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
+    
+    s_history = sorted(history, key=lambda a: len(a['similar']), reverse=True)
+    r.set('headlines_%s' % tag, json.dumps(s_history[:5]))
 
 
 def append_related(seen, tag, target, current, min_ratio):
