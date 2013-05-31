@@ -22,7 +22,8 @@ urlpatterns = patterns('',
         {'tag': 'FinanceArticle'}),
     url(r'^api/entertainment/$', 'newsconnector.mobile.views.api_read_more',
         {'tag': 'EntertainmentArticle'}),
-        
+    
+    url(r'^api/headlines/$', 'newsconnector.mobile.views.api_get_all_headlines'),
     url(r'^api/news/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
         {'tag': 'NewsArticle'}),
     url(r'^api/sports/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
