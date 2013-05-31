@@ -23,7 +23,8 @@ def build(tag):
     for a in articles:
         for h in history:
             sim_ratio = ratio(h['content'], a['content'])
-            if sim_ratio >= 0.6 and a['hash_key'] not in h['seen']:
+            sim_ratio_title = ratio(h['title'], a['title'])
+            if (sim_ratio >= 0.6 or sim_ratio_title >= 0.6) and a['hash_key'] not in h['seen']:
                 h['similar'].insert(0, a)
                 h['seen'].append(a['hash_key'])
                 #removed seen=
