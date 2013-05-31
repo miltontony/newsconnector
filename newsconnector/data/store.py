@@ -30,3 +30,9 @@ def get_hashed_articles(tag):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     articles = r.get('similar_%s' % tag)
     return json.loads(articles) if articles else None
+
+
+def get_headlines(tag):
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    articles = r.get('headlines_%s' % tag)
+    return json.loads(articles) if articles else None
