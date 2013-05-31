@@ -33,19 +33,19 @@ def update_feeds():
                     for feed in EntertainmentFeed.objects.all()]
 
     run_tasks(news_feeds, NewsArticle)
-    #update_articles_view_cache('NewsArticle')
+    update_articles_view_cache('NewsArticle')
     similar.build('NewsArticle')
 
     run_tasks(sports_feeds, SportsArticle)
-    #update_articles_view_cache('SportsArticle')
+    update_articles_view_cache('SportsArticle')
     similar.build('SportsArticle')
 
     run_tasks(fin_feeds, FinanceArticle)
-    #update_articles_view_cache('FinanceArticle')
+    update_articles_view_cache('FinanceArticle')
     similar.build('FinanceArticle')
 
     run_tasks(e_feeds, EntertainmentArticle)
-    #update_articles_view_cache('EntertainmentArticle')
+    update_articles_view_cache('EntertainmentArticle')
     similar.build('EntertainmentArticle')
 
 
