@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from newsconnector.data import store
 import json
+from datetime import datetime
 
 
 def api_read_more(request, tag):
@@ -17,10 +18,18 @@ def api_read_more(request, tag):
         cat = 4
 
     limit = (page - 1) * 40
+    
+    articles = store.get_hashed_articles(tag)[limit:]
 
     return HttpResponse(json.dumps({
-        'articles': store.get_hashed_articles(tag)[limit:],
+        'articles': [update_date(a) for a in articles],
         'cat': cat,
     }),
         mimetype='application/json'
     )
+
+def update_date(obj):
+    from django.utils.timesince import timesince
+    d = datetime.strptime(obj['date_iso'][:19], '%Y-%m-%dT%H:%M:%S')
+    obj['date'] = '%s ago' % timesince(d)
+    return obj
