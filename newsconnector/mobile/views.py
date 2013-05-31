@@ -40,7 +40,7 @@ def api_get_headlines(request, tag):
     else:
         cat = 4
 
-    articles = store.get_headlines(tag)[:3]
+    articles = store.get_headlines(tag)
 
     return HttpResponse(json.dumps({
         'articles': [update_date(a) for a in articles],
@@ -48,6 +48,23 @@ def api_get_headlines(request, tag):
     }),
         mimetype='application/json'
     )
+    
+
+def api_get_all_headlines(request):
+    news = store.get_headlines('NewsArticle')[:3]
+    sports = store.get_headlines('SportsArticle')[:3]
+    finance = store.get_headlines('FinanceArticle')[:3]
+    entertainment = store.get_headlines('EntertainmentArticle')[:3]
+
+    return HttpResponse(json.dumps({
+        'news': [update_date(a) for a in news],
+        'sports': [update_date(a) for a in sports],
+        'finance': [update_date(a) for a in finance],
+        'entertainment': [update_date(a) for a in entertainment],
+    }),
+        mimetype='application/json'
+    )
+
 
 def update_date(obj):
     from django.utils.timesince import timesince
