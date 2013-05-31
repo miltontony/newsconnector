@@ -5,6 +5,7 @@ from newsconnector.models import *
 from newsconnector.support.utils import *
 from pyes import *
 from Levenshtein import ratio
+from datetime import date
 
 conn = ES('127.0.0.1:9200')
 
@@ -51,6 +52,9 @@ def append_related(seen, tag, target, current, min_ratio):
 
 
 def is_related(pk, tag, min_ratio=40):
+    min = date.today() - timedelta(days=7)
+    max = date.today() + timedelta(days=1)
+
     f = TermFilter("hash_key", pk)
     s = Search(filter=f, start=0, size=1)
     results = conn.search(s, indexes=["newsworld"])
@@ -59,7 +63,9 @@ def is_related(pk, tag, min_ratio=40):
         q1 = TermsQuery("keywords", r.keywords)
         q2 = TermsQuery("tag", [tag])
         q = BoolQuery(must=[q1, q2])
-        articles = conn.search(Search(q, start=0, size=11),
+        filt = FilteredQuery(q,
+            RangeFilter(qrange=ESRange('date', min, max, include_upper=False)))
+        articles = conn.search(Search(filter=filt, start=0, size=11),
                                indexes=["newsworld"],
                                sort='_score,date:desc')
         break
