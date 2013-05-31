@@ -26,11 +26,13 @@ def build(tag):
             if sim_ratio >= 0.6 and a['hash_key'] not in h['seen']:
                 h['similar'].insert(0, a)
                 h['seen'].append(a['hash_key'])
-                seen = append_related(seen, tag, h, a, 70)
+                #removed seen=
+                append_related(seen, tag, h, a, 70)
                 seen.append(a['hash_key'])
 
         if a['hash_key'] not in seen:
-            seen = append_related(seen, tag, a, a, 40)
+            #removed seen=
+            append_related(seen, tag, a, a, 40)
             history.append(a)
             seen.append(a['hash_key'])
 
