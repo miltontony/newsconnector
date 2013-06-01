@@ -26,22 +26,26 @@ def build(tag):
             sim_ratio_title = ratio(h['title'], a['title'])
             if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                 a['score'] = max(sim_ratio, sim_ratio_title)
+                a['seen'] = h['hash_key']
                 h['similar'].insert(0, a)
                 h['seen'].append(a['hash_key'])
                 #removed seen=
                 append_related(seen, tag, h, a, 70)
                 seen.append(a['hash_key'])
+                break
             else:
                 for s in h['similar']:
                     sim_ratio = ratio(s['content'], a['content'])
                     sim_ratio_title = ratio(s['title'], a['title'])
                     if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                         a['score'] = max(sim_ratio, sim_ratio_title)
+                        a['seen'] = s['hash_key']
                         h['similar'].insert(0, a)
                         h['seen'].append(a['hash_key'])
                         #removed seen=
                         append_related(seen, tag, h, a, 70)
                         seen.append(a['hash_key'])
+                        break
 
         if a['hash_key'] not in seen:
             #removed seen=
