@@ -29,8 +29,7 @@ def build(tag):
                 a['seen'] = h['hash_key']
                 h['similar'].insert(0, a)
                 h['seen'].append(a['hash_key'])
-                #removed seen=
-                append_related(seen, tag, h, a, 70)
+                h = append_related(tag, h, a, 70)
                 seen.append(a['hash_key'])
                 break
             else:
@@ -42,19 +41,17 @@ def build(tag):
                         a['seen'] = s['hash_key']
                         h['similar'].insert(0, a)
                         h['seen'].append(a['hash_key'])
-                        #removed seen=
-                        append_related(seen, tag, h, a, 70)
+                        h = append_related(tag, h, a, 70)
                         seen.append(a['hash_key'])
                         break
 
         if a['hash_key'] not in seen:
-            #removed seen=
-            append_related(seen, tag, a, a, 40)
+            a = append_related(tag, a, a, 40)
             history.append(a)
             seen.append(a['hash_key'])
 
-    for a in history:
-        a['similar'] = sorted(a['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
+    for his in history:
+        his['similar'] = sorted(his['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
@@ -63,14 +60,13 @@ def build(tag):
     r.set('headlines_%s' % tag, json.dumps(s_history[:5]))
 
 
-def append_related(seen, tag, target, current, min_ratio):
+def append_related(tag, target, current, min_ratio):
     related = is_related(current['hash_key'], tag, min_ratio)
     for r in related:
         if r['hash_key'] not in target['seen']:
             target['similar'].append(r)
             target['seen'].append(r['hash_key'])
-            seen.append(r['hash_key'])
-    return seen
+    return target
 
 
 def is_related(pk, tag, min_ratio=40):
