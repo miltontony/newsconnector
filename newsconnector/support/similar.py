@@ -30,6 +30,16 @@ def build(tag):
                 #removed seen=
                 append_related(seen, tag, h, a, 70)
                 seen.append(a['hash_key'])
+            else:
+                for s in h['seen']:
+                    sim_ratio = ratio(s['content'], a['content'])
+                    sim_ratio_title = ratio(s['title'], a['title'])
+                    if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
+                        h['similar'].insert(0, a)
+                        h['seen'].append(a['hash_key'])
+                        #removed seen=
+                        append_related(seen, tag, h, a, 70)
+                        seen.append(a['hash_key'])
 
         if a['hash_key'] not in seen:
             #removed seen=
