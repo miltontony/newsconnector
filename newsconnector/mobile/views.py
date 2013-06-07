@@ -18,7 +18,7 @@ def api_read_more(request, tag):
         cat = 4
 
     limit = (page - 1) * 40
-    
+
     articles = store.get_hashed_articles(tag)[limit:]
 
     return HttpResponse(json.dumps({
@@ -48,7 +48,7 @@ def api_get_headlines(request, tag):
     }),
         mimetype='application/json'
     )
-    
+
 
 def api_get_all_headlines(request):
     news = store.get_headlines('NewsArticle')[:3]
@@ -60,7 +60,7 @@ def api_get_all_headlines(request):
         'news': [update_date(a) for a in news],
         'sports': [update_date(a) for a in sports],
         'finance': [update_date(a) for a in finance],
-        'entertainment': [update_date(a) for a in entertainment],
+        'entertainment': [update_date(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }),
         mimetype='application/json'
     )
