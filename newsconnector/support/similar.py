@@ -22,28 +22,31 @@ def build(tag):
     seen = []
     for a in articles:
         for h in history:
-            sim_ratio = ratio(h['content'], a['content'])
-            sim_ratio_title = ratio(h.get('title', ''), a.get('title', ''))
-            if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
-                a['score'] = max(sim_ratio, sim_ratio_title)
-                a['seen'] = h['hash_key']
-                h['similar'].insert(0, a)
-                h['seen'].append(a['hash_key'])
-                h = append_related(tag, h, a, 70)
-                seen.append(a['hash_key'])
-                break
-            else:
-                for s in h['similar']:
-                    sim_ratio = ratio(s['content'], a['content'])
-                    sim_ratio_title = ratio(s.get('title', ''), a.get('title', ''))
-                    if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
-                        a['score'] = max(sim_ratio, sim_ratio_title)
-                        a['seen'] = s['hash_key']
-                        h['similar'].insert(0, a)
-                        h['seen'].append(a['hash_key'])
-                        h = append_related(tag, h, a, 70)
-                        seen.append(a['hash_key'])
-                        break
+            try:
+                sim_ratio = ratio(h['content'], a['content'])
+                sim_ratio_title = ratio(h['title'], a['title'])
+                if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
+                    a['score'] = max(sim_ratio, sim_ratio_title)
+                    a['seen'] = h['hash_key']
+                    h['similar'].insert(0, a)
+                    h['seen'].append(a['hash_key'])
+                    h = append_related(tag, h, a, 70)
+                    seen.append(a['hash_key'])
+                    break
+                else:
+                    for s in h['similar']:
+                        sim_ratio = ratio(s['content'], a['content'])
+                        sim_ratio_title = ratio(s['title'], a['title'])
+                        if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
+                            a['score'] = max(sim_ratio, sim_ratio_title)
+                            a['seen'] = s['hash_key']
+                            h['similar'].insert(0, a)
+                            h['seen'].append(a['hash_key'])
+                            h = append_related(tag, h, a, 70)
+                            seen.append(a['hash_key'])
+                            break
+            except Exception:
+                pass
 
         if a['hash_key'] not in seen:
             a = append_related(tag, a, a, 40)
