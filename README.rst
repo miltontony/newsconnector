@@ -1,7 +1,7 @@
 Newsconnector
 ============
 
-A python app that relates news stories graphically sourced via rss feeds
+A python app that relates news stories sourced via rss feeds
 
 Getting it running
 ------------------
