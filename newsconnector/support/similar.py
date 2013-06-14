@@ -23,7 +23,7 @@ def build(tag):
     for a in articles:
         for h in history:
             sim_ratio = ratio(h['content'], a['content'])
-            sim_ratio_title = ratio(h['title'], a['title'])
+            sim_ratio_title = ratio(h.get('title', ''), a.get('title', ''))
             if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                 a['score'] = max(sim_ratio, sim_ratio_title)
                 a['seen'] = h['hash_key']
@@ -35,7 +35,7 @@ def build(tag):
             else:
                 for s in h['similar']:
                     sim_ratio = ratio(s['content'], a['content'])
-                    sim_ratio_title = ratio(s['title'], a['title'])
+                    sim_ratio_title = ratio(s.get('title', ''), a.get('title', ''))
                     if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                         a['score'] = max(sim_ratio, sim_ratio_title)
                         a['seen'] = s['hash_key']
@@ -55,7 +55,7 @@ def build(tag):
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
-    
+
     s_history = sorted(history, key=lambda a: len(a['similar']), reverse=True)
     r.set('headlines_%s' % tag, json.dumps(s_history[:5]))
 
