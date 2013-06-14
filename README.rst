@@ -38,4 +38,7 @@ Getting it running
     ./manage.py migrate
     ./manage.py loaddata fixtures/*
     ./manage.py collectstatic --noinput
+
+#. Run app::
+
     ./manage.py runserver
