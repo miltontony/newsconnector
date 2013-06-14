@@ -60,7 +60,7 @@ def api_get_all_headlines(request):
         'news': [update_date(a) for a in news],
         'sports': [update_date(a) for a in sports],
         'finance': [update_date(a) for a in finance],
-        'entertainment': [update_date(a) for a in entertainment],
+        'entertainment': [update_date(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }),
         mimetype='application/json'
     )
