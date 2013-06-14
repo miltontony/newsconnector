@@ -16,3 +16,4 @@ django-subdomains
 python-memcached
 -e git+git://github.com/aparo/pyes.git@master#egg=pyes
 redis
+Levenshtein
