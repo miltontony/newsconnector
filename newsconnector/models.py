@@ -36,6 +36,14 @@ class EntertainmentArticle(Article):
     pass
 
 
+class INewsArticle(Article):
+    pass
+
+
+class ISportsArticle(Article):
+    pass
+
+
 #------ Feeds ----------
 class NewsFeed(RssFeed):
     pass
@@ -50,4 +58,12 @@ class FinanceFeed(RssFeed):
 
 
 class EntertainmentFeed(RssFeed):
+    pass
+
+
+class INewsFeed(RssFeed):
+    pass
+
+
+class ISportsFeed(RssFeed):
     pass

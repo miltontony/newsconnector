@@ -23,14 +23,18 @@ conn = ES('127.0.0.1:9200')
 
 @task(ignore_result=True)
 def update_feeds():
-    news_feeds = [(feed.url, feed.name)\
-                        for feed in NewsFeed.objects.all()]
-    sports_feeds = [(feed.url, feed.name)\
+    news_feeds = [(feed.url, feed.name)
+                  for feed in NewsFeed.objects.all()]
+    sports_feeds = [(feed.url, feed.name)
                     for feed in SportsFeed.objects.all()]
-    fin_feeds = [(feed.url, feed.name)\
-                    for feed in FinanceFeed.objects.all()]
-    e_feeds = [(feed.url, feed.name)\
-                    for feed in EntertainmentFeed.objects.all()]
+    fin_feeds = [(feed.url, feed.name)
+                 for feed in FinanceFeed.objects.all()]
+    e_feeds = [(feed.url, feed.name)
+               for feed in EntertainmentFeed.objects.all()]
+    inews_feeds = [(feed.url, feed.name)
+                   for feed in INewsFeed.objects.all()]
+    isports_feeds = [(feed.url, feed.name)
+                     for feed in ISportsFeed.objects.all()]
 
     run_tasks(news_feeds, NewsArticle)
     update_articles_view_cache('NewsArticle')
@@ -47,6 +51,14 @@ def update_feeds():
     run_tasks(e_feeds, EntertainmentArticle)
     update_articles_view_cache('EntertainmentArticle')
     similar.build('EntertainmentArticle')
+
+    run_tasks(inews_feeds, INewsArticle)
+    update_articles_view_cache('INewsArticle')
+    similar.build('INewsArticle')
+
+    run_tasks(isports_feeds, ISportsArticle)
+    update_articles_view_cache('ISportsArticle')
+    similar.build('ISportsArticle')
 
 
 def get_image_url(links):
@@ -71,15 +83,16 @@ def get_instance(cls, dictArticle, source):
         a, created = cls.objects.get_or_create(link=dictArticle.link)
         if created:
             article = {'title': dictArticle.title,
-            'link': dictArticle.link,
-            'hash_key': hash,
-            'content': content,
-            'source': source,
-            'tag': cls.__name__,
-            'image_url': get_image_url(dictArticle.links),
-            'date': '%s' %
-                datetime.fromtimestamp(mktime(dictArticle.published_parsed))
-                        .isoformat()}
+                       'link': dictArticle.link,
+                       'hash_key': hash,
+                       'content': content,
+                       'source': source,
+                       'tag': cls.__name__,
+                       'image_url': get_image_url(dictArticle.links),
+                       'date': '%s' %
+                               datetime.fromtimestamp(
+                                   mktime(dictArticle.published_parsed))
+                       .isoformat()}
             return article
         return None
 
