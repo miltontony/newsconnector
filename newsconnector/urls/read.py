@@ -22,7 +22,7 @@ urlpatterns = patterns('',
         {'tag': 'FinanceArticle'}),
     url(r'^api/entertainment/$', 'newsconnector.mobile.views.api_read_more',
         {'tag': 'EntertainmentArticle'}),
-    
+
     url(r'^api/headlines/$', 'newsconnector.mobile.views.api_get_all_headlines'),
     url(r'^api/news/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
         {'tag': 'NewsArticle'}),
@@ -32,6 +32,12 @@ urlpatterns = patterns('',
         {'tag': 'FinanceArticle'}),
     url(r'^api/entertainment/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
         {'tag': 'EntertainmentArticle'}),
+
+    url(r'^api/inews/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
+        {'tag': 'INewsArticle'}),
+    url(r'^api/isports/headlines/$', 'newsconnector.mobile.views.api_get_headlines',
+        {'tag': 'ISportsArticle'}),
+    url(r'^api/iheadlines/$', 'newsconnector.mobile.views.api_get_international_headlines'),
 
     #url(r'^news/$', views.news, name='news'),
     url(r'^news/search/$',

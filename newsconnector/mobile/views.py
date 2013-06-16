@@ -4,9 +4,7 @@ import json
 from datetime import datetime
 
 
-def api_read_more(request, tag):
-    page = int(request.GET.get('page', 1))
-
+def parse_tag(tag):
     cat = 1
     if tag == 'NewsArticle':
         cat = 1
@@ -14,8 +12,21 @@ def api_read_more(request, tag):
         cat = 2
     elif tag == 'FinanceArticle':
         cat = 3
-    else:
+    elif tag == 'EntertainmentArticle':
         cat = 4
+    elif tag == 'INewsArticle':
+        cat = 5
+    elif tag == 'ISportsArticle':
+        cat = 6
+    else:
+        raise Exception('Invalid article tag')
+    return cat
+
+
+def api_read_more(request, tag):
+    page = int(request.GET.get('page', 1))
+
+    cat = parse_tag(tag)
 
     limit = (page - 1) * 40
 
@@ -30,15 +41,7 @@ def api_read_more(request, tag):
 
 
 def api_get_headlines(request, tag):
-    cat = 1
-    if tag == 'NewsArticle':
-        cat = 1
-    elif tag == 'SportsArticle':
-        cat = 2
-    elif tag == 'FinanceArticle':
-        cat = 3
-    else:
-        cat = 4
+    cat = parse_tag(tag)
 
     articles = store.get_headlines(tag)
 
@@ -60,6 +63,20 @@ def api_get_all_headlines(request):
         'news': [update_date(a) for a in news],
         'sports': [update_date(a) for a in sports],
         'finance': [update_date(a) for a in finance],
+        'entertainment': [update_date(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
+    }),
+        mimetype='application/json'
+    )
+
+
+def api_get_international_headlines(request):
+    news = store.get_headlines('INewsArticle')[:3]
+    sports = store.get_headlines('ISportsArticle')[:3]
+    entertainment = store.get_headlines('EntertainmentArticle')[:3]
+
+    return HttpResponse(json.dumps({
+        'news': [update_date(a) for a in news],
+        'sports': [update_date(a) for a in sports],
         'entertainment': [update_date(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }),
         mimetype='application/json'
