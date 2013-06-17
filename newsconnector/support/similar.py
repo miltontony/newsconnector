@@ -24,7 +24,7 @@ def build(tag):
         for h in history:
             try:
                 sim_ratio = 0
-                if (h['content'] and a['content'] and h['content'] != '' and a['content'] != '')                
+                if (h['content'] != None and a['content'] != None and h['content'] != '' and a['content'] != '')                
                     sim_ratio = ratio(h['content'], a['content'])
                 sim_ratio_title = ratio(h['title'], a['title'])
                 if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
@@ -38,7 +38,7 @@ def build(tag):
                 else:
                     for s in h['similar']:
                         sim_ratio = 0
-                        if (s['content'] and a['content'] and s['content'] != '' and a['content'] != '')                
+                        if (s['content'] != None and a['content'] != None and s['content'] != '' and a['content'] != '')                
                             sim_ratio = ratio(s['content'], a['content'])
                         sim_ratio_title = ratio(s['title'], a['title'])
                         if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
