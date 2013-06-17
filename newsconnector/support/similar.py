@@ -23,7 +23,9 @@ def build(tag):
     for a in articles:
         for h in history:
             try:
-                sim_ratio = ratio(h['content'], a['content'])
+                sim_ratio = 0
+                if (h['content'] and a['content'] and h['content'] != '' and a['content'] != '')                
+                    sim_ratio = ratio(h['content'], a['content'])
                 sim_ratio_title = ratio(h['title'], a['title'])
                 if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                     a['score'] = max(sim_ratio, sim_ratio_title)
@@ -35,7 +37,9 @@ def build(tag):
                     break
                 else:
                     for s in h['similar']:
-                        sim_ratio = ratio(s['content'], a['content'])
+                        sim_ratio = 0
+                        if (s['content'] and a['content'] and s['content'] != '' and a['content'] != '')                
+                            sim_ratio = ratio(s['content'], a['content'])
                         sim_ratio_title = ratio(s['title'], a['title'])
                         if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                             a['score'] = max(sim_ratio, sim_ratio_title)
