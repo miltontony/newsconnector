@@ -119,7 +119,7 @@ def run_tasks(feeds, feedModel):
         print 'Article update complete.'
         print '-- Update Complete --'
     except:
-        rollback_articles(new_articles)
+        rollback_articles(new_articles, feedModel)
         exc_type, exc_value, exc_traceback = sys.exc_info()
         print "Unexpected error:", exc_type
         print "Unexpected error:", exc_value
