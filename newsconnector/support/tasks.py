@@ -105,15 +105,28 @@ def get_instance(cls, dictArticle, source):
     return None
 
 
+def rollback_articles(articles, feedModel):
+    feedModel.objects.filter(link__in=[a['link'] for a in articles]).delete()
+
+
 def run_tasks(feeds, feedModel):
     print '-- Update Started: %s --' % feedModel.__name__
     print 'Fetching RSS feeds.'
     new_articles = get_new_articles(feeds, feedModel)
 
-    update_articles(new_articles)
-    print 'Article update complete.'
+    try:
+        update_articles(new_articles)
+        print 'Article update complete.'
+        print '-- Update Complete --'
+    except:
+        rollback_articles(new_articles)
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        print "Unexpected error:", exc_type
+        print "Unexpected error:", exc_value
+        print 'Rolling back: %s (%s)' % (feedModel.__name__, len(new_articles))
+        traceback.print_tb(exc_traceback)
 
-    print '-- Update Complete --'
+    conn.refresh()
 
 
 def get_new_articles(feeds, feedModel):
@@ -124,44 +137,35 @@ def get_new_articles(feeds, feedModel):
 
 def update_articles(articles_list):
     for art in articles_list:
-        try:
-            if not art:
-                continue
+        if not art:
+            continue
 
-            data = '%s %s' % (art['title'], art['content'])
+        data = '%s %s' % (art['title'], art['content'])
 
-            if not data:
-                continue
+        if not data:
+            continue
 
-            data = data.encode('ascii', 'ignore')
+        data = data.encode('ascii', 'ignore')
 
-            #print 'Start OpenCalais keyword fetch.'
+        #print 'Start OpenCalais keyword fetch.'
 
-            calais = Calais('r8krg8jjs9smep7c2z9jvzew')
-            result = calais.analyze(data)
+        calais = Calais('r8krg8jjs9smep7c2z9jvzew')
+        result = calais.analyze(data)
 
-            temp_keys = []
-            if hasattr(result, 'entities'):
-                temp_keys = [a["name"].lower() for a in result.entities]
+        temp_keys = []
+        if hasattr(result, 'entities'):
+            temp_keys = [a["name"].lower() for a in result.entities]
 
-            if hasattr(result, 'socialTag'):
-                temp_keys += [a["name"].lower() for a in result.socialTag\
-                                                if a['importance'] == '1']
+        if hasattr(result, 'socialTag'):
+            temp_keys += [a["name"].lower() for a in result.socialTag\
+                                            if a['importance'] == '1']
 
-            keywords = list(set(temp_keys))
+        keywords = list(set(temp_keys))
 
-            if len(keywords) > 0:
-                art['keywords'] = keywords
+        if len(keywords) > 0:
+            art['keywords'] = keywords
 
-            conn.index(art, 'newsworld', 'article')
-            #print art
-        except:
-            exc_type, exc_value, exc_traceback = sys.exc_info()
-            print "Unexpected error:", exc_type
-            print "Unexpected error:", exc_value
-            traceback.print_tb(exc_traceback)
-
-    conn.refresh()
+        conn.index(art, 'newsworld', 'article')
 
 
 def from_es_dto(obj):
