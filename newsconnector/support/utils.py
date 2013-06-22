@@ -104,3 +104,12 @@ def from_es_dict_dto(obj):
             'hash_key': obj.get('hash_key'),
             'date': '%s ago' % timesince(obj.get('date')),
             'keywords': obj.get('keywords')}
+
+
+def print_exception():
+    import sys
+    import traceback
+    exc_type, exc_value, exc_traceback = sys.exc_info()
+    print "Unexpected error:", exc_type
+    print "Unexpected error:", exc_value
+    traceback.print_tb(exc_traceback)

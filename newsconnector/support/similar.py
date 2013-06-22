@@ -45,16 +45,21 @@ def build(tag):
                             h = append_related(tag, h, a, 70)
                             seen.append(a['hash_key'])
                             break
-            except Exception:
-                pass
+            except:
+                print_exception()
+        try:
+            if a['hash_key'] not in seen:
+                a = append_related(tag, a, a, 40)
+                history.append(a)
+                seen.append(a['hash_key'])
+        except:
+            print_exception()
 
-        if a['hash_key'] not in seen:
-            a = append_related(tag, a, a, 40)
-            history.append(a)
-            seen.append(a['hash_key'])
-
-    for his in history:
-        his['similar'] = sorted(his['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
+    try:
+        for his in history:
+            his['similar'] = sorted(his['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
+    except:
+        print_exception()
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
@@ -81,15 +86,17 @@ def is_related(pk, tag, min_ratio=40):
     results = conn.search(s, indexes=["newsworld"])
     articles = None
     for r in results:
-        q1 = TermsQuery("keywords", r.keywords)
-        q2 = TermsQuery("tag", [tag])
-        q = BoolQuery(must=[q1, q2])
-        filt = FilteredQuery(q,
-            RangeFilter(qrange=ESRange('date', min, max, include_upper=False)))
-        articles = conn.search(Search(filter=filt, start=0, size=11),
-                               indexes=["newsworld"],
-                               sort='_score,date:desc')
-        break
+        try:
+            q1 = TermsQuery("keywords", r.keywords)
+            q2 = TermsQuery("tag", [tag])
+            q = BoolQuery(must=[q1, q2])
+            filt = FilteredQuery(q, RangeFilter(qrange=ESRange('date', min, max, include_upper=False)))
+            articles = conn.search(Search(filter=filt, start=0, size=11),
+                                   indexes=["newsworld"],
+                                   sort='_score,date:desc')
+            break
+        except:
+            print_exception()
 
     n_articles = []
 
@@ -104,6 +111,6 @@ def is_related(pk, tag, min_ratio=40):
                 if a.score >= min_ratio:
                     n_articles.append(from_es_dto(a))
     except:
-        pass
+        print_exception()
 
     return n_articles

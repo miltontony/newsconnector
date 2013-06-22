@@ -9,8 +9,6 @@ from datetime import datetime, date
 
 from celery.task import task
 
-import sys
-import traceback
 import feedparser
 import lxml.html
 from pyes import *
@@ -97,10 +95,7 @@ def get_instance(cls, dictArticle, source):
         return None
 
     except:
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print "Unexpected error:", exc_type
-        print "Unexpected error:", exc_value
-        traceback.print_tb(exc_traceback)
+        print_exception()
 
     return None
 
@@ -120,11 +115,8 @@ def run_tasks(feeds, feedModel):
         print '-- Update Complete --'
     except:
         rollback_articles(new_articles, feedModel)
-        exc_type, exc_value, exc_traceback = sys.exc_info()
-        print "Unexpected error:", exc_type
-        print "Unexpected error:", exc_value
         print 'Rolling back: %s (%s)' % (feedModel.__name__, len(new_articles))
-        traceback.print_tb(exc_traceback)
+        print_exception()
 
     conn.refresh()
 
@@ -183,12 +175,15 @@ def from_es_dto(obj):
 
 
 def update_articles_view_cache(tag):
-    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    try:
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
-    articles = get_articles(tag)
-    featuredNews = get_featured_articles(articles)
-    r.set(tag, json.dumps([from_es_dto(a) for a in articles]))
-    r.set('featured_%s' % tag, json.dumps(featuredNews))
+        articles = get_articles(tag)
+        featuredNews = get_featured_articles(articles)
+        r.set(tag, json.dumps([from_es_dto(a) for a in articles]))
+        r.set('featured_%s' % tag, json.dumps(featuredNews))
+    except:
+        print_exception()
 
 
 def get_articles(tag):
