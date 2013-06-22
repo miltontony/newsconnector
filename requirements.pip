@@ -14,7 +14,7 @@ lxml
 networkx
 django-subdomains
 python-memcached
--e git+git://github.com/aparo/pyes.git@master#egg=pyes
+-e git+git://github.com/aparo/pyes.git@ed2d69e2c719fcf0bd6354b9a84eb7c075969108#egg=pyes
 redis
 python-levenshtein
 raven
