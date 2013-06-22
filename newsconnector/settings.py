@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'djcelery',
     'gunicorn',
     'newsconnector',
+    'raven.contrib.django.raven_compat',
 )
 
 
@@ -119,4 +120,8 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
     }
+}
+
+RAVEN_CONFIG = {
+    'dsn': 'http://dbd1eb703a204dfdad43fa56e38503c5:9084e7858812477094b6c576c914cfd7@sentry.tonym.co.za/2',
 }

@@ -108,8 +108,7 @@ def from_es_dict_dto(obj):
 
 def print_exception():
     import sys
-    import traceback
+    import logging
+
     exc_type, exc_value, exc_traceback = sys.exc_info()
-    print "Unexpected error:", exc_type
-    print "Unexpected error:", exc_value
-    traceback.print_tb(exc_traceback)
+    logging.error(exc_value, exc_info=True)
