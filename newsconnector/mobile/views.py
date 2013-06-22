@@ -28,9 +28,10 @@ def api_read_more(request, tag):
 
     cat = parse_tag(tag)
 
-    limit = (page - 1) * 40
+    start = (page - 1) * 40
+    stop = page * 40
 
-    articles = store.get_hashed_articles(tag)[limit:]
+    articles = store.get_hashed_articles(tag)[start:stop]
 
     return HttpResponse(json.dumps({
         'articles': [update_date(a) for a in articles],
