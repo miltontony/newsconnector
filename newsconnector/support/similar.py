@@ -39,7 +39,7 @@ def build(tag):
                     a['seen'] = h['hash_key']
                     h['similar'].insert(0, a)
                     h['seen'].append(a['hash_key'])
-                    h = append_related(tag, h, a, 70)
+                    #h = append_related(tag, h, a, 70)
                     seen.append(a['hash_key'])
                     break
                 else:
@@ -52,18 +52,18 @@ def build(tag):
                             a['seen'] = s['hash_key']
                             h['similar'].insert(0, a)
                             h['seen'].append(a['hash_key'])
-                            h = append_related(tag, h, a, 70)
+                            #h = append_related(tag, h, a, 70)
                             seen.append(a['hash_key'])
                             break
             except:
                 print_exception()
-        try:
-            if a['hash_key'] not in seen:
-                a = append_related(tag, a, a, 40)
-                history.append(a)
-                seen.append(a['hash_key'])
-        except:
-            print_exception()
+#        try:
+#            if a['hash_key'] not in seen:
+#                a = append_related(tag, a, a, 40)
+#                history.append(a)
+#                seen.append(a['hash_key'])
+#        except:
+#            print_exception()
 
     try:
         for his in history:
