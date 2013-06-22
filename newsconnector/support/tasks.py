@@ -102,7 +102,7 @@ def get_instance(cls, dictArticle, source):
 
 def rollback_articles(articles, feedModel):
     feedModel.objects.filter(link__in=[a['link']
-                                       for a in articles if not a]).delete()
+                                       for a in articles if a]).delete()
 
 
 def run_tasks(feeds, feedModel):
