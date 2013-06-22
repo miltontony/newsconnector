@@ -11,6 +11,8 @@ conn = ES('127.0.0.1:9200')
 
 
 def get_ratio(a, b):
+    a = a.encode('ascii', 'ignore')
+    b = b.encode('ascii', 'ignore')
     if (a and b and a != '' and b != ''):
         return ratio(a, b)
     return 0
