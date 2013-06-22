@@ -10,6 +10,12 @@ from datetime import date
 conn = ES('127.0.0.1:9200')
 
 
+def get_ratio(a, b):
+    if (a and b and a != '' and b != ''):
+        return ratio(a, b)
+    return 0
+
+
 def build(tag):
     f = TermFilter("tag", tag)
     results = conn.search(Search(filter=f, start=1, size=200),
@@ -23,10 +29,9 @@ def build(tag):
     for a in articles:
         for h in history:
             try:
-                sim_ratio = 0
-                if (h['content'] and a['content'] and h['content'] != '' and a['content'] != ''):
-                    sim_ratio = ratio(h['content'], a['content'])
-                sim_ratio_title = ratio(h['title'], a['title'])
+                sim_ratio = get_ratio(h['content'], a['content'])
+                sim_ratio_title = get_ratio(h['title'], a['title'])
+
                 if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                     a['score'] = max(sim_ratio, sim_ratio_title)
                     a['seen'] = h['hash_key']
@@ -37,10 +42,9 @@ def build(tag):
                     break
                 else:
                     for s in h['similar']:
-                        sim_ratio = 0
-                        if (s['content'] and a['content'] and s['content'] != '' and a['content'] != ''):
-                            sim_ratio = ratio(s['content'], a['content'])
-                        sim_ratio_title = ratio(s['title'], a['title'])
+                        sim_ratio = get_ratio(s['content'], a['content'])
+                        sim_ratio_title = get_ratio(s['title'], a['title'])
+
                         if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
                             a['score'] = max(sim_ratio, sim_ratio_title)
                             a['seen'] = s['hash_key']
