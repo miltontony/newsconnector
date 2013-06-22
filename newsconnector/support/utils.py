@@ -106,9 +106,13 @@ def from_es_dict_dto(obj):
             'keywords': obj.get('keywords')}
 
 
-def print_exception():
-    import sys
-    import logging
+from raven.conf import setup_logging
+from raven.contrib.django.raven_compat.handlers import SentryHandler
+setup_logging(SentryHandler())
+import sys
+import logging
 
+
+def print_exception():
     exc_type, exc_value, exc_traceback = sys.exc_info()
     logging.error(exc_value, exc_info=True)
