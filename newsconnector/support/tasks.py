@@ -116,7 +116,8 @@ def run_tasks(feeds, feedModel):
         print '-- Update Complete --'
     except:
         rollback_articles(new_articles, feedModel)
-        print 'Rolling back: %s (%s)' % (feedModel.__name__, len(new_articles))
+        print 'Rolling back: %s (%s)' % (feedModel.__name__,
+                                         len(list(new_articles)))
         print_exception()
 
     conn.refresh()
