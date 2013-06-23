@@ -124,7 +124,7 @@ CACHES = {
 }
 
 RAVEN_CONFIG = {
-    'dsn': 'http://dbd1eb703a204dfdad43fa56e38503c5:9084e7858812477094b6c576c914cfd7@sentry.tonym.co.za/2',
+    'dsn': 'http://dbd1eb703a204dfdad43fa56e38503c5:9084e7858812477094b6c576c914cfd7@localhost:9000/2',
 }
 
 from raven.conf import setup_logging
