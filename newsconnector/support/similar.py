@@ -57,13 +57,13 @@ def build(tag):
                             break
             except:
                 print_exception()
-#        try:
-#            if a['hash_key'] not in seen:
-#                a = append_related(tag, a, a, 40)
-#                history.append(a)
-#                seen.append(a['hash_key'])
-#        except:
-#            print_exception()
+
+        try:
+            if a['hash_key'] not in seen:
+                history.append(a)
+                seen.append(a['hash_key'])
+        except:
+            print_exception()
 
     try:
         for his in history:
