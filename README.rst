@@ -39,6 +39,12 @@ Getting it running
     ./manage.py loaddata fixtures/*
     ./manage.py collectstatic --noinput
 
+#. Update rss database::
+
+    ./manage.py shell
+    from newsconnector.support.tasks import update_feeds
+    update_feeds()
+
 #. Run app::
 
     ./manage.py runserver
