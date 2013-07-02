@@ -23,7 +23,7 @@ Getting it running
     
 #. Clone the repo + virtual environment::
 
-    git clone git://github.com/miltontony/newsconnector.git
+    git clone git@github.com:miltontony/newsconnector.git
     cd newsconnector
     virtualenv --no-site-packages ve
     source ve/bin/activate
