@@ -18,14 +18,7 @@ def get_ratio(a, b):
     return 0
 
 
-def build(tag):
-    f = TermFilter("tag", tag)
-    results = conn.search(Search(filter=f, start=1, size=200),
-                          indexes=["newsworld"],
-                          sort='date:desc')
-    results.count()
-    articles = [from_es_dto(a) for a in results]
-
+def build_similar(articles):
     history = []
     seen = []
     for a in articles:
@@ -70,6 +63,18 @@ def build(tag):
             his['similar'] = sorted(his['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
     except:
         print_exception()
+    return history
+
+
+def build(tag):
+    f = TermFilter("tag", tag)
+    results = conn.search(Search(filter=f, start=1, size=200),
+                          indexes=["newsworld"],
+                          sort='date:desc')
+    results.count()
+    articles = [from_es_dto(a) for a in results]
+
+    history = build_similar(articles)
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
