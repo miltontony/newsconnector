@@ -19,9 +19,9 @@ def reload():
         run('kill -HUP `cat tmp/pids/newsconnector*.pid`')
 
 
-def deploy():
+def restart():
     with cd(env.path):
-        run('git pull')
         run('sudo supervisorctl stop celery')
         run('ve/bin/python %(path)s/newsconnector/manage.py celery purge' % env)
+        run("kill -9 `ps aux | grep celery | awk -F' ' '{print $2.}'`")
         run('sudo supervisorctl restart all')
