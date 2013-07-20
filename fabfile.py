@@ -23,5 +23,5 @@ def restart():
     with cd(env.path):
         run('sudo supervisorctl stop celery')
         run('ve/bin/python %(path)s/newsconnector/manage.py celery purge' % env)
-        run('./kill_celery.sh')
+        run('%(path)s/kill_celery.sh' % env)
         run('sudo supervisorctl restart all')
