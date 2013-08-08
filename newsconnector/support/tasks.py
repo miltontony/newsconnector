@@ -4,6 +4,7 @@ from newsconnector.support.utils import *
 from newsconnector.support import similar
 
 from django.utils.hashcompat import md5_constructor
+from django.core.cache import cache
 from time import mktime
 from datetime import datetime, date
 
@@ -14,13 +15,33 @@ import lxml.html
 from pyes import *
 import json
 import redis
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
+SYSTEM_STATE_KEY = 'system_state_key'
+TASK_ID_KEY = 'updatefeeds_task_key'
 
 conn = ES('127.0.0.1:9200')
+
+def stop_task():
+    from celery import current_app as celery
+    task_id = r.get(TASK_ID_KEY)
+    if task_id:
+        celery.control.revoke(task_id, terminate=True, signal='SIGKILL')
+
+def must_start_update():
+    if not cache.get(SYSTEM_STATE_KEY):
+        stop_task()
+        cache.set(SYSTEM_STATE_KEY, 1, 1800)
+        return True
+    return False
 
 
 @task(ignore_result=True)
 def update_feeds():
+    if not must_start_update():
+        return
+    r.set(TASK_ID_KEY, update_feeds.request.id)
+
     news_feeds = [(feed.url, feed.name)
                   for feed in NewsFeed.objects.all()]
     sports_feeds = [(feed.url, feed.name)

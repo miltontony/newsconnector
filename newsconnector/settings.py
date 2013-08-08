@@ -12,7 +12,7 @@ from datetime import timedelta
 CELERYBEAT_SCHEDULE = {
     'update-feed-articles': {
         'task': 'newsconnector.support.tasks.update_feeds',
-        'schedule': timedelta(minutes=30),
+        'schedule': timedelta(seconds=60),
     },
 }
 CELERY_TIMEZONE = 'UTC'
