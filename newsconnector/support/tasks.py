@@ -17,6 +17,9 @@ import json
 import redis
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
+import logging
+logger = logging.getLogger(__name__)
+
 SYSTEM_STATE_KEY = 'system_state_key'
 TASK_ID_KEY = 'updatefeeds_task_key'
 
@@ -27,13 +30,13 @@ def stop_task():
     task_id = r.get(TASK_ID_KEY)
     if task_id:
         celery.control.revoke(task_id, terminate=True, signal='SIGKILL')
-        print 'Killed: [%s]' % task_id
+        logger.info('Killed: [%s]' % task_id)
 
 def must_start_update():
     if not cache.get(SYSTEM_STATE_KEY):
         stop_task()
         return True
-    print 'Update skipped..'
+    logger.info('Update skipped..')
     return False
 
 
@@ -130,18 +133,18 @@ def rollback_articles(articles, feedModel):
 
 
 def run_tasks(feeds, feedModel):
-    print '-- Update Started: %s --' % feedModel.__name__
-    print 'Fetching RSS feeds.'
+    logger.info('-- Update Started: %s --' % feedModel.__name__)
+    logger.info('Fetching RSS feeds.')
     new_articles = get_new_articles(feeds, feedModel)
 
     try:
         update_articles(new_articles)
-        print 'Article update complete.'
-        print '-- Update Complete --'
+        logger.info('Article update complete.')
+        logger.info('-- Update Complete --')
     except:
         rollback_articles(new_articles, feedModel)
-        print 'Rolling back: %s (%s)' % (feedModel.__name__,
-                                         len(list(new_articles)))
+        logger.info('Rolling back: %s (%s)' % (feedModel.__name__,
+                                         len(list(new_articles))))
         print_exception()
 
     conn.refresh()
