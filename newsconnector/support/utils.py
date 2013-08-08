@@ -111,8 +111,9 @@ from raven.contrib.django.raven_compat.handlers import SentryHandler
 setup_logging(SentryHandler())
 import sys
 import logging
+logger = logging.getLogger(__name__)
 
 
 def print_exception():
     exc_type, exc_value, exc_traceback = sys.exc_info()
-    logging.error(exc_value, exc_info=True)
+    logger.error(exc_value, exc_info=True)
