@@ -109,6 +109,11 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'raven.contrib.django.handlers.SentryHandler',
         },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
     },
     'loggers': {
         'django.request': {
