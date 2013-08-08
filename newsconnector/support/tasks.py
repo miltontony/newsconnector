@@ -27,12 +27,14 @@ def stop_task():
     task_id = r.get(TASK_ID_KEY)
     if task_id:
         celery.control.revoke(task_id, terminate=True, signal='SIGKILL')
+        print 'Killed: [%s]' % task_id
 
 def must_start_update():
     if not cache.get(SYSTEM_STATE_KEY):
         stop_task()
         cache.set(SYSTEM_STATE_KEY, 1, 1800)
         return True
+    print 'Update skipped..'
     return False
 
 
