@@ -25,6 +25,6 @@ def restart():
         run('ve/bin/python %(path)s/newsconnector/manage.py celery purge' % env)
 
     with settings(warn_only=True):
-        run('%(path)s/kill_celery.sh' % env)
+        run('%(path)s/kill_workers.sh' % env)
 
     sudo('supervisorctl restart all')
