@@ -88,7 +88,7 @@ def update_feeds(force=False):
 
 def get_image_url(links):
     for link in links:
-        if(link.type == 'image/jpeg'):
+        if hasattr(link, 'type') and link.type == 'image/jpeg':
             return link.href
     return ''
 
