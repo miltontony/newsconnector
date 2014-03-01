@@ -1,7 +1,7 @@
 <div class="span6 featured-articles">
     <h4 class="well well-small">Trending Today</h4>
     {% for x in articles %}
-    {% with related=x.articles %}
+    {% with related=x.similar %}
 
     <div class="row">
     <div class="box span6">
@@ -11,7 +11,7 @@
     <div class="box-content">
         <div class="span3">
         <ul>
-        {% for s in related %}
+        {% for s in related|slice:":5" %}
         {% if not s == related.0 %}
         <li><a target="_blank" href="{{s.link}}">{{s.title}}</a></li>
         {% endif %}

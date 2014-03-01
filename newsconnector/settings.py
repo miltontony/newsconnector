@@ -48,7 +48,7 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-ROOT_URLCONF = 'newsconnector.urls.read'
+ROOT_URLCONF = 'newsconnector.urls'
 LOGIN_URL = '/admin/'
 
 MEDIA_ROOT = abspath('media')
@@ -160,3 +160,8 @@ from raven.conf import setup_logging
 from raven.contrib.django.raven_compat.handlers import SentryHandler
 
 setup_logging(SentryHandler())
+
+try:
+    from newsconnector.local_settings import *
+except:
+    pass

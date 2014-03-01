@@ -23,7 +23,7 @@ def parse_tag(tag):
     return cat
 
 
-def api_read_more(request, tag):
+def articles(request, tag):
     page = int(request.GET.get('page', 1))
 
     cat = parse_tag(tag)
@@ -31,7 +31,7 @@ def api_read_more(request, tag):
     start = (page - 1) * 40
     stop = page * 40
 
-    articles = store.get_hashed_articles(tag)[start:stop]
+    articles = store.get_articles(tag)[start:stop]
 
     return HttpResponse(json.dumps({
         'articles': [update_date(a) for a in articles],
@@ -41,7 +41,7 @@ def api_read_more(request, tag):
     )
 
 
-def api_get_headlines(request, tag):
+def headlines(request, tag):
     cat = parse_tag(tag)
 
     articles = store.get_headlines(tag)
@@ -54,7 +54,7 @@ def api_get_headlines(request, tag):
     )
 
 
-def api_get_all_headlines(request):
+def headlines_all(request):
     news = store.get_headlines('NewsArticle')[:3]
     sports = store.get_headlines('SportsArticle')[:3]
     finance = store.get_headlines('FinanceArticle')[:3]
@@ -70,7 +70,7 @@ def api_get_all_headlines(request):
     )
 
 
-def api_get_international_headlines(request):
+def iheadlines_all(request):
     news = store.get_headlines('INewsArticle')[:3]
     sports = store.get_headlines('ISportsArticle')[:3]
     entertainment = store.get_headlines('EntertainmentArticle')[:3]
