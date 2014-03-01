@@ -67,7 +67,7 @@ def build_similar(articles):
 
 
 def build(tag):
-    f = TermFilter("tag", tag)
+    f = TermFilter("tag", tag.lower())
     results = conn.search(Search(filter=f, start=1, size=200),
                           indexes=["newsworld"],
                           sort='date:desc')

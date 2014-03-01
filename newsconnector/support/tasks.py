@@ -80,6 +80,15 @@ def update_feeds(force=False):
     similar.build('ISportsArticle')
 
 
+def build_similar():
+    similar.build('NewsArticle')
+    similar.build('SportsArticle')
+    similar.build('FinanceArticle')
+    similar.build('EntertainmentArticle')
+    similar.build('INewsArticle')
+    similar.build('ISportsArticle')
+
+
 def get_image_url(links):
     for link in links:
         if hasattr(link, 'type') and link.type == 'image/jpeg':
@@ -142,7 +151,7 @@ def run_tasks(feeds, feedModel):
             len(list(new_articles))))
         print_exception()
 
-    conn.refresh()
+    conn.indices.refresh('newsworld')
 
 
 def get_new_articles(feeds, feedModel):

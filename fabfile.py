@@ -1,7 +1,7 @@
 from fabric.api import *
 
 env.path = '/var/sites/newsconnector'
-env.hosts = ['ubuntu@23.21.46.126']
+env.hosts = ['ubuntu@newsworld.co.za']
 
 
 def push():
