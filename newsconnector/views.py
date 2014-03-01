@@ -88,7 +88,7 @@ def read_more(request, tag):
         return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
 
-    f = TermFilter("tag", tag)
+    f = TermFilter("tag", tag.lower())
     results = conn.search(Search(filter=f, start=(page - 1) * 20, size=20),\
                         indexes=["newsworld"],
                         sort='date:desc')
