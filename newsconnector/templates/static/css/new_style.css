@@ -31,6 +31,16 @@
     background: 0 -2px url(../images/similar_circle.png) no-repeat;
 }
 
+.article-footer .similar-0{
+    background: 0 -2px url(../images/similar_circle_0.png) no-repeat;
+}
+.article-footer .similar-1{
+    background: 0 -2px url(../images/similar_circle_1.png) no-repeat;
+}
+.article-footer .similar-2{
+    background: 0 -2px url(../images/similar_circle_2.png) no-repeat;
+}
+
 .article-footer{
     margin-bottom: 15px;
 }

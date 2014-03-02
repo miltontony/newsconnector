@@ -146,6 +146,11 @@ CACHES = {
     }
 }
 
+from raven.conf import setup_logging
+from raven.contrib.django.raven_compat.handlers import SentryHandler
+
+setup_logging(SentryHandler())
+
 try:
     from newsconnector.local_settings import *
 except:
