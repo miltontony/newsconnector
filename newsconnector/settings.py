@@ -15,7 +15,7 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(seconds=60),
     },
 }
-#CELERY_TIMEZONE = 'UTC'
+CELERY_TIMEZONE = 'America/New_York'
 CELERY_IMPORTS = ("newsconnector.support.tasks",)
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_REDIRECT_STDOUTS = False
