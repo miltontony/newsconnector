@@ -26,7 +26,7 @@ $(function(){
         nextSelector : "#tabs-news div.read-more-cont a.read-more",
         itemSelector : "div.article",
         msgText: "<em>Loading more stories...</em>",
-        behavior: 'local',
+        behavior: 'local'
         //debug: true,
     };
 
@@ -43,4 +43,19 @@ $(function(){
     opts.navSelector = "#tabs-entertainment div.read-more-cont a.read-more";
     opts.nextSelector = "#tabs-entertainment div.read-more-cont a.read-more";
     $('#tabs-entertainment .articles').infinitescroll(opts);
+
+    $('.articles').on('click', '.view-similar', function(event){
+        event.preventDefault();
+        var id = $(this).attr('rel');
+        $(this).hide();
+        $("#"+id+" .article-similar").slideDown();
+        $("#"+id+" .hide-similar").show();
+    });
+    $('.articles').on('click', '.hide-similar', function(event){
+        event.preventDefault();
+        var id = $(this).attr('rel');
+        $(this).hide();
+        $("#"+id+" .article-similar").fadeOut();
+        $("#"+id+" .view-similar").show();
+    });
 });

@@ -19,6 +19,13 @@ def reload():
         run('kill -HUP `cat tmp/pids/newsconnector*.pid`')
 
 
+def deploy():
+    push()
+    static()
+    with cd(env.path):
+        run('kill -HUP `cat tmp/pids/newsconnector*.pid`')
+
+
 def restart():
     with cd(env.path):
         sudo('supervisorctl stop celery')

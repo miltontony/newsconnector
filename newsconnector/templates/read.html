@@ -18,9 +18,7 @@ newsworld = {
     <div class="tab-pane active" id="tabs-news">
     		<div class="span6 articles">
                 <h4 class="well well-small">Latest News</h4>
-    		{% for n in news %}
-    		{%	include "article_block.html" with article=n %}
-    		{% endfor %}
+    		{%	include "article_block.html" with articles=news %}
 
     		{% include "read_more_block.html" with tag='NewsArticle' %}
     		</div>
@@ -30,9 +28,7 @@ newsworld = {
     <div class="tab-pane" id="tabs-finance">
     	<div class="span6 articles">
             <h4 class="well well-small">Latest Finanical News</h4>
-    	{% for n in finance %}
-    	{% include "article_block.html" with article=n section_index=3 %}
-    	{% endfor %}
+    	{% include "article_block.html" with articles=finance section_index=3 %}
 
     	{% include "read_more_block.html" with tag='FinanceArticle' %}
     	</div>
@@ -42,9 +38,7 @@ newsworld = {
     <div class="tab-pane" id="tabs-sports">
     	<div class="span6 articles">
             <h4 class="well well-small">Latest Sports News</h4>
-    	{% for n in sports %}
-    	{% include "article_block.html" with article=n section_index=2 %}
-    	{% endfor %}
+    	{% include "article_block.html" with articles=sports section_index=2 %}
 
     	{% include "read_more_block.html" with tag='SportsArticle' %}
     	</div>
@@ -54,9 +48,7 @@ newsworld = {
     <div class="tab-pane" id="tabs-entertainment">
     	<div class="span6 articles">
             <h4 class="well well-small">Latest E! News</h4>
-    	{% for n in entertainment %}
-    	{% include "article_block.html" with article=n section_index=4 %}
-    	{% endfor %}
+    	{% include "article_block.html" with articles=entertainment section_index=4 %}
 
     	{% include "read_more_block.html" with tag='EntertainmentArticle' %}
     	</div>

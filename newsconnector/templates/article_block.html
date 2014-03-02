@@ -1,4 +1,5 @@
-<div class="media article">
+{% for article in articles %}
+<div class="media article" id="{{article.hash_key}}">
   <a class="pull-left" target="_blank" href="{{article.link}}">
     {% if article.image_url %}
     <img src="{{article.image_url}}" width="64px"/>
@@ -13,6 +14,19 @@
     <div class="article-footer">
         {{article.date|timesince}} ago |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+        <span class="similar">{{article.similar|length}}</span>
+        {% if article.similar %}
+        <a href="#" rel='{{article.hash_key}}' class="view-similar">&darr; view similar</a>
+        <a href="#" rel='{{article.hash_key}}' class="hide-similar">&uarr; hide similar</a>
+        {% endif %}
     </div>
+    {% for a in article.similar %}
+    <div class="article-similar">
+        <strong>{{a.title}}</strong><br/>
+        <div>{{a.content}}</div>
+        <div><a href="{{a.link}}">{{a.source}}</a></div>
+    </div>
+    {% endfor %}
   </div>
 </div>
+{% endfor %}

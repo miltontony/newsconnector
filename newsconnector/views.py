@@ -95,4 +95,4 @@ def read_more(request, tag):
         return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
 
-    return render(request, 'readmore_articles.html', {'articles': articles})
+    return render(request, 'article_block.html', {'articles': articles})
