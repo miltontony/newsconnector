@@ -52,7 +52,6 @@ def featured_articles(tag):
 
 
 def read(request):
-    print store.get_articles('NewsArticle')[0]
     return render(
         request,
         'read.html',
