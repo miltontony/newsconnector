@@ -22,7 +22,7 @@ def reload():
 def restart():
     with cd(env.path):
         sudo('supervisorctl stop celery')
-        run('ve/bin/python %(path)s/newsconnector/manage.py celery purge' % env)
+        run('ve/bin/python %(path)s/newsconnector/manage.py celery purge -f' % env)
 
     with settings(warn_only=True):
         run('%(path)s/kill_workers.sh' % env)

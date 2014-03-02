@@ -46,8 +46,5 @@ urlpatterns = patterns('',
     url(r'^entertainment/search/$',
         views.search,
         {'articleModel': EntertainmentArticle},
-        name='entertainment_search', ),
-
-    url(r'^related/(?P<pk>\w{32})/$',
-        views.related, name='related', ),
+        name='entertainment_search', )
 )

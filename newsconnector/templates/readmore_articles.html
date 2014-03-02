@@ -12,14 +12,8 @@
     {{article.content}}
 
     <div class="article-footer">
-        {{article.date}} |
+        {{article.date|timesince}} ago |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
-        <span class="related-link-ie">| <a target="_blank" href="{% url related article.hash_key %}">View Related</a></span>
-    </div>
-
-    <div class="overlay">
-        <a class="goto" target="_blank" href="{{article.link}}">{{article.source}}</a>
-        <a class="related-button" target="_blank" href="{% url related article.hash_key %}">View Related</a>
     </div>
   </div>
 </div>

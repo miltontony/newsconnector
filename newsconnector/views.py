@@ -52,18 +52,20 @@ def featured_articles(tag):
 
 
 def read(request):
-    return render(request,
-            'read.html',
-            {
-             'news': store.get_articles('NewsArticle'),
-             'sports': store.get_articles('SportsArticle'),
-             'finance': store.get_articles('FinanceArticle'),
-             'entertainment': store.get_articles('EntertainmentArticle'),
-             'featuredNews': store.get_headlines('NewsArticle'),
-             'featuredSports': store.get_headlines('SportsArticle'),
-             'featuredFinance': store.get_headlines('FinanceArticle'),
-             'featuredEntertainment': store.get_headlines('EntertainmentArticle'),
-             })
+    print store.get_articles('NewsArticle')[0]
+    return render(
+        request,
+        'read.html',
+        {
+            'news': store.get_articles('NewsArticle')[:20],
+            'sports': store.get_articles('SportsArticle')[:20],
+            'finance': store.get_articles('FinanceArticle')[:20],
+            'entertainment': store.get_articles('EntertainmentArticle')[:20],
+            'featuredNews': store.get_headlines('NewsArticle'),
+            'featuredSports': store.get_headlines('SportsArticle'),
+            'featuredFinance': store.get_headlines('FinanceArticle'),
+            'featuredEntertainment': store.get_headlines('EntertainmentArticle'),
+        })
 
 
 def read_json(request):
@@ -84,46 +86,13 @@ def read_json(request):
 def read_more(request, tag):
     page = int(request.GET.get('page', 1))
 
+    start = (page - 1) * 40
+    stop = page * 40
+
+    articles = store.get_articles(tag)[start:stop]
+
     if not page:
         return HttpResponse(json.dumps({'error': 'page not selected'}),
                             mimetype='application/json')
 
-    f = TermFilter("tag", tag.lower())
-    results = conn.search(Search(filter=f, start=(page - 1) * 20, size=20),\
-                        indexes=["newsworld"],
-                        sort='date:desc')
-    results.count()
-    return render(request, 'readmore_articles.html', {'articles': [from_es_dto(a) for a in results]})
-
-
-def related(request, pk):
-    f = TermFilter("hash_key", pk)
-    s = Search(filter=f, start=0, size=1)
-    results = conn.search(s, indexes=["newsworld"])
-    articles = None
-    article = None
-    for r in results:
-        article = r
-        q = TermsQuery("keywords", r.keywords)
-        articles = conn.search(Search(q, start=0, size=11),\
-                                indexes=["newsworld"],
-                                sort='_score,date:desc')
-        break
-
-    n_articles = []
-
-    try:
-        if len(list(articles)) > 0:
-            max_score = articles[0]._meta.score
-
-            for a in articles:
-                if a.hash_key == pk:
-                    continue
-                a.score = (a._meta.score / max_score) * 100
-                n_articles.append(from_es_dto(a))
-    except:
-        pass
-
-    data = {'articles': n_articles,
-            'article': from_es_dto(article)}
-    return render(request, 'related.html', data)
+    return render(request, 'readmore_articles.html', {'articles': articles})
