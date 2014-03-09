@@ -8,10 +8,14 @@ from time import mktime
 from datetime import datetime
 
 from celery.task import task
+from goose import Goose
 
 import feedparser
 import lxml.html
 from pyes import *
+from pyes.queryset import generate_model
+ArticleModel = generate_model("newsworld", "article")
+
 import redis
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -78,6 +82,25 @@ def update_feeds(force=False):
 
     run_tasks(isports_feeds, ISportsArticle)
     similar.build('ISportsArticle')
+
+
+@task(ignore_result=True)
+def scrape_articles():
+    articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
+    count = 0
+    for article in articles:
+        try:
+            g = Goose()
+            goosed = g.extract(url=article.link)
+            article.fulltext = goosed.cleaned_text
+            article.save()
+            print '[scraped] ', article.title
+            count += 1
+        except:
+            print '[scrapper] [error] Unable to scrape ', article.title
+
+        if count >= 100:
+            break
 
 
 def build_similar():
@@ -160,8 +183,22 @@ def get_new_articles(feeds, feedModel):
             yield get_instance(feedModel, entry, source)
 
 
+def scrape_article(article):
+    try:
+        g = Goose()
+        goosed = g.extract(url=article['link'])
+        article['fulltext'] = goosed.cleaned_text
+        logger.info('[scraped] ' + article['title'])
+    except:
+        logger.error(
+            '[scrapper] [error] Unable to scrape %s' % article['title'],
+            exc_info=True)
+    return article
+
+
 def index_articles(articles_list):
     for art in articles_list:
         if not art:
             continue
+        art = scrape_article(art)
         conn.index(art, 'newsworld', 'article')
