@@ -94,10 +94,10 @@ def scrape_articles():
             goosed = g.extract(url=article.link)
             article.fulltext = goosed.cleaned_text
             article.save()
-            print '[scraped] ', article.title
+            print '[scraped] ', article.title.encode('ascii', 'ignore')
             count += 1
         except:
-            print '[scrapper] [error] Unable to scrape ', article.title
+            print '[scrapper] [error] Unable to scrape ', article.title.encode('ascii', 'ignore')
 
         if count >= 100:
             break
@@ -188,10 +188,10 @@ def scrape_article(article):
         g = Goose()
         goosed = g.extract(url=article['link'])
         article['fulltext'] = goosed.cleaned_text
-        logger.info('[scraped] ' + article['title'])
+        logger.info('[scraped] ' + article['title'].encode('ascii', 'ignore'))
     except:
         logger.error(
-            '[scrapper] [error] Unable to scrape %s' % article['title'],
+            '[scrapper] [error] Unable to scrape %s' % article['title'].encode('ascii', 'ignore'),
             exc_info=True)
     return article
 
