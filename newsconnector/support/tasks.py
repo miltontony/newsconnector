@@ -85,7 +85,7 @@ def update_feeds(force=False):
 
 
 @task(ignore_result=True)
-def scrape_articles():
+def scrape_articles(limit=100):
     articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
     count = 0
     for article in articles:
@@ -99,7 +99,7 @@ def scrape_articles():
         except:
             print '[scrapper] [error] Unable to scrape ', article.link
 
-        if count >= 100:
+        if limit and count >= limit:
             break
 
 
