@@ -14,6 +14,14 @@ CELERYBEAT_SCHEDULE = {
         'task': 'newsconnector.support.tasks.update_feeds',
         'schedule': timedelta(seconds=60),
     },
+    'update-redis-articles': {
+        'task': 'newsconnector.support.tasks.build_similar',
+        'schedule': timedelta(minutes=5),
+    },
+    'scrape-100-articles': {
+        'task': 'newsconnector.support.tasks.scrape_articles',
+        'schedule': timedelta(minutes=42),
+    },
 }
 CELERY_TIMEZONE = 'Africa/Johannesburg'
 CELERY_IMPORTS = ("newsconnector.support.tasks",)
@@ -83,6 +91,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'newsconnector',
     'raven.contrib.django.raven_compat',
+    'raven.contrib.django.celery',
 )
 
 
