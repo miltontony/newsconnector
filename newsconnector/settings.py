@@ -8,26 +8,6 @@ djcelery.setup_loader()
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
-from datetime import timedelta
-CELERYBEAT_SCHEDULE = {
-    'update-feed-articles': {
-        'task': 'newsconnector.support.tasks.update_feeds',
-        'schedule': timedelta(seconds=60),
-    },
-    'update-redis-articles': {
-        'task': 'newsconnector.support.tasks.build_similar',
-        'schedule': timedelta(minutes=5),
-    },
-    'scrape-100-articles': {
-        'task': 'newsconnector.support.tasks.scrape_articles',
-        'schedule': timedelta(minutes=42),
-    },
-}
-TIME_ZONE = CELERY_TIMEZONE = 'UTC'
-CELERY_IMPORTS = ("newsconnector.support.tasks",)
-CELERY_RESULT_BACKEND = "amqp"
-CELERY_REDIRECT_STDOUTS = False
-
 
 def abspath(*args):
     """convert relative paths to absolute paths relative to PROJECT_ROOT"""
@@ -49,6 +29,7 @@ DATABASES = {
     }
 }
 
+TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = True
