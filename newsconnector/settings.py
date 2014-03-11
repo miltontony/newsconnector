@@ -23,7 +23,7 @@ CELERYBEAT_SCHEDULE = {
         'schedule': timedelta(minutes=42),
     },
 }
-CELERY_TIMEZONE = 'Africa/Johannesburg'
+TIME_ZONE = CELERY_TIMEZONE = 'UTC'
 CELERY_IMPORTS = ("newsconnector.support.tasks",)
 CELERY_RESULT_BACKEND = "amqp"
 CELERY_REDIRECT_STDOUTS = False
@@ -34,22 +34,21 @@ def abspath(*args):
     return os.path.join(PROJECT_ROOT, *args)
 
 ADMINS = (
-     ('Milton', 'madandat@gmail.com'),
+    ('Milton', 'madandat@gmail.com'),
 )
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'news',                      # Or path to database file if using sqlite3.
-        'USER': 'news',                      # Not used with sqlite3.
-        'PASSWORD': 'news',                  # Not used with sqlite3.
-        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'news',
+        'USER': 'news',
+        'PASSWORD': 'news',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
-TIME_ZONE = 'Africa/Johannesburg'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
 USE_I18N = True
