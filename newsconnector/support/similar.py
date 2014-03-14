@@ -67,18 +67,18 @@ def build_similar(articles):
                     #h = append_related(tag, h, a, 70)
                     seen.append(a['hash_key'])
                     break
-                else:
-                    for s in h['similar']:
-                        sim_ratio = get_fuzzy_ratio(s, a)
+                #else:
+                #    for s in h['similar']:
+                #        sim_ratio = get_fuzzy_ratio(s, a)
 
-                        if sim_ratio >= 70 and a['hash_key'] not in h['seen']:
-                            a['score'] = sim_ratio
-                            a['seen'] = s['hash_key']
-                            h['similar'].insert(0, a)
-                            h['seen'].append(a['hash_key'])
-                            #h = append_related(tag, h, a, 70)
-                            seen.append(a['hash_key'])
-                            break
+                #        if sim_ratio >= 70 and a['hash_key'] not in h['seen']:
+                #            a['score'] = sim_ratio
+                #            a['seen'] = s['hash_key']
+                #            h['similar'].insert(0, a)
+                #            h['seen'].append(a['hash_key'])
+                #            #h = append_related(tag, h, a, 70)
+                #            seen.append(a['hash_key'])
+                #            break
             except:
                 print_exception()
 
@@ -110,6 +110,7 @@ def build(tag):
     articles = [from_es_dto(a) for a in results]
 
     history = build_similar(articles)
+    print '[similar] correlated %s articles for %s' % (len(history), tag)
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     r.set('similar_%s' % tag, json.dumps(history))
