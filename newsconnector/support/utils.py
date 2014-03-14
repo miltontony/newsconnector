@@ -1,8 +1,5 @@
 from datetime import date, timedelta, datetime
 
-import re
-from django.db.models import Q
-
 
 def found_string(str1, str2):
     return ' ' + str1 + ' ' in ' ' + str2 + ' '
@@ -18,43 +15,6 @@ def get_max_date(max_date):
     max = datetime.fromtimestamp(int(max_date) / 1000.0).date()
     max = datetime(max.year, max.month, max.day, 23, 59, 59)
     return max
-
-
-def normalize_query(query_string,
-          findterms=re.compile(r'"([^"]+)"|(\S+)').findall,
-          normspace=re.compile(r'\s{2,}').sub):
-    ''' Splits the query string in invidual keywords, getting rid of unecessary
-    spaces and grouping quoted words together.
-    Example:
-
-    >>> normalize_query('  some random  words "with   quotes  " and   spaces')
-    ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
-
-  '''
-    return [normspace(' ', (t[0] or t[1]).strip())\
-                for t in findterms(query_string)]
-
-
-def get_query(query_string, search_fields):
-    ''' Returns a query, that is a combination of Q objects. That combination
-    aims to search keywords within a model by testing the given search fields.
-
-  '''
-    query = None  # Query to search for every search term
-    terms = normalize_query(query_string)
-    for term in terms:
-        or_query = None  # Query to search for a given term in each field
-        for field_name in search_fields:
-            q = Q(**{"%s__icontains" % field_name: ' ' + term + ' '})
-            if or_query is None:
-                or_query = q
-            else:
-                or_query = or_query | q
-    if query is None:
-        query = or_query
-    else:
-        query = query & or_query
-    return query
 
 
 def delete_old_data():
@@ -81,6 +41,7 @@ def from_es_dto(obj):
             'link': obj.link,
             'content': truncatewords(obj.content, 50),
             'source': obj.source,
+            'fulltext': obj.fulltext if hasattr(obj, 'fulltext') else '',
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
             'date': '%s ago' % timesince(obj.date),
@@ -100,6 +61,7 @@ def from_es_dict_dto(obj):
             'link': obj.get('link'),
             'content': truncatewords(obj.get('content'), 50),
             'source': obj.get('source'),
+            'fulltext': obj.get('fulltext', ''),
             'image_url': obj.get('image_url'),
             'hash_key': obj.get('hash_key'),
             'date': '%s ago' % timesince(obj.get('date')),
