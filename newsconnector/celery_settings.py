@@ -6,10 +6,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'newsconnector.support.tasks.update_feeds',
         'schedule': timedelta(seconds=60),
     },
-    'update-redis-articles': {
-        'task': 'newsconnector.support.tasks.build_similar',
-        'schedule': timedelta(minutes=5),
-    },
+    #'update-redis-articles': {
+    #    'task': 'newsconnector.support.tasks.build_similar',
+    #    'schedule': timedelta(minutes=5),
+    #},
     'scrape-100-articles': {
         'task': 'newsconnector.support.tasks.scrape_articles',
         'schedule': timedelta(minutes=42),

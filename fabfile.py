@@ -14,7 +14,7 @@ def static():
         run('ve/bin/python %(path)s/newsconnector/manage.py collectstatic --noinput' % env)
 
 
-def reload():
+def reload_g():
     with cd(env.path):
         run('kill -HUP `cat tmp/pids/newsconnector*.pid`')
 
@@ -22,8 +22,7 @@ def reload():
 def deploy():
     push()
     static()
-    with cd(env.path):
-        run('kill -HUP `cat tmp/pids/newsconnector*.pid`')
+    reload_g()
 
 
 def restart():

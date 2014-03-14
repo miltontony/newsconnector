@@ -66,11 +66,22 @@ def update_feeds(force=False):
                      for feed in ISportsFeed.objects.all()]
 
     run_tasks(news_feeds, NewsArticle)
+    build_similar.delay('NewsArticle')
+
     run_tasks(sports_feeds, SportsArticle)
+    build_similar.delay('SportsArticle')
+
     run_tasks(fin_feeds, FinanceArticle)
+    build_similar.delay('FinanceArticle')
+
     run_tasks(e_feeds, EntertainmentArticle)
+    build_similar.delay('EntertainmentArticle')
+
     run_tasks(inews_feeds, INewsArticle)
+    build_similar.delay('INewsArticle')
+
     run_tasks(isports_feeds, ISportsArticle)
+    build_similar.delay('ISportsArticle')
 
 
 @task(ignore_result=True)
@@ -93,7 +104,10 @@ def scrape_articles(limit=100):
 
 
 @task(ignore_result=True)
-def build_similar():
+def build_similar(tag=None):
+    if tag:
+        return similar.build(tag)
+
     similar.build('NewsArticle')
     similar.build('SportsArticle')
     similar.build('FinanceArticle')
