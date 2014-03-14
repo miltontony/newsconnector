@@ -6,6 +6,7 @@ from pyes import (ES, TermFilter, TermsQuery, Search, BoolQuery, FilteredQuery,
                   RangeFilter)
 from Levenshtein import ratio
 from datetime import datetime, date, timedelta
+from fuzzywuzzy import fuzz
 
 conn = ES('127.0.0.1:9200')
 
@@ -14,11 +15,31 @@ logger = logging.getLogger(__name__)
 
 
 def get_ratio(a, b):
-    a = a.encode('ascii', 'ignore')
-    b = b.encode('ascii', 'ignore')
-    if (a and b and a != '' and b != ''):
-        return ratio(a, b)
-    return 0
+    content_ratio = ratio(
+        a['content'].encode('ascii', 'ignore'),
+        b['content'].encode('ascii', 'ignore')
+    )
+    text_ratio = ratio(
+        a['fulltext'].encode('ascii', 'ignore'),
+        b['fulltext'].encode('ascii', 'ignore')
+    )
+    title_ratio = ratio(
+        a['title'].encode('ascii', 'ignore'),
+        b['title'.encode('ascii', 'ignore')]
+    )
+    return max(content_ratio, text_ratio, title_ratio)
+
+
+def get_fuzzy_ratio(art1, art2):
+    content_ratio = fuzz.token_set_ratio(
+        art1['content'].encode('ascii', 'ignore'),
+        art2['content'].encode('ascii', 'ignore')
+    )
+    text_ratio = fuzz.token_set_ratio(
+        art1['fulltext'].encode('ascii', 'ignore'),
+        art2['fulltext'].encode('ascii', 'ignore')
+    )
+    return max(content_ratio, text_ratio)
 
 
 def build_similar(articles):
@@ -27,11 +48,10 @@ def build_similar(articles):
     for a in articles:
         for h in history:
             try:
-                sim_ratio = get_ratio(h['content'], a['content'])
-                sim_ratio_title = get_ratio(h['title'], a['title'])
+                sim_ratio = get_fuzzy_ratio(h, a)
 
-                if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
-                    a['score'] = max(sim_ratio, sim_ratio_title)
+                if sim_ratio >= 70 and a['hash_key'] not in h['seen']:
+                    a['score'] = sim_ratio
                     a['seen'] = h['hash_key']
                     h['similar'].insert(0, a)
                     h['seen'].append(a['hash_key'])
@@ -40,11 +60,10 @@ def build_similar(articles):
                     break
                 else:
                     for s in h['similar']:
-                        sim_ratio = get_ratio(s['content'], a['content'])
-                        sim_ratio_title = get_ratio(s['title'], a['title'])
+                        sim_ratio = get_fuzzy_ratio(s, a)
 
-                        if (sim_ratio >= 0.55 or sim_ratio_title >= 0.55) and a['hash_key'] not in h['seen']:
-                            a['score'] = max(sim_ratio, sim_ratio_title)
+                        if sim_ratio >= 70 and a['hash_key'] not in h['seen']:
+                            a['score'] = sim_ratio
                             a['seen'] = s['hash_key']
                             h['similar'].insert(0, a)
                             h['seen'].append(a['hash_key'])
@@ -63,7 +82,11 @@ def build_similar(articles):
 
     try:
         for his in history:
-            his['similar'] = sorted(his['similar'], key=lambda s: datetime.strptime(s['date_iso'], "%Y-%m-%dT%H:%M:%S"), reverse=True)
+            his['similar'] = sorted(
+                his['similar'],
+                key=lambda s: datetime.strptime(
+                    s['date_iso'], "%Y-%m-%dT%H:%M:%S"),
+                reverse=True)
     except:
         print_exception()
     return history

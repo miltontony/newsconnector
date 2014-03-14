@@ -19,3 +19,4 @@ redis
 python-levenshtein
 raven
 goose-extractor
+fuzzywuzzy
