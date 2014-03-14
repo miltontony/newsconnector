@@ -9,6 +9,9 @@ from datetime import date
 
 conn = ES('127.0.0.1:9200')
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def get_ratio(a, b):
     a = a.encode('ascii', 'ignore')
@@ -81,6 +84,7 @@ def build(tag):
 
     s_history = sorted(history, key=lambda a: len(a['similar']), reverse=True)
     r.set('headlines_%s' % tag, json.dumps(s_history[:5]))
+    logger.info('[similar] redis updated for: %s' % tag)
 
 
 def append_related(tag, target, current, min_ratio):
