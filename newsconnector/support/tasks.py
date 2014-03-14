@@ -190,5 +190,8 @@ def index_articles(articles_list):
     for art in articles_list:
         if not art:
             continue
+        if ArticleModel.objects.filter(hash_key=art['hash_key']).exists():
+            logger.info('[skipped] ' + art['link'])
+            continue
         art = scrape_article(art)
         conn.index(art, 'newsworld', 'article')
