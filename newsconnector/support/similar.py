@@ -1,11 +1,11 @@
 import json
 import redis
 
-from newsconnector.models import *
-from newsconnector.support.utils import *
-from pyes import *
+from newsconnector.support.utils import print_exception, from_es_dto
+from pyes import (ES, TermFilter, TermsQuery, Search, BoolQuery, FilteredQuery,
+                  RangeFilter)
 from Levenshtein import ratio
-from datetime import date
+from datetime import date, timedelta
 
 conn = ES('127.0.0.1:9200')
 
