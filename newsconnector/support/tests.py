@@ -10,7 +10,7 @@ class SimilarTest(TestCase):
         result = build_similar(news_data['articles'])
 
         self.assertEqual(len(news_data['articles']), 40)
-        self.assertEqual(len(result), 27)
+        self.assertEqual(len(result), 28)
 
     def test_similar_ratio(self):
         arts = headlines_data['articles']
@@ -20,17 +20,26 @@ class SimilarTest(TestCase):
 
     def test_using_fuzz(self):
         arts = headlines_data['articles']
-        print '--fuzz test--'
-        print 'Title: ', arts[0]['title']
+        f_similar = []
+        l_similar = []
         for art in arts[0]['similar']:
             #score = fuzz.token_set_ratio(arts[0]['fulltext'], art['fulltext'])
-            score = get_fuzzy_ratio(arts[0], art)
-            if score < 70:
-                n = '***' + art['title']
-            else:
-                n = art['title']
-            print art['score'], ' vs ', score, ' - ', n
+            fuzzy_score = get_fuzzy_ratio(arts[0], art)
+            lev_score = get_ratio(arts[0], art)
+            if fuzzy_score >= 70:
+                f_similar.append(art['title'])
+            if lev_score >= 0.40:
+                l_similar.append(art['title'])
 
-        print '--end--'
-        #print get_ratio(arts[0]['fulltext'], arts[2]['fulltext'])
-        #self.assertFalse(result[0]['similar'][0]['score'] >= 0.55)
+        print set(f_similar) - set(l_similar)
+
+        self.assertEqual(len(f_similar), 7)
+        self.assertEqual(len(l_similar), 43)
+
+    def test_null_articles(self):
+        arts = headlines_data['articles']
+        self.assertEqual(get_ratio(arts[0], None), 0)
+        self.assertEqual(get_ratio(None, arts[0]), 0)
+
+        self.assertEqual(get_fuzzy_ratio(None, arts[0]), 0)
+        self.assertEqual(get_fuzzy_ratio(arts[0], None), 0)

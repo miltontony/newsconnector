@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 
 
 def get_ratio(a, b):
+    if not (a and b):
+        return 0
+
     content_ratio = ratio(
         a['content'].encode('ascii', 'ignore'),
         b['content'].encode('ascii', 'ignore')
@@ -31,6 +34,12 @@ def get_ratio(a, b):
 
 
 def get_fuzzy_ratio(art1, art2):
+    if not (art1 and art2):
+        return 0
+
+    if get_ratio(art1, art2) <= 0.40:
+        return 0
+
     content_ratio = fuzz.token_set_ratio(
         art1['content'].encode('ascii', 'ignore'),
         art2['content'].encode('ascii', 'ignore')
