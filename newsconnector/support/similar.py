@@ -28,7 +28,7 @@ def get_ratio(a, b):
     )
     title_ratio = ratio(
         a['title'].encode('ascii', 'ignore'),
-        b['title'.encode('ascii', 'ignore')]
+        b['title'].encode('ascii', 'ignore')
     )
     return max(content_ratio, text_ratio, title_ratio)
 
