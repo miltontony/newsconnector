@@ -21,7 +21,7 @@ import redis
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 import logging
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('raven')
 
 SYSTEM_STATE_KEY = 'system_state_key'
 TASK_ID_KEY = 'updatefeeds_task_key'

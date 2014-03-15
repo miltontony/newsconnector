@@ -8,15 +8,15 @@ logging.disable(logging.CRITICAL)
 class SimilarTest(TestCase):
     def test_number_of_items(self):
         result = build_similar(news_data['articles'])
-
         self.assertEqual(len(news_data['articles']), 40)
         self.assertEqual(len(result), 30)
 
     def test_similar_ratio(self):
         arts = headlines_data['articles']
 
-        print get_ratio(arts[0], arts[0]['similar'][0])
-        print get_fuzzy_ratio(arts[0], arts[0]['similar'][0])
+        r = get_ratio(arts[0], arts[0]['similar'][0])
+        f = get_fuzzy_ratio(arts[0], arts[0]['similar'][0])
+        self.assertTrue(f > r)
 
     def test_using_fuzz(self):
         arts = headlines_data['articles']
@@ -31,8 +31,7 @@ class SimilarTest(TestCase):
             if lev_score >= 0.40:
                 l_similar.append(art['title'])
 
-        print set(f_similar) - set(l_similar)
-
+        self.assertFalse(set(f_similar) - set(l_similar))
         self.assertEqual(len(f_similar), 7)
         self.assertEqual(len(l_similar), 43)
 
