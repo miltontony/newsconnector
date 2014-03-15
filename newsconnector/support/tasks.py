@@ -1,6 +1,8 @@
-from newsconnector.models import *
-from newsconnector.support.utils import *
-from newsconnector.support import similar
+from newsconnector.models import (
+    NewsFeed, NewsArticle, SportsFeed, SportsArticle, FinanceArticle,
+    FinanceFeed, EntertainmentArticle, EntertainmentFeed, INewsArticle,
+    INewsFeed, ISportsArticle, ISportsFeed)
+from newsconnector.support import similar, utils
 
 from django.utils.hashcompat import md5_constructor
 from django.core.cache import cache
@@ -8,11 +10,10 @@ from time import mktime
 from datetime import datetime
 
 from celery.task import task
-from goose import Goose
 
 import feedparser
 import lxml.html
-from pyes import *
+from pyes import ES
 from pyes.queryset import generate_model
 ArticleModel = generate_model("newsworld", "article")
 
@@ -84,15 +85,22 @@ def update_feeds(force=False):
     build_similar.delay('ISportsArticle')
 
 
+def scrape(url):
+    from goose import Goose
+    from readability.readability import Document
+    import urllib
+    page = urllib.urlopen(url).read()
+    html = Document(page).summary()
+    return Goose().extract(raw_html=html).cleaned_text
+
+
 @task(ignore_result=True)
 def scrape_articles(limit=100):
     articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
     count = 0
     for article in articles:
         try:
-            g = Goose()
-            goosed = g.extract(url=article.link)
-            article.fulltext = goosed.cleaned_text
+            article.fulltext = scrape(article.link)
             article.save()
             print '[scraped] ', article.link
             count += 1
@@ -152,7 +160,7 @@ def get_instance(cls, dictArticle, source):
         return None
 
     except:
-        print_exception()
+        utils.print_exception()
 
     return None
 
@@ -176,7 +184,7 @@ def run_tasks(feeds, feedModel):
         logger.info('Rolling back: %s (%s)' % (
             feedModel.__name__,
             len(list(new_articles))))
-        print_exception()
+        utils.print_exception()
 
     conn.indices.refresh('newsworld')
 
@@ -189,9 +197,7 @@ def get_new_articles(feeds, feedModel):
 
 def scrape_article(article):
     try:
-        g = Goose()
-        goosed = g.extract(url=article['link'])
-        article['fulltext'] = goosed.cleaned_text
+        article['fulltext'] = scrape(article['link'])
         logger.info('[scraped] ' + article['link'])
     except:
         logger.error(

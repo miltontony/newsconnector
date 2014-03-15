@@ -20,3 +20,4 @@ python-levenshtein
 raven
 goose-extractor
 fuzzywuzzy
+readability-lxml

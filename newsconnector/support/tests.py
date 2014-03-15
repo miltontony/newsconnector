@@ -10,7 +10,7 @@ class SimilarTest(TestCase):
         result = build_similar(news_data['articles'])
 
         self.assertEqual(len(news_data['articles']), 40)
-        self.assertEqual(len(result), 28)
+        self.assertEqual(len(result), 30)
 
     def test_similar_ratio(self):
         arts = headlines_data['articles']
