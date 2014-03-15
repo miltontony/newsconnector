@@ -110,6 +110,7 @@ def build_similar(articles):
 
 
 def build(tag, limit=200):
+    conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
         tag=tag.lower()).order_by('-date')[:limit]
 

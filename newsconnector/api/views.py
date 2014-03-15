@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from newsconnector.data import store
 import json
 from datetime import datetime
+from newsconnector.support import utils
 
 
 def parse_tag(tag):
@@ -31,10 +32,10 @@ def articles(request, tag):
     start = (page - 1) * 40
     stop = page * 40
 
-    articles = store.get_articles(tag)[start:stop]
-
+    articles = store.get_articles(tag, start, stop)
+    fudge = [utils.from_es_dict_dto(a) for a in articles]
     return HttpResponse(json.dumps({
-        'articles': [update_date(a) for a in articles],
+        'articles': fudge,
         'cat': cat,
     }),
         mimetype='application/json'
@@ -82,10 +83,3 @@ def iheadlines_all(request):
     }),
         mimetype='application/json'
     )
-
-
-def update_date(obj):
-    from django.utils.timesince import timesince
-    d = datetime.strptime(obj['date_iso'][:19], '%Y-%m-%dT%H:%M:%S')
-    obj['date'] = '%s ago' % timesince(d)
-    return obj

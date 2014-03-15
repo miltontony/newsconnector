@@ -28,6 +28,7 @@ def delete_keyword(request, pk):
 
 
 def search(request, articleModel=Article):
+    conn.indices.refresh('newsworld')
     q = request.GET.get('q', None)
 
     if not q or not q.strip():
@@ -56,14 +57,14 @@ def read(request):
         request,
         'read.html',
         {
-            'news': store.get_articles('NewsArticle')[:20],
-            'sports': store.get_articles('SportsArticle')[:20],
-            'finance': store.get_articles('FinanceArticle')[:20],
-            'entertainment': store.get_articles('EntertainmentArticle')[:20],
-            'featuredNews': store.get_headlines('NewsArticle'),
-            'featuredSports': store.get_headlines('SportsArticle'),
-            'featuredFinance': store.get_headlines('FinanceArticle'),
-            'featuredEntertainment': store.get_headlines('EntertainmentArticle'),
+            'news': store.get_articles('NewsArticle', 40),
+            'sports': store.get_articles('SportsArticle', 40),
+            'finance': store.get_articles('FinanceArticle', 40),
+            'entertainment': store.get_articles('EntertainmentArticle', 40),
+            'featuredNews': store.get_headlines('NewsArticle', 40),
+            'featuredSports': store.get_headlines('SportsArticle', 40),
+            'featuredFinance': store.get_headlines('FinanceArticle', 40),
+            'featuredEntertainment': store.get_headlines('EntertainmentArticle', 40),
         })
 
 
@@ -88,7 +89,7 @@ def read_more(request, tag):
     start = (page - 1) * 40
     stop = page * 40
 
-    articles = store.get_articles(tag)[start:stop]
+    articles = store.get_articles(tag, stop, start)
 
     if not page:
         return HttpResponse(json.dumps({'error': 'page not selected'}),

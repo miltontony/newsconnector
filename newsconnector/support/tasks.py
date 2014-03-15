@@ -90,7 +90,14 @@ def scrape(url):
     from readability.readability import Document
     import urllib
     page = urllib.urlopen(url).read()
-    html = Document(page).summary()
+    positive_keywords = ['article', 'content', 'container', 'contentcontainer']
+    negative_keywords = ['header', 'footer', 'ads', 'comments', ]
+    html = Document(
+        page,
+        positive_keywords=positive_keywords,
+        negative_keywords=negative_keywords,
+        min_text_length=200
+    ).summary()
     return Goose().extract(raw_html=html).cleaned_text
 
 

@@ -61,7 +61,7 @@ def prepare_es_dto(obj):
 
 
 def from_es_dict_dto(obj):
-    def prepare_dict_article(obj):
+    def prepare_dict_article(obj, strip_similar=False):
         from django.utils.timesince import timesince
         from django.template.defaultfilters import truncatewords
 
@@ -77,10 +77,13 @@ def from_es_dict_dto(obj):
                 'date_iso': obj.get('date').isoformat(),
                 'keywords': obj.get('keywords'),
                 'seen': obj.get('seen', []),
-                'similar': obj.get('similar', []),
+                'similar': obj.get('similar', []) if strip_similar else [],
                 }
     obj = prepare_dict_article(obj)
-    obj['similar'] = [prepare_dict_article(s) for s in obj.get('similar', [])]
+    obj['similar'] = [
+        prepare_dict_article(s, True)
+        for s in obj.get('similar', [])
+    ]
     return obj
 
 
