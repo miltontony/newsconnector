@@ -6,24 +6,24 @@
     <div class="row">
     <div class="box span6">
     <div class="box-header well">
-        <h2 style="text-transform:capitalize">{{x.keyword}}</h2>
+        <h2 style="text-transform:capitalize">{{x.title}}</h2>
     </div>
     <div class="box-content">
         <div class="span3">
         <ul>
         {% for s in related|slice:":5" %}
-        {% if not s == related.0 %}
+        {% if not s.hash_key == related.hash_key %}
         <li><a target="_blank" href="{{s.link}}">{{s.title}}</a></li>
         {% endif %}
         {% endfor %}
         </ul>
         </div>
         <div class="span3">
-            <h4 class="media-heading">{{related.0.title}}</h4>
-            {{ related.0.content }}
+            <h4 class="media-heading">{{articles.0.title}}</h4>
+            {{ articles.0.content }}
             <br/>
             <small>
-            <a target="_blank" href="{{related.0.link}}">Full story...</a> | {{related.0.source}}
+            <a target="_blank" href="{{articles.0.link}}">Full story...</a> | {{articles.0.source}}
             </small>
         </div>
     </div>

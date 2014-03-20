@@ -131,7 +131,7 @@ def build(tag, limit=200):
     logger.info('[similar] indexing complete for: %s' % tag)
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
-    h = [from_es_dict_dto(a) for a in history]
+    h = [from_es_dict_dto(a, False) for a in history]
     h = sorted(h, key=lambda a: len(a['similar']), reverse=True)
     r.set('headlines_%s' % tag, json.dumps(h[:5]))
     logger.info('[similar] updated for: %s' % tag)
