@@ -150,19 +150,26 @@ def get_instance(cls, dictArticle, source):
                       .encode('ascii', 'ignore')
         hash = md5_constructor(hash_str).hexdigest()
 
+        article_date = dictArticle.published_parsed
+        if not article_date:
+            article_date = datetime.now().isoformat()
+        else:
+            article_date = datetime.fromtimestamp(
+                mktime(dictArticle.published_parsed)
+            ).isoformat()
+
         a, created = cls.objects.get_or_create(link=dictArticle.link)
         if created:
-            article = {'title': dictArticle.title,
-                       'link': dictArticle.link,
-                       'hash_key': hash,
-                       'content': content,
-                       'source': source,
-                       'tag': cls.__name__,
-                       'image_url': get_image_url(dictArticle.links),
-                       'date': '%s' %
-                               datetime.fromtimestamp(
-                                   mktime(dictArticle.published_parsed))
-                       .isoformat()}
+            article = {
+                'title': dictArticle.title,
+                'link': dictArticle.link,
+                'hash_key': hash,
+                'content': content,
+                'source': source,
+                'tag': cls.__name__,
+                'image_url': get_image_url(dictArticle.links),
+                'date': '%s' % article_date
+            }
             return article
         return None
 
