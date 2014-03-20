@@ -21,18 +21,24 @@ def get_ratio(a, b):
     if not (a and b):
         return 0
 
-    content_ratio = ratio(
-        a['content'].encode('ascii', 'ignore'),
-        b['content'].encode('ascii', 'ignore')
-    )
-    text_ratio = ratio(
-        a['fulltext'].encode('ascii', 'ignore'),
-        b['fulltext'].encode('ascii', 'ignore')
-    )
-    title_ratio = ratio(
-        a['title'].encode('ascii', 'ignore'),
-        b['title'].encode('ascii', 'ignore')
-    )
+    content_ratio = text_ratio = title_ratio = 0
+    if a['content'] and b['content']:
+        content_ratio = ratio(
+            a['content'].encode('ascii', 'ignore'),
+            b['content'].encode('ascii', 'ignore')
+        )
+
+    if a['fulltext'] and b['fulltext']:
+        text_ratio = ratio(
+            a['fulltext'].encode('ascii', 'ignore'),
+            b['fulltext'].encode('ascii', 'ignore')
+        )
+
+    if a['title'] and b['title']:
+        title_ratio = ratio(
+            a['title'].encode('ascii', 'ignore'),
+            b['title'].encode('ascii', 'ignore')
+        )
     return max(content_ratio, text_ratio, title_ratio)
 
 
@@ -43,14 +49,18 @@ def get_fuzzy_ratio(art1, art2):
     if get_ratio(art1, art2) <= 0.40:
         return 0
 
-    content_ratio = fuzz.token_set_ratio(
-        art1['content'].encode('ascii', 'ignore'),
-        art2['content'].encode('ascii', 'ignore')
-    )
-    text_ratio = fuzz.token_set_ratio(
-        art1['fulltext'].encode('ascii', 'ignore'),
-        art2['fulltext'].encode('ascii', 'ignore')
-    )
+    content_ratio = text_ratio = 0
+
+    if art1['content'] and art2['content']:
+        content_ratio = fuzz.token_set_ratio(
+            art1['content'].encode('ascii', 'ignore'),
+            art2['content'].encode('ascii', 'ignore')
+        )
+    if art1['fulltext'] and art2['fulltext']:
+        text_ratio = fuzz.token_set_ratio(
+            art1['fulltext'].encode('ascii', 'ignore'),
+            art2['fulltext'].encode('ascii', 'ignore')
+        )
     return max(content_ratio, text_ratio)
 
 
