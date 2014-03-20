@@ -1,6 +1,5 @@
 import redis
 import json
-from datetime import datetime
 from pyes.queryset import generate_model
 from pyes import ES
 conn = ES('127.0.0.1:9200')
@@ -8,7 +7,7 @@ ArticleModel = generate_model("newsworld", "article")
 
 
 def update_date(obj):
-    obj['date'] = datetime.strptime(obj['date_iso'][:19], '%Y-%m-%dT%H:%M:%S')
+    obj['date'] = obj['date_iso']
     return obj
 
 
