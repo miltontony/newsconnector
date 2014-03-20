@@ -33,4 +33,5 @@ def restart():
     with settings(warn_only=True):
         run('%(path)s/kill_workers.sh' % env)
 
-    sudo('supervisorctl restart newsconnector: celery')
+    sudo('supervisorctl restart newsconnector:')
+    sudo('supervisorctl start celery')
