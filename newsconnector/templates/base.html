@@ -94,6 +94,7 @@ $(function(){
       $('#tabs-news .articles, #tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
       var href = $(this).attr('href');
       $(href+' .articles').infinitescroll('resume');
+      jQuery('html, body').animate({scrollTop: 0}, 500);
     });
 
     $('#tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
