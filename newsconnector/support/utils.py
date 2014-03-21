@@ -32,6 +32,12 @@ def delete_old_data():
     print 'keywords remaining: %s' % Keyword.objects.all().count()
 
 
+def get_positive_words(url):
+    if url.startswith('http://www.news24.com'):
+        return ['article', 'col626']
+    return None
+
+
 def scrape(url):
     from goose import Goose
     from readability.readability import Document
@@ -42,7 +48,12 @@ def scrape(url):
         'Accept-Encoding': 'identity',
     })
     page = unicode(urllib2.urlopen(req).read(), errors='ignore')
-    html = Document(page).summary()
+
+    pos = get_positive_words(url)
+    if pos:
+        html = Document(page, positive_keywords=pos).summary()
+    else:
+        html = Document(page).summary()
     return Goose().extract(raw_html=html).cleaned_text
 
 

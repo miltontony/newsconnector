@@ -13,7 +13,12 @@ class ScraperTest(TestCase):
     def test_news24_2(self):
         text = scrape('http://www.news24.com/SouthAfrica/News/Transport-dept-to-probe-Kokstad-crash-20140320')
         print text
-        self.assertTrue('At least two people were seriously ' in text)
+        self.assertTrue('At least two people were seriously' in text)
+
+    def test_news24_3(self):
+        text = scrape('http://www.news24.com/SouthAfrica/News/Energy-DG-steps-down-for-health-reasons-20140320')
+        print text
+        self.assertTrue('Deputy director general of Petroleum' in text)
 
     def test_sowetan(self):
         text = scrape('http://www.sowetanlive.co.za/news/2014/03/14/oscar-trial-first-cop-ignorant-about-window')
