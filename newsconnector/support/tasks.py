@@ -47,8 +47,8 @@ def must_start_update():
 
 @task(ignore_result=True)
 def update_feeds(force=False):
-    if not must_start_update() and not force:
-        return
+    #if not must_start_update() and not force:
+    #    return
 
     r.set(TASK_ID_KEY, update_feeds.request.id)
     cache.set(SYSTEM_STATE_KEY, 1, 1800)
