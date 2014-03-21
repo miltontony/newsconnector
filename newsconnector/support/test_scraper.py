@@ -49,3 +49,8 @@ class ScraperTest(TestCase):
         text = scrape('http://www.eonline.com/news/523549/shirtless-andrew-garfield-hits-the-waves-to-teach-autistic-kids-how-to-surf-swoon-alert?cmpid=rss-000000-rssfeed-365-topstories&utm_source=eonline&utm_medium=rssfeeds&utm_campaign=rss_topstories')
         print text
         self.assertTrue('Because his girlfriend' in text)
+
+    def test_rt(self):
+        text = scrape('http://rt.com/politics/lavrov-crimea-slander-annexation-289/')
+        print text
+        self.assertTrue('On Thursday the bills were passed' in text)

@@ -35,8 +35,13 @@ def delete_old_data():
 def scrape(url):
     from goose import Goose
     from readability.readability import Document
-    import urllib
-    page = urllib.urlopen(url).read()
+    import urllib2
+    ua = 'Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36'
+    req = urllib2.Request(url, headers={
+        'User-Agent': ua,
+        'Accept-Encoding': 'identity',
+    })
+    page = urllib2.urlopen(req).read()
     html = Document(page).summary()
     return Goose().extract(raw_html=html).cleaned_text
 
