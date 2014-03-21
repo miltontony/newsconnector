@@ -30,6 +30,11 @@ class ScraperTest(TestCase):
         print text
         self.assertTrue('United States slapped sanctions' in text)
 
+    def test_timeslive2(self):
+        text = scrape('http://www.timeslive.co.za/politics/2014/03/20/kzn-leads-in-unauthorised-expenditure-with-r1.2billion')
+        print text
+        self.assertTrue('Researcher Georgina Alexander' in text)
+
     def test_ewn(self):
         text = scrape('http://ewn.co.za/2014/03/21/Police-hunt-for-Bosmont-school-robbers')
         print text

@@ -9,7 +9,7 @@
   </a>
   <div class="media-body">
     <h4 class="media-heading">{{article.title}}</h4>
-    {{article.content}}
+    {{article.content|truncatewords:50}}
 
     <div class="article-footer">
         {{article.date|timesince}} ago |
