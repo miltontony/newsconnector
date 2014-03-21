@@ -31,7 +31,7 @@ def articles(request, tag):
     start = (page - 1) * 40
     stop = page * 40
 
-    articles = store.get_articles(tag, start, stop)
+    articles = store.get_articles(tag, start=start, limit=stop)
     fudge = [utils.from_es_dict_dto(a) for a in articles]
     return HttpResponse(json.dumps({
         'articles': fudge,

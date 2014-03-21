@@ -32,6 +32,15 @@ def delete_old_data():
     print 'keywords remaining: %s' % Keyword.objects.all().count()
 
 
+def scrape(url):
+    from goose import Goose
+    from readability.readability import Document
+    import urllib
+    page = urllib.urlopen(url).read()
+    html = Document(page).summary()
+    return Goose().extract(raw_html=html).cleaned_text
+
+
 def from_es_dto(obj):
     from django.utils.timesince import timesince
     from django.template.defaultfilters import truncatewords

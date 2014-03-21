@@ -85,29 +85,13 @@ def update_feeds(force=False):
     build_similar.delay('ISportsArticle')
 
 
-def scrape(url):
-    from goose import Goose
-    from readability.readability import Document
-    import urllib
-    page = urllib.urlopen(url).read()
-    positive_keywords = ['article', 'content', 'container', 'contentcontainer']
-    negative_keywords = ['header', 'footer', 'ads', 'comments', ]
-    html = Document(
-        page,
-        positive_keywords=positive_keywords,
-        negative_keywords=negative_keywords,
-        min_text_length=200
-    ).summary()
-    return Goose().extract(raw_html=html).cleaned_text
-
-
 @task(ignore_result=True)
 def scrape_articles(limit=100):
     articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
     count = 0
     for article in articles:
         try:
-            article.fulltext = scrape(article.link)
+            article.fulltext = utils.scrape(article.link)
             article.save()
             print '[scraped] ', article.link
             count += 1
@@ -211,7 +195,7 @@ def get_new_articles(feeds, feedModel):
 
 def scrape_article(article):
     try:
-        article['fulltext'] = scrape(article['link'])
+        article['fulltext'] = utils.scrape(article['link'])
         logger.info('[scraped] ' + article['link'])
     except:
         logger.error(
