@@ -41,7 +41,7 @@ def scrape(url):
         'User-Agent': ua,
         'Accept-Encoding': 'identity',
     })
-    page = urllib2.urlopen(req).read()
+    page = unicode(urllib2.urlopen(req).read(), errors='ignore')
     html = Document(page).summary()
     return Goose().extract(raw_html=html).cleaned_text
 

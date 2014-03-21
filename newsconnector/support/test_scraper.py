@@ -5,10 +5,15 @@ from unittest import TestCase
 
 
 class ScraperTest(TestCase):
-    def test_news24(self):
+    def test_news24_1(self):
         text = scrape('http://www.news24.com/SouthAfrica/News/R25m-worth-of-counterfeit-CDs-seized-20140320')
         print text
         self.assertTrue('producing the fake CDs' in text)
+
+    def test_news24_2(self):
+        text = scrape('http://www.news24.com/SouthAfrica/News/Transport-dept-to-probe-Kokstad-crash-20140320')
+        print text
+        self.assertTrue('At least two people were seriously ' in text)
 
     def test_sowetan(self):
         text = scrape('http://www.sowetanlive.co.za/news/2014/03/14/oscar-trial-first-cop-ignorant-about-window')

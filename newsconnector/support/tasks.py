@@ -97,6 +97,8 @@ def scrape_articles(limit=100):
             count += 1
         except:
             print '[scrapper] [error] Unable to scrape ', article.link
+            article.fulltext = article.content
+            article.save()
 
         if limit and count >= limit:
             break
