@@ -15,7 +15,7 @@
         {{article.date|timesince}} ago |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
         {% with num_similar=article.similar|length %}
-        {% if num_similar == 0 %}
+        {% if not num_similar or num_similar == 0 %}
         <span class="similar similar-0">{{num_similar}}</span>
         {% else %}{% if num_similar < 5 %}
         <span class="similar similar-1">{{num_similar}}</span>
