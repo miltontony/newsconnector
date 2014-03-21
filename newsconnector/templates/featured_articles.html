@@ -1,13 +1,10 @@
 <div class="span6 featured-articles">
-    <h4 class="well well-small">Trending Today</h4>
+    <h4 class="well well-small">Headlines</h4>
     {% for x in articles %}
     {% with related=x.similar %}
 
     <div class="row">
     <div class="box span6">
-    <div class="box-header well">
-        <h2 style="text-transform:capitalize">{{x.title}}</h2>
-    </div>
     <div class="box-content">
         <div class="span3">
         <ul>
