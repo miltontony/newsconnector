@@ -5,7 +5,6 @@ from newsconnector.models import (
 from newsconnector.support import similar, utils
 
 from django.utils.hashcompat import md5_constructor
-from django.core.cache import cache
 from time import mktime
 from datetime import datetime
 
@@ -37,21 +36,12 @@ def stop_task():
         logger.info('Killed: [%s]' % task_id)
 
 
-def must_start_update():
-    if not cache.get(SYSTEM_STATE_KEY):
-        stop_task()
-        return True
-    logger.info('Update skipped..')
-    return False
-
-
 @task(ignore_result=True)
 def update_feeds(force=False):
     #if not must_start_update() and not force:
     #    return
 
     r.set(TASK_ID_KEY, update_feeds.request.id)
-    cache.set(SYSTEM_STATE_KEY, 1, 1800)
 
     news_feeds = [(feed.url, feed.name)
                   for feed in NewsFeed.objects.all()]

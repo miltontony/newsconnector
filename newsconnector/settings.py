@@ -128,13 +128,6 @@ LOGGING = {
     },
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
-    }
-}
-
 from raven.conf import setup_logging
 from raven.contrib.django.raven_compat.handlers import SentryHandler
 
