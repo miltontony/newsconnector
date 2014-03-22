@@ -77,19 +77,6 @@ def from_es_dto(obj):
             }
 
 
-def prepare_es_dto(obj):
-    obj['similar'] = []
-    obj['seen'] = []
-    if not 'date_iso' in obj:
-        obj['date_iso'] = obj['date'].isoformat()
-    elif isinstance(obj['date_iso'], datetime):
-        obj['date_iso'] = obj['date_iso'].isoformat()
-
-    if not 'fulltext' in obj:
-        obj['fulltext'] = None
-    return obj
-
-
 def from_es_dict_dto(obj, prepare_dict_article=False):
     def prepare_dict_article(obj, strip_similar=False):
         from django.utils.timesince import timesince

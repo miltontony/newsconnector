@@ -2,7 +2,7 @@ import json
 import redis
 
 from newsconnector.support.utils import (
-    print_exception, prepare_es_dto, from_es_dict_dto)
+    print_exception, from_es_dict_dto)
 
 from Levenshtein import ratio
 from datetime import datetime
@@ -64,6 +64,21 @@ def get_fuzzy_ratio(art1, art2):
     return max(content_ratio, text_ratio)
 
 
+def prepare_es_dto(obj):
+    obj['similar'] = []
+    obj['seen'] = []
+    obj['main'] = False
+
+    if not 'date_iso' in obj:
+        obj['date_iso'] = obj['date'].isoformat()
+    elif isinstance(obj['date_iso'], datetime):
+        obj['date_iso'] = obj['date_iso'].isoformat()
+
+    if not 'fulltext' in obj:
+        obj['fulltext'] = None
+    return obj
+
+
 def log_progress(index, total, distinct, tag):
     if index % 10 == 0:
         logger.info('[similar] [%s] %s/%s new:%s' % (
@@ -110,6 +125,7 @@ def build_similar(articles, tag):
 
         try:
             if not found_similar and a['hash_key'] not in seen:
+                a['main'] = True
                 history.append(a)
                 seen.append(a['hash_key'])
         except:
