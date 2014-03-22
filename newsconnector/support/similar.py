@@ -88,6 +88,12 @@ def prepare_es_dto(obj):
 
     if not 'fulltext' in obj:
         obj['fulltext'] = None
+
+    if not 'seen' in obj:
+        obj['seen'] = None
+
+    if not 'similar' in obj:
+        obj['similar'] = None
     return obj
 
 
