@@ -81,13 +81,13 @@ def prepare_es_dto(obj):
     #obj['seen'] = []
     obj['main'] = False
 
+    if not 'fulltext' in obj:
+        obj['fulltext'] = ''
+
     if not 'date_iso' in obj:
         obj['date_iso'] = obj['date'].isoformat()
     elif isinstance(obj['date_iso'], datetime):
         obj['date_iso'] = obj['date_iso'].isoformat()
-
-    if not 'fulltext' in obj:
-        obj['fulltext'] = None
 
     if not 'seen' in obj:
         obj['seen'] = []
@@ -176,6 +176,7 @@ def build_similar(articles, tag):
 
     try:
         for his in history:
+            his['similar'] = [prepare_es_dto(a) for a in his['similar']]
             his['similar'] = sorted(
                 his['similar'],
                 key=lambda s: datetime.strptime(
