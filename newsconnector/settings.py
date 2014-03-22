@@ -107,22 +107,30 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'formatter': 'verbose'
-        }
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': '/var/sites/newsconnector/logs/newsworld.log',
+            'formatter': 'verbose',
+            'maxBytes': 1024*1024*10,  # 5 MB
+            'backupCount': 5,
+        },
     },
     'loggers': {
         'django.db.backends': {
             'level': 'ERROR',
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
         },
         'raven': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
         },
         'sentry.errors': {
             'level': 'DEBUG',
-            'handlers': ['console'],
+            'handlers': ['console', 'file'],
             'propagate': False,
         },
     },
