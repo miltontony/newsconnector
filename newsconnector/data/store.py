@@ -14,7 +14,7 @@ def update_date(obj):
 def get_articles(tag, limit=20, start=0):
     conn.indices.refresh('newsworld')
     return ArticleModel.objects.filter(
-        tag=tag.lower()).order_by('-date')[start:limit]
+        tag=tag.lower(), main=True).order_by('-date')[start:limit]
 
 
 def get_headlines(tag, limit=20):
