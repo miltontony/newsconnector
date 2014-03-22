@@ -8,7 +8,7 @@ class Command(BaseCommand):
         from newsconnector.support.tasks import update_feeds, scrape_articles
 
         if action == 'feeds':
-            update_feeds.delay()
+            update_feeds()
 
         if action == 'scrape':
-            scrape_articles.delay()
+            scrape_articles()
