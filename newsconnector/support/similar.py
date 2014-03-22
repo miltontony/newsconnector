@@ -93,11 +93,16 @@ def prepare_es_dto(obj):
         obj['seen'] = []
     elif isinstance(obj['seen'], str):
         obj['seen'] = []
+    elif obj['seen'] is None:
+        obj['seen'] = []
 
     if not 'similar' in obj:
         obj['similar'] = []
     elif isinstance(obj['similar'], str):
         obj['similar'] = []
+    elif obj['similar'] is None:
+        obj['similar'] = []
+
 
     return obj
 
