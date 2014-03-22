@@ -22,10 +22,13 @@ def get_unicode(txt):
         return ''
     try:
         txt = unicode(txt, errors="ignore")
+    except:
+        pass
+    try:
         txt = txt.encode('ascii', 'ignore')
     except:
         pass
-    return txt
+    return str(txt)
 
 
 def get_ratio(art1, art2):
