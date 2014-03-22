@@ -24,20 +24,20 @@ def get_ratio(a, b):
     content_ratio = text_ratio = title_ratio = 0
     if a['content'] and b['content']:
         content_ratio = ratio(
-            a['content'].encode('ascii', 'ignore'),
-            b['content'].encode('ascii', 'ignore')
+            unicode(a['content'], errors='ignore'),
+            unicode(b['content'], errors='ignore')
         )
 
     if a['fulltext'] and b['fulltext']:
         text_ratio = ratio(
-            a['fulltext'].encode('ascii', 'ignore'),
-            b['fulltext'].encode('ascii', 'ignore')
+            unicode(a['fulltext'], errors='ignore'),
+            unicode(b['fulltext'], errors='ignore')
         )
 
     if a['title'] and b['title']:
         title_ratio = ratio(
-            a['title'].encode('ascii', 'ignore'),
-            b['title'].encode('ascii', 'ignore')
+            unicode(a['title'], errors='ignore'),
+            unicode(b['title'], errors='ignore')
         )
     return max(content_ratio, text_ratio, title_ratio)
 
@@ -53,13 +53,13 @@ def get_fuzzy_ratio(art1, art2):
 
     if art1['content'] and art2['content']:
         content_ratio = fuzz.token_set_ratio(
-            art1['content'].encode('ascii', 'ignore'),
-            art2['content'].encode('ascii', 'ignore')
+            unicode(art1['content'], errors='ignore'),
+            unicode(art2['content'], errors='ignore')
         )
     if art1['fulltext'] and art2['fulltext']:
         text_ratio = fuzz.token_set_ratio(
-            art1['fulltext'].encode('ascii', 'ignore'),
-            art2['fulltext'].encode('ascii', 'ignore')
+            unicode(art1['fulltext'], errors='ignore'),
+            unicode(art2['fulltext'], errors='ignore')
         )
     return max(content_ratio, text_ratio)
 
@@ -98,10 +98,14 @@ def build_similar(articles, tag):
             try:
                 if a['hash_key'] not in h['seen']:
                     sim_ratio = get_fuzzy_ratio(h, a)
+
                     if sim_ratio >= 70:
                         a['score'] = sim_ratio
                         a['seen'] = h['hash_key']
-                        a.save()
+                        try:
+                            a.save()
+                        except:
+                            pass
                         h['similar'].insert(0, a)
                         h['seen'].append(a['hash_key'])
                         #h = append_related(tag, h, a, 70)

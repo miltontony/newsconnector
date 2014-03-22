@@ -8,7 +8,7 @@ from unittest import TestCase
 
 class SimilarTest(TestCase):
     def test_number_of_items(self):
-        result = build_similar(news_data['articles'])
+        result = build_similar(news_data['articles'], 'newsarticle')
         self.assertEqual(len(news_data['articles']), 40)
         self.assertEqual(len(result), 30)
 
