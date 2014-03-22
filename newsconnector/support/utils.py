@@ -85,6 +85,7 @@ def from_es_dict_dto(obj, prepare_dict_article=False):
         return {'title': obj.get('title'),
                 'score': obj.get('score'),
                 'link': obj.get('link'),
+                'main': obj.get('main', False),
                 'content': truncatewords(obj.get('content'), 50),
                 'source': obj.get('source'),
                 'fulltext': obj.get('fulltext', ''),
