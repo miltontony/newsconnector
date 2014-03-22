@@ -57,22 +57,22 @@ def update_feeds(force=False):
                      for feed in ISportsFeed.objects.all()]
 
     run_tasks(news_feeds, NewsArticle)
-    build_similar.delay('NewsArticle')
+    build_similar('NewsArticle')
 
     run_tasks(sports_feeds, SportsArticle)
-    build_similar.delay('SportsArticle')
+    build_similar('SportsArticle')
 
     run_tasks(fin_feeds, FinanceArticle)
-    build_similar.delay('FinanceArticle')
+    build_similar('FinanceArticle')
 
     run_tasks(e_feeds, EntertainmentArticle)
-    build_similar.delay('EntertainmentArticle')
+    build_similar('EntertainmentArticle')
 
     run_tasks(inews_feeds, INewsArticle)
-    build_similar.delay('INewsArticle')
+    build_similar('INewsArticle')
 
     run_tasks(isports_feeds, ISportsArticle)
-    build_similar.delay('ISportsArticle')
+    build_similar('ISportsArticle')
 
 
 @task(ignore_result=True)
