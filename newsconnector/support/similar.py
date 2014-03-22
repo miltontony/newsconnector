@@ -77,6 +77,7 @@ def build_similar(articles):
                     if sim_ratio >= 70:
                         a['score'] = sim_ratio
                         a['seen'] = h['hash_key']
+                        a.save()
                         h['similar'].insert(0, a)
                         h['seen'].append(a['hash_key'])
                         #h = append_related(tag, h, a, 70)
