@@ -128,10 +128,10 @@ def build_similar(articles, tag):
 
                         h['similar'] = [a, ] + h['similar'] + a['similar']
                         h['seen'].append(a['hash_key'])
-                        h['seen'] += a['seen']
+                        h['seen'] += [a['seen'], ]
                         #h = append_related(tag, h, a, 70)
                         seen.append(a['hash_key'])
-                        seen += a['seen']
+                        seen += [a['seen'], ]
                         found_similar = True
                         break
                     #else:
@@ -152,6 +152,8 @@ def build_similar(articles, tag):
         try:
             if not found_similar and a['hash_key'] not in seen:
                 a['main'] = True
+                a['similar'] = []
+                a['seen'] = []
                 history.append(a)
                 seen.append(a['hash_key'])
         except:
