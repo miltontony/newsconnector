@@ -19,7 +19,7 @@ logger = logging.getLogger('raven')
 
 def get_unicode(txt):
     if not txt:
-        return None
+        return ''
     try:
         txt = unicode(txt, errors="ignore")
         txt = txt.encode('ascii', 'ignore')
