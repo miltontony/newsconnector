@@ -1,5 +1,6 @@
 import logging
-from newsconnector.support.similar import build_similar, get_ratio, get_fuzzy_ratio
+from newsconnector.support.similar import (
+    build_similar, get_ratio, get_fuzzy_ratio)
 from newsconnector.support.test_data import news_data, headlines_data
 logging.disable(logging.CRITICAL)
 from unittest import TestCase

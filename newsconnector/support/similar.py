@@ -64,12 +64,21 @@ def get_fuzzy_ratio(art1, art2):
     return max(content_ratio, text_ratio)
 
 
-def build_similar(articles):
+def log_progress(index, total, distinct, tag):
+    if index % 10 == 0:
+        logger.info('[similar] [%s] %s/%s new:%s' % (
+            tag, index, total, distinct))
+
+
+def build_similar(articles, tag):
     history = []
     seen = []
+    index = 0
     for a in articles:
+        log_progress(index, len(articles), len(history), tag)
         a = prepare_es_dto(a)
         found_similar = False
+        index += 1
         for h in history:
             try:
                 if a['hash_key'] not in h['seen']:
@@ -103,8 +112,6 @@ def build_similar(articles):
             if not found_similar and a['hash_key'] not in seen:
                 history.append(a)
                 seen.append(a['hash_key'])
-                logger.info('[similar] articles seen: %s' % len(history))
-                logger.info('[similar] articles seen: %s' % a['title'])
         except:
             print_exception()
 
@@ -125,7 +132,7 @@ def build(tag, limit=200):
     articles = ArticleModel.objects.filter(
         tag=tag.lower()).order_by('-date')[:limit]
 
-    history = build_similar(articles)
+    history = build_similar(articles, tag)
     for a in history:
         a.save()
     conn.indices.refresh('newsworld')
