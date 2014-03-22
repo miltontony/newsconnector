@@ -91,21 +91,29 @@ def prepare_es_dto(obj):
     return obj
 
 
-def log_progress(index, total, distinct, tag):
+def log_progress(index, total, distinct, skipped, tag):
     if index % 10 == 0:
-        logger.info('[similar] [%s] %s/%s new:%s' % (
-            tag, index, total, distinct))
+        logger.info('[similar] [%s] %s/%s new:%s skipped:%s' % (
+            tag, index, total, distinct, skipped))
+        print '[similar] [%s] %s/%s new:%s skipped:%s' % (
+            tag, index, total, distinct, skipped)
 
 
 def build_similar(articles, tag):
     history = []
     seen = []
+    skipped = []
     index = 0
     for a in articles:
-        log_progress(index, len(articles), len(history), tag)
+        log_progress(index, len(articles), len(history), len(skipped), tag)
         a = prepare_es_dto(a)
         found_similar = False
         index += 1
+
+        if a['hash_key'] in seen:
+            skipped.append(a['hash_key'])
+            continue
+
         for h in history:
             try:
                 if a['hash_key'] not in h['seen']:
@@ -118,10 +126,12 @@ def build_similar(articles, tag):
                         except:
                             pass
 
-                        h['similar'].insert(0, a)
+                        h['similar'] = [a, ] + h['similar'] + a['similar']
                         h['seen'].append(a['hash_key'])
+                        h['seen'] += a['seen']
                         #h = append_related(tag, h, a, 70)
                         seen.append(a['hash_key'])
+                        seen += a['seen']
                         found_similar = True
                         break
                     #else:
