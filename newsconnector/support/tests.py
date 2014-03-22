@@ -1,15 +1,17 @@
 import logging
+import json
 from newsconnector.support.similar import (
     build_similar, get_ratio, get_fuzzy_ratio)
-from newsconnector.support.test_data import news_data, headlines_data
+from newsconnector.support.test_data import headlines_data
 logging.disable(logging.CRITICAL)
 from unittest import TestCase
 
 
 class SimilarTest(TestCase):
     def test_number_of_items(self):
-        result = build_similar(news_data['articles'], 'newsarticle')
-        self.assertEqual(len(news_data['articles']), 40)
+        with open("newsconnector/support/test_articles.json", "r") as myfile:
+            data = myfile.read().replace('\n', '')
+        result = build_similar(json.loads(data), 'newsarticle')
         self.assertEqual(len(result), 30)
 
     def test_similar_ratio(self):

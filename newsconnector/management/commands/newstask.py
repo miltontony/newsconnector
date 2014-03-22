@@ -11,6 +11,7 @@ class Command(BaseCommand):
             if isinstance(obj, datetime.datetime):
                 return obj.isoformat()
             return obj
+
         from newsconnector.support.tasks import (
             update_feeds, scrape_articles, build_similar)
         from pyes.queryset import generate_model
@@ -24,10 +25,8 @@ class Command(BaseCommand):
             scrape_articles()
 
         if action == 'dump':
-            print json.dumps(
-                ArticleModel.objects.all().order_by('-date')[:40],
-                default=default
-            )
+            a = ArticleModel.objects.all().order_by('-date')[:40]
+            print json.dumps(a, default=default)
 
         if action == 'similar':
             build_similar('NewsArticle')

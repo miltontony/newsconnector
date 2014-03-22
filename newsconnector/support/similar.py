@@ -77,8 +77,8 @@ def get_fuzzy_ratio(art1, art2):
 
 
 def prepare_es_dto(obj):
-    obj['similar'] = []
-    obj['seen'] = []
+    #obj['similar'] = []
+    #obj['seen'] = []
     obj['main'] = False
 
     if not 'date_iso' in obj:
@@ -133,6 +133,9 @@ def build_similar(articles, tag):
                         seen.append(a['hash_key'])
                         seen += [a['seen'], ]
                         found_similar = True
+
+                        if a['hash_key'] == '94032da0f2e05ed7e6df051ec1e0e9ce':
+                            print 'what!!', h['title']
                         break
                     #else:
                     #    for s in h['similar']:
@@ -152,10 +155,11 @@ def build_similar(articles, tag):
         try:
             if not found_similar and a['hash_key'] not in seen:
                 a['main'] = True
-                a['similar'] = []
-                a['seen'] = []
+                #a['similar'] = []
+                #a['seen'] = []
                 history.append(a)
                 seen.append(a['hash_key'])
+                seen += a['seen']
         except:
             print_exception()
 

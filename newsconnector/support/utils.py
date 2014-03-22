@@ -77,7 +77,7 @@ def from_es_dto(obj):
             }
 
 
-def from_es_dict_dto(obj, prepare_dict_article=False):
+def from_es_dict_dto(obj, strip_similar=False):
     def prepare_dict_article(obj, strip_similar=False):
         from django.utils.timesince import timesince
         from django.template.defaultfilters import truncatewords
@@ -97,7 +97,7 @@ def from_es_dict_dto(obj, prepare_dict_article=False):
                 'seen': obj.get('seen', []),
                 'similar': obj.get('similar', []) if strip_similar else [],
                 }
-    obj = prepare_dict_article(obj, prepare_dict_article)
+    obj = prepare_dict_article(obj, strip_similar)
     obj['similar'] = [
         prepare_dict_article(s, True)
         for s in obj.get('similar', [])
