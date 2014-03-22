@@ -17,28 +17,38 @@ import logging
 logger = logging.getLogger('raven')
 
 
-def get_ratio(a, b):
-    if not (a and b):
+def get_unicode(txt):
+    if not txt:
+        return None
+    try:
+        txt = unicode(txt, errors="ignore")
+        txt = txt.encode('ascii', 'ignore')
+    except:
+        pass
+    return txt
+
+
+def get_ratio(art1, art2):
+    if not (art1 and art2):
         return 0
 
+    art1_c = get_unicode(art1['content'])
+    art2_c = get_unicode(art2['content'])
+    art1_f = get_unicode(art1['fulltext'])
+    art2_f = get_unicode(art2['fulltext'])
+    art1_t = get_unicode(art1['title'])
+    art2_t = get_unicode(art2['title'])
+
     content_ratio = text_ratio = title_ratio = 0
-    if a['content'] and b['content']:
-        content_ratio = ratio(
-            a['content'].encode('ascii', 'ignore'),
-            b['content'].encode('ascii', 'ignore')
-        )
+    if art1_c and art2_c:
+        content_ratio = ratio(art1_c, art2_c)
 
-    if a['fulltext'] and b['fulltext']:
-        text_ratio = ratio(
-            a['fulltext'].encode('ascii', 'ignore'),
-            b['fulltext'].encode('ascii', 'ignore')
-        )
+    if art1_f and art2_f:
+        text_ratio = ratio(art1_f, art2_f)
 
-    if a['title'] and b['title']:
-        title_ratio = ratio(
-            a['title'].encode('ascii', 'ignore'),
-            b['title'].encode('ascii', 'ignore')
-        )
+    if art1_t and art2_t:
+        title_ratio = ratio(art1_t, art2_t)
+
     return max(content_ratio, text_ratio, title_ratio)
 
 
@@ -51,16 +61,15 @@ def get_fuzzy_ratio(art1, art2):
 
     content_ratio = text_ratio = 0
 
-    if art1['content'] and art2['content']:
-        content_ratio = fuzz.token_set_ratio(
-            art1['content'].encode('ascii', 'ignore'),
-            art2['content'].encode('ascii', 'ignore')
-        )
-    if art1['fulltext'] and art2['fulltext']:
-        text_ratio = fuzz.token_set_ratio(
-            art1['fulltext'].encode('ascii', 'ignore'),
-            art2['fulltext'].encode('ascii', 'ignore')
-        )
+    art1_c = get_unicode(art1['content'])
+    art2_c = get_unicode(art2['content'])
+    art1_f = get_unicode(art1['fulltext'])
+    art2_f = get_unicode(art2['fulltext'])
+
+    if art1_c and art2_c:
+        content_ratio = fuzz.token_set_ratio(art1_c, art2_c)
+    if art1_f and art2_f:
+        text_ratio = fuzz.token_set_ratio(art1_f, art2_f)
     return max(content_ratio, text_ratio)
 
 
