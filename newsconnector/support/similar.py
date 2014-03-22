@@ -90,10 +90,10 @@ def prepare_es_dto(obj):
         obj['fulltext'] = None
 
     if not 'seen' in obj:
-        obj['seen'] = None
+        obj['seen'] = []
 
     if not 'similar' in obj:
-        obj['similar'] = None
+        obj['similar'] = []
     return obj
 
 
