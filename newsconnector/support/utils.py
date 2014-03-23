@@ -58,7 +58,6 @@ def scrape(url):
 
 
 def from_es_dto(obj):
-    from django.utils.timesince import timesince
     from django.template.defaultfilters import truncatewords
 
     return {'title': obj.title,
@@ -66,20 +65,19 @@ def from_es_dto(obj):
             'link': obj.link,
             'content': truncatewords(obj.content, 50),
             'source': obj.source,
-            'fulltext': obj.fulltext if hasattr(obj, 'fulltext') else '',
+            'fulltext': obj.fulltext or '' if hasattr(obj, 'fulltext') else '',
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
-            'date': '%s ago' % timesince(obj.date),
+            'date': obj.date,
             'date_iso': obj.date.isoformat(),
             'keywords': obj.keywords,
-            'similar': [],
-            'seen': [],
+            'similar': obj.similar or [] if hasattr(obj, 'similar') else [],
+            'seen': obj.seen or [] if hasattr(obj, 'seen') else [],
             }
 
 
 def from_es_dict_dto(obj, strip_similar=False):
     def prepare_dict_article(obj, strip_similar=False):
-        from django.utils.timesince import timesince
         from django.template.defaultfilters import truncatewords
 
         return {'title': obj.get('title'),
@@ -91,11 +89,11 @@ def from_es_dict_dto(obj, strip_similar=False):
                 'fulltext': obj.get('fulltext', ''),
                 'image_url': obj.get('image_url'),
                 'hash_key': obj.get('hash_key'),
-                'date': '%s ago' % timesince(obj.get('date')),
+                'date': obj.get('date'),
                 'date_iso': obj.get('date').isoformat(),
                 'keywords': obj.get('keywords'),
                 'seen': obj.get('seen', []),
-                'similar': obj.get('similar', []) if strip_similar else [],
+                'similar': obj.get('similar') or [] if strip_similar else [],
                 }
     obj = prepare_dict_article(obj, strip_similar)
     obj['similar'] = [

@@ -17,6 +17,13 @@ def health(request):
     return HttpResponse("")
 
 
+def date_parser(obj):
+        import datetime
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return obj
+
+
 @login_required
 def delete_keyword(request, pk):
     if(request.user.is_staff):
@@ -38,14 +45,17 @@ def search(request, articleModel=Article):
     q2 = TextQuery("title", q, operator='or')
     q3 = TextQuery("keyword", q, boost=0.5, operator='or')
     query = BoolQuery(should=[q1, q2, q3])
-    results = conn.search(Search(query=query, start=0, size=20),\
-                            indexes=["newsworld"], sort='date:desc,_score')
-
-    return render(request, 'browse.html',
-                            {'sites': RssFeed.objects.all().distinct('name'),
-                            'q': q,
-                            'news': [from_es_dto(a) for a in results],
-                            })
+    results = conn.search(
+        Search(query=query, start=0, size=20),
+        indexes=["newsworld"], sort='date:desc,_score')
+    return render(
+        request,
+        'browse.html',
+        {
+            'sites': RssFeed.objects.all().distinct('name'),
+            'q': q,
+            'news': [from_es_dto(a) for a in results],
+        })
 
 
 def featured_articles(tag):
@@ -78,7 +88,7 @@ def read_json(request):
         #'fSports': [from_es_dto(a) for a in store.get_featured_articles('SportsArticle')],
         #'fFinance': [from_es_dto(a) for a in store.get_featured_articles('FinanceArticle')],
         #'fEntertainment': [from_es_dto(a) for a in store.get_featured_articles('EntertainmentArticle')],
-    })
+    }, default=date_parser)
 
     return HttpResponse(data, mimetype='application/json')
 
@@ -92,7 +102,8 @@ def read_more(request, tag):
     articles = store.get_articles(tag, stop, start)
 
     if not page:
-        return HttpResponse(json.dumps({'error': 'page not selected'}),
-                            mimetype='application/json')
+        return HttpResponse(json.dumps(
+            {'error': 'page not selected'}, default=date_parser),
+            mimetype='application/json')
 
     return render(request, 'article_block.html', {'articles': articles})

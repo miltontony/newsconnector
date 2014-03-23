@@ -4,6 +4,13 @@ import json
 from newsconnector.support import utils
 
 
+def date_parser(obj):
+        import datetime
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return obj
+
+
 def parse_tag(tag):
     cat = 1
     if tag == 'NewsArticle':
@@ -36,7 +43,7 @@ def articles(request, tag):
     return HttpResponse(json.dumps({
         'articles': fudge,
         'cat': cat,
-    }),
+    }, default=date_parser),
         mimetype='application/json'
     )
 
@@ -49,7 +56,7 @@ def headlines(request, tag):
     return HttpResponse(json.dumps({
         'articles': articles,
         'cat': cat,
-    }),
+    }, default=date_parser),
         mimetype='application/json'
     )
 
@@ -65,7 +72,7 @@ def headlines_all(request):
         'sports': sports,
         'finance': finance,
         'entertainment': [a for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
-    }),
+    }, default=date_parser),
         mimetype='application/json'
     )
 
@@ -79,6 +86,6 @@ def iheadlines_all(request):
         'news': news,
         'sports': sports,
         'entertainment': [a for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
-    }),
+    }, default=date_parser),
         mimetype='application/json'
     )

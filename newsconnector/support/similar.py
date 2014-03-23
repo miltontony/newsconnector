@@ -102,7 +102,7 @@ def prepare_es_dto(obj):
         obj['similar'] = []
     elif obj['similar'] is None:
         obj['similar'] = []
-
+        obj['similar'] = []
 
     return obj
 
@@ -183,10 +183,7 @@ def build_similar(articles, tag):
         for his in history:
             his['similar'] = [prepare_es_dto(a) for a in his['similar']]
             his['similar'] = sorted(
-                his['similar'],
-                key=lambda s: datetime.strptime(
-                    s['date_iso'], "%Y-%m-%dT%H:%M:%S"),
-                reverse=True)
+                his['similar'], key=lambda s: s['date'], reverse=True)
     except:
         print_exception()
     return history
