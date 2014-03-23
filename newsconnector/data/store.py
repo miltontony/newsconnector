@@ -16,7 +16,7 @@ def get_articles(tag, limit=20, start=0):
 def get_headlines(tag, limit=20):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     articles = r.get('headlines_%s' % tag)
-    return json.loads(articles)[:limit]
+    return [update_date(a) for a in json.loads(articles)[:limit]]
 
 
 def update_date(obj):
