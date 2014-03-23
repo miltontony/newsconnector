@@ -13,7 +13,7 @@ class Command(BaseCommand):
             return obj
 
         from newsconnector.support.tasks import (
-            update_feeds, scrape_articles, build_similar)
+            update_feeds, scrape_articles, build_similar, update_headlines)
         from pyes.queryset import generate_model
         import json
         ArticleModel = generate_model("newsworld", "article")
@@ -33,3 +33,6 @@ class Command(BaseCommand):
 
         if action == 'similar_all':
             build_similar()
+
+        if action == 'headlines':
+            update_headlines()

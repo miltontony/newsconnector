@@ -8,6 +8,8 @@ from django.utils.hashcompat import md5_constructor
 from time import mktime
 from datetime import datetime
 
+import json
+import redis
 import feedparser
 import lxml.html
 from pyes import ES
@@ -171,3 +173,40 @@ def index_articles(articles_list):
             continue
         art = scrape_article(art)
         conn.index(art, 'newsworld', 'article')
+
+
+def update_headlines():
+    headlines('NewsArticle')
+    headlines('SportsArticle')
+    headlines('FinanceArticle')
+    headlines('EntertainmentArticle')
+    headlines('INewsArticle')
+    headlines('ISportsArticle')
+
+
+def headlines(tag, limit=200):
+    def date_parser(obj):
+        import datetime
+        if isinstance(obj, datetime.datetime):
+            return obj.isoformat()
+        return obj
+
+    conn.indices.refresh('newsworld')
+    articles = ArticleModel.objects.filter(
+        tag=tag.lower()).order_by('-date')[:limit]
+
+    try:
+        for his in articles:
+            his['similar'] = [
+                similar.prepare_es_dto(a) for a in his['similar']
+            ]
+            his['similar'] = sorted(
+                his['similar'], key=lambda s: s['date'], reverse=True)
+    except:
+        utils.print_exception()
+
+    r = redis.StrictRedis(host='localhost', port=6379, db=0)
+    h = [utils.from_es_dict_dto(a) for a in articles]
+    h = sorted(h, key=lambda a: len(a['similar']), reverse=True)
+    r.set('headlines_%s' % tag, json.dumps(h[:5], default=date_parser))
+    logger.info('[headlines] %s updated' % tag)
