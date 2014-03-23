@@ -93,7 +93,7 @@ def from_es_dict_dto(obj, strip_similar=False):
                 'date_iso': obj.get('date').isoformat(),
                 'keywords': obj.get('keywords'),
                 'seen': obj.get('seen', []),
-                'similar': obj.get('similar') or [] if strip_similar else [],
+                'similar': obj.get('similar') or [] if not strip_similar else [],
                 }
     obj = prepare_dict_article(obj, strip_similar)
     obj['similar'] = [
