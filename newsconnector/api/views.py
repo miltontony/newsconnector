@@ -6,8 +6,9 @@ from newsconnector.support import utils
 
 def date_parser(obj):
         import datetime
+        from django.utils.timesince import timesince
         if isinstance(obj, datetime.datetime):
-            return obj.isoformat()
+            return timesince(obj)
         return obj
 
 

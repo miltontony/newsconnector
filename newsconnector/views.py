@@ -18,10 +18,10 @@ def health(request):
 
 
 def date_parser(obj):
-        import datetime
-        if isinstance(obj, datetime.datetime):
-            return obj.isoformat()
-        return obj
+    import datetime
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    return obj
 
 
 @login_required

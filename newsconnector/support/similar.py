@@ -189,6 +189,13 @@ def build_similar(articles, tag):
     return history
 
 
+def date_parser(obj):
+    import datetime
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    return obj
+
+
 def build(tag, limit=200):
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
@@ -203,5 +210,5 @@ def build(tag, limit=200):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     h = [from_es_dict_dto(a, False) for a in history]
     h = sorted(h, key=lambda a: len(a['similar']), reverse=True)
-    r.set('headlines_%s' % tag, json.dumps(h[:5]))
+    r.set('headlines_%s' % tag, json.dumps(h[:5], default=date_parser))
     logger.info('[similar] updated for: %s' % tag)
