@@ -8,41 +8,19 @@ from django.utils.hashcompat import md5_constructor
 from time import mktime
 from datetime import datetime
 
-from celery.task import task
-
 import feedparser
 import lxml.html
 from pyes import ES
 from pyes.queryset import generate_model
 ArticleModel = generate_model("newsworld", "article")
 
-import redis
-r = redis.StrictRedis(host='localhost', port=6379, db=0)
-
 import logging
 logger = logging.getLogger('raven')
-
-SYSTEM_STATE_KEY = 'system_state_key'
-TASK_ID_KEY = 'updatefeeds_task_key'
 
 conn = ES('127.0.0.1:9200')
 
 
-def stop_task():
-    from celery import current_app as celery
-    task_id = r.get(TASK_ID_KEY)
-    if task_id:
-        celery.control.revoke(task_id, terminate=True, signal='SIGKILL')
-        logger.info('Killed: [%s]' % task_id)
-
-
-@task(ignore_result=True)
 def update_feeds(force=False):
-    #if not must_start_update() and not force:
-    #    return
-
-    r.set(TASK_ID_KEY, update_feeds.request.id)
-
     news_feeds = [(feed.url, feed.name)
                   for feed in NewsFeed.objects.all()]
     sports_feeds = [(feed.url, feed.name)
@@ -57,25 +35,13 @@ def update_feeds(force=False):
                      for feed in ISportsFeed.objects.all()]
 
     run_tasks(news_feeds, NewsArticle)
-    build_similar('NewsArticle')
-
     run_tasks(sports_feeds, SportsArticle)
-    build_similar('SportsArticle')
-
     run_tasks(fin_feeds, FinanceArticle)
-    build_similar('FinanceArticle')
-
     run_tasks(e_feeds, EntertainmentArticle)
-    build_similar('EntertainmentArticle')
-
     run_tasks(inews_feeds, INewsArticle)
-    build_similar('INewsArticle')
-
     run_tasks(isports_feeds, ISportsArticle)
-    build_similar('ISportsArticle')
 
 
-@task(ignore_result=True)
 def scrape_articles(limit=100):
     articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
     count = 0
@@ -94,7 +60,6 @@ def scrape_articles(limit=100):
             break
 
 
-@task(ignore_result=True)
 def build_similar(tag=None):
     if tag:
         return similar.build(tag)
@@ -161,17 +126,18 @@ def rollback_articles(articles, feedModel):
 
 
 def run_tasks(feeds, feedModel):
-    logger.info('-- Update Started: %s --' % feedModel.__name__)
-    logger.info('Fetching RSS feeds.')
+    logger.info('[update] Started: %s --' % feedModel.__name__)
+    logger.info('[update] Fetching RSS feeds.')
     new_articles = get_new_articles(feeds, feedModel)
 
     try:
         index_articles(new_articles)
-        logger.info('Article update complete.')
-        logger.info('-- Update Complete --')
+        logger.info('[update][%s] Complete. new:%s' % (
+            feedModel.__name__,
+            len(list(new_articles))))
     except:
         rollback_articles(new_articles, feedModel)
-        logger.info('Rolling back: %s (%s)' % (
+        logger.info('[update][error] Rolling back: %s (%s)' % (
             feedModel.__name__,
             len(list(new_articles))))
         utils.print_exception()
@@ -201,7 +167,7 @@ def index_articles(articles_list):
         if not art:
             continue
         if ArticleModel.objects.filter(hash_key=art['hash_key']).exists():
-            logger.info('[skipped] ' + art['link'])
+            logger.info('[index][skipped] ' + art['link'])
             continue
         art = scrape_article(art)
         conn.index(art, 'newsworld', 'article')

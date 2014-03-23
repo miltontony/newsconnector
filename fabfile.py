@@ -26,6 +26,10 @@ def deploy():
 
 
 def restart():
+    sudo('supervisorctl restart newsconnector:')
+
+
+def restart_celery():
     with cd(env.path):
         sudo('supervisorctl stop celery')
         run('ve/bin/python %(path)s/newsconnector/manage.py celery purge -f' % env)
@@ -33,5 +37,4 @@ def restart():
     with settings(warn_only=True):
         run('%(path)s/kill_workers.sh' % env)
 
-    sudo('supervisorctl restart newsconnector:')
     sudo('supervisorctl start celery')
