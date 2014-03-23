@@ -128,7 +128,7 @@ def rollback_articles(articles, feedModel):
 def run_tasks(feeds, feedModel):
     logger.info('[update] Started: %s --' % feedModel.__name__)
     logger.info('[update] Fetching RSS feeds.')
-    new_articles = get_new_articles(feeds, feedModel)
+    new_articles = list(get_new_articles(feeds, feedModel))
 
     try:
         index_articles(new_articles)
