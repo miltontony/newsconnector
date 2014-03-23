@@ -30,3 +30,6 @@ class Command(BaseCommand):
 
         if action == 'similar':
             build_similar('NewsArticle')
+
+        if action == 'similar_all':
+            build_similar()
