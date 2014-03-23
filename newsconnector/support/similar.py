@@ -195,8 +195,8 @@ def build(tag, limit=200):
 
     history = build_similar(articles, tag)
     for a in history:
-        a['similar'] = dict((v['hash_key'], v) for v in a['similar']).values()
-        a['seen'] = dict((v['hash_key'], v) for v in a['similar']).values()
+        a['similar'] = list(dict((v['hash_key'], v) for v in a['similar']).values())
+        a['seen'] = list(dict((v['hash_key'], v) for v in a['similar']).values())
         a.save()
     conn.indices.refresh('newsworld')
     logger.info('[similar] indexing complete for: %s' % tag)
