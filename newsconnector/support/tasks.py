@@ -129,17 +129,17 @@ def run_tasks(feeds, feedModel):
     logger.info('[update] Started: %s --' % feedModel.__name__)
     logger.info('[update] Fetching RSS feeds.')
     new_articles = list(get_new_articles(feeds, feedModel))
-
+    l_new_articles = len([a for a in new_articles if a])
     try:
         index_articles(new_articles)
         logger.info('[update][%s] Complete. new:%s' % (
             feedModel.__name__,
-            len(list(new_articles))))
+            l_new_articles))
     except:
         rollback_articles(new_articles, feedModel)
         logger.info('[update][error] Rolling back: %s (%s)' % (
             feedModel.__name__,
-            len(list(new_articles))))
+            l_new_articles))
         utils.print_exception()
 
     conn.indices.refresh('newsworld')
