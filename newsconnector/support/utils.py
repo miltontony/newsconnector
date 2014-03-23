@@ -33,8 +33,8 @@ def delete_old_data():
     print 'keywords remaining: %s' % Keyword.objects.all().count()
 
 
-def clean(txt):
-    return unicodedata.normalize('NFKD', txt).encode('ascii', 'ignore')
+def clean(t):
+    return unicodedata.normalize('NFKD', unicode(t)).encode('ascii', 'ignore')
 
 
 def get_positive_words(url):
