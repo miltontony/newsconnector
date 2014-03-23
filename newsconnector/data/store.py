@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import json
 import redis
 from pyes.queryset import generate_model
@@ -20,6 +20,6 @@ def get_headlines(tag, limit=20):
 
 
 def update_date(obj):
-    if not isinstance(obj['date'], datetime.datetime):
+    if not isinstance(obj['date'], datetime):
         obj['date'] = datetime.strptime(obj['date'], "%Y-%m-%dT%H:%M:%S")
     return obj
