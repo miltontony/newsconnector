@@ -1,3 +1,4 @@
+import unicodedata
 from datetime import date, timedelta, datetime
 
 
@@ -32,6 +33,10 @@ def delete_old_data():
     print 'keywords remaining: %s' % Keyword.objects.all().count()
 
 
+def clean(txt):
+    return unicodedata.normalize('NFKD', txt).encode('ascii', 'ignore')
+
+
 def get_positive_words(url):
     if url.startswith('http://www.news24.com'):
         return ['article', 'col626']
@@ -60,12 +65,12 @@ def scrape(url):
 def from_es_dto(obj):
     from django.template.defaultfilters import truncatewords
 
-    return {'title': obj.title,
+    return {'title': clean(obj.title),
             'score': obj.score,
             'link': obj.link,
-            'content': truncatewords(obj.content, 50),
+            'content': truncatewords(clean(obj.content), 50),
             'source': obj.source,
-            'fulltext': obj.fulltext or '' if hasattr(obj, 'fulltext') else '',
+            'fulltext': clean(obj.fulltext) or '' if hasattr(obj, 'fulltext') else '',
             'image_url': obj.image_url,
             'hash_key': obj.hash_key,
             'date': obj.date,
@@ -80,13 +85,13 @@ def from_es_dict_dto(obj, strip_similar=False):
     def prepare_dict_article(obj, strip_similar=False):
         from django.template.defaultfilters import truncatewords
 
-        return {'title': obj.get('title'),
+        return {'title': clean(obj.get('title')),
                 'score': obj.get('score'),
                 'link': obj.get('link'),
                 'main': obj.get('main', False),
-                'content': truncatewords(obj.get('content'), 50),
+                'content': truncatewords(clean(obj.get('content')), 50),
                 'source': obj.get('source'),
-                'fulltext': obj.get('fulltext', ''),
+                'fulltext': clean(obj.get('fulltext', '')),
                 'image_url': obj.get('image_url'),
                 'hash_key': obj.get('hash_key'),
                 'date': obj.get('date'),

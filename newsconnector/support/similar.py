@@ -2,7 +2,7 @@ import json
 import redis
 
 from newsconnector.support.utils import (
-    print_exception, from_es_dict_dto)
+    print_exception, from_es_dict_dto, clean)
 
 from Levenshtein import ratio
 from datetime import datetime
@@ -103,6 +103,10 @@ def prepare_es_dto(obj):
     elif obj['similar'] is None:
         obj['similar'] = []
         obj['similar'] = []
+
+    obj['fulltext'] = clean(obj['fulltext'])
+    obj['content'] = clean(obj['content'])
+    obj['title'] = clean(obj['title'])
 
     return obj
 

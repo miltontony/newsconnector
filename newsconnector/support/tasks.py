@@ -104,10 +104,10 @@ def get_instance(cls, dictArticle, source):
         a, created = cls.objects.get_or_create(link=dictArticle.link)
         if created:
             article = {
-                'title': dictArticle.title,
+                'title': utils.clean(dictArticle.title),
                 'link': dictArticle.link,
                 'hash_key': hash,
-                'content': content,
+                'content': utils.clean(content),
                 'source': source,
                 'tag': cls.__name__,
                 'image_url': get_image_url(dictArticle.links),
@@ -161,7 +161,7 @@ def scrape_article(article):
         logger.error(
             '[scrapper] [error] Unable to scrape %s' % article['link'],
             exc_info=True)
-    return article
+    return utils.clean(article)
 
 
 def index_articles(articles_list):
