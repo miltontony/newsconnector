@@ -1,5 +1,6 @@
-import redis
+import datetime
 import json
+import redis
 from pyes.queryset import generate_model
 from pyes import ES
 conn = ES('127.0.0.1:9200')
@@ -16,3 +17,9 @@ def get_headlines(tag, limit=20):
     r = redis.StrictRedis(host='localhost', port=6379, db=0)
     articles = r.get('headlines_%s' % tag)
     return json.loads(articles)[:limit]
+
+
+def update_date(obj):
+    if not isinstance(obj['date'], datetime.datetime):
+        obj['date'] = datetime.strptime(obj['date'], "%Y-%m-%dT%H:%M:%S")
+    return obj

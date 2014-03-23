@@ -5,11 +5,11 @@ from newsconnector.support import utils
 
 
 def date_parser(obj):
-        import datetime
-        from django.utils.timesince import timesince
-        if isinstance(obj, datetime.datetime):
-            return timesince(obj)
-        return obj
+    import datetime
+    from django.utils.timesince import timesince
+    if isinstance(obj, datetime.datetime):
+        return timesince(obj)
+    return obj
 
 
 def parse_tag(tag):
