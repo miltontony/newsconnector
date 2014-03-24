@@ -196,11 +196,15 @@ def build(tag, limit=200):
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
         tag=tag.lower()).order_by('-date')[:limit]
-
     history = build_similar(articles, tag)
     for a in history:
-        a['similar'] = list(dict((v['hash_key'], v) for v in a['similar']).values())
-        a['seen'] = list(dict((v['hash_key'], v) for v in a['similar']).values())
+        if not 'similar' in a:
+            a['similar'] = []
+        if not 'seen' in a:
+            a['seen'] = []
+        a['similar'] = list(dict(
+            (v['hash_key'], v) for v in a['similar']).values())
+        a['seen'] = list(set(a['seen']))
         a.save()
     conn.indices.refresh('newsworld')
     logger.info('[similar] indexing complete for: %s' % tag)
