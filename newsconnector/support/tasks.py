@@ -161,7 +161,7 @@ def scrape_article(article):
         logger.error(
             '[scrapper] [error] Unable to scrape %s' % article['link'],
             exc_info=True)
-    return utils.clean(article)
+    return article
 
 
 def index_articles(articles_list):

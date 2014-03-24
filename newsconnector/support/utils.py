@@ -59,7 +59,7 @@ def scrape(url):
         html = Document(page, positive_keywords=pos).summary()
     else:
         html = Document(page).summary()
-    return Goose().extract(raw_html=html).cleaned_text
+    return clean(Goose().extract(raw_html=html).cleaned_text)
 
 
 def from_es_dto(obj):
