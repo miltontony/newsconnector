@@ -86,7 +86,7 @@ def prepare_es_dto(obj):
 
     if not 'date_iso' in obj and isinstance(obj['date'], datetime):
         obj['date_iso'] = obj['date'].isoformat()
-    elif isinstance(obj['date_iso'], datetime):
+    elif 'date_iso' in obj and isinstance(obj['date_iso'], datetime):
         obj['date_iso'] = obj['date_iso'].isoformat()
 
     if not 'seen' in obj:
