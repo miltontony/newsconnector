@@ -84,7 +84,7 @@ def prepare_es_dto(obj):
     if not 'fulltext' in obj:
         obj['fulltext'] = ''
 
-    if not 'date_iso' in obj:
+    if not 'date_iso' in obj and isinstance(obj['date'], datetime):
         obj['date_iso'] = obj['date'].isoformat()
     elif isinstance(obj['date_iso'], datetime):
         obj['date_iso'] = obj['date_iso'].isoformat()
