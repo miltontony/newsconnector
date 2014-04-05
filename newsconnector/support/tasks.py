@@ -6,7 +6,7 @@ from newsconnector.support import similar, utils
 
 from django.utils.hashcompat import md5_constructor
 from time import mktime
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import json
 import redis
@@ -193,7 +193,10 @@ def headlines(tag, limit=200):
 
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
-        tag=tag.lower(), main=True).order_by('-date')[:limit]
+        tag=tag.lower(),
+        main=True,
+        date__gte=datetime.now()-timedelta(hours=24)
+    ).order_by('-date')[:limit]
 
     try:
         for his in articles:
