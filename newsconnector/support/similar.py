@@ -130,6 +130,9 @@ def build_similar(articles, tag):
         found_similar = False
         index += 1
 
+        if index > 200:
+            break
+
         if a['hash_key'] in seen:
             skipped.append(a['hash_key'])
             continue
@@ -195,7 +198,7 @@ def date_parser(obj):
 def build(tag, limit=200):
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
-        tag=tag.lower()).order_by('-date')[:limit]
+        tag=tag.lower()).order_by('-date')
     history = build_similar(articles, tag)
     for a in history:
         if not 'similar' in a:
