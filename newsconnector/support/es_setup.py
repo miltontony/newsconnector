@@ -63,7 +63,10 @@ def setup():
             'type': u'string'}
     }
 
-    conn.put_mapping("article", {'properties': mapping})
+    conn.put_mapping("article", {
+        'settings': {"number_of_shards": 1},
+        'properties': mapping,
+    })
     conn.refresh()
 
 
