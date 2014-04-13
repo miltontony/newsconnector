@@ -198,7 +198,7 @@ def date_parser(obj):
 def build(tag, limit=200):
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
-        tag=tag.lower()).order_by('-date')
+        tag=tag).order_by('-date')
     history = build_similar(articles, tag)
     for a in history:
         if not 'similar' in a:

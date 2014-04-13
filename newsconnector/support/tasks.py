@@ -193,7 +193,7 @@ def headlines(tag, limit=200):
 
     conn.indices.refresh('newsworld')
     articles = ArticleModel.objects.filter(
-        tag=tag.lower(),
+        tag=tag,
         main=True,
         date__gte=datetime.now()-timedelta(hours=24)
     ).order_by('-date')[:limit]
