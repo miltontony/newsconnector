@@ -35,7 +35,6 @@ class Article(models.Model):
             fulltext=obj['fulltext'],
             source=obj['source'],
             date=obj['date'],
-            date_added=obj['date_added'],
             hash_key=obj['hash_key'],
             image_url=obj['image_url'],
             link=obj['link'],
