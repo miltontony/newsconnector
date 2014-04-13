@@ -15,6 +15,32 @@ class Article(models.Model):
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.link
 
+    def to_json(self):
+        return {'title': self.title,
+                'link': self.link,
+                'content': self.content,
+                'source': self.source,
+                'image_url': self.image_url if self.image_url else '',
+                'hash_key': self.hash_key,
+                'tag': self.__class__.__name__,
+                'date': '%s' % self.date.isoformat(),
+                'date_added': '%s' % self.date_added.isoformat(),
+                'fulltext': self.fulltext}
+
+    @classmethod
+    def from_es(cls, obj):
+        return cls.objects.create(
+            title=obj['title'],
+            content=obj['content'],
+            fulltext=obj['fulltext'],
+            source=obj['source'],
+            date=obj['date'],
+            date_added=obj['date_added'],
+            hash_key=obj['hash_key'],
+            image_url=obj['image_url'],
+            link=obj['link'],
+        )
+
 
 class RssFeed(models.Model):
     id = models.AutoField(primary_key=True)
