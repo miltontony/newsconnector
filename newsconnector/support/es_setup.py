@@ -96,32 +96,32 @@ def backup():
     Article.objects.all().delete()
 
     print 'Backing up NewsArticle'
-    for a in ArticleModel.objects.filter(tag='NewsArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='newsarticle', date__gte=d):
         NewsArticle.from_es(a)
     print 'Total: %s' % str(NewsArticle.objects.all().count())
 
     print 'Backing up SportsArticle'
-    for a in ArticleModel.objects.filter(tag='SportsArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='sportsarticle', date__gte=d):
         SportsArticle.from_es(a)
     print 'Total: %s' % str(SportsArticle.objects.all().count())
 
     print 'Backing up FinanceArticle'
-    for a in ArticleModel.objects.filter(tag='FinanceArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='financearticle', date__gte=d):
         FinanceArticle.from_es(a)
     print 'Total: %s' % str(FinanceArticle.objects.all().count())
 
     print 'Backing up EntertainmentArticle'
-    for a in ArticleModel.objects.filter(tag='EntertainmentArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='entertainmentarticle', date__gte=d):
         EntertainmentArticle.from_es(a)
     print 'Total: %s' % str(EntertainmentArticle.objects.all().count())
 
     print 'Backing up INewsArticle'
-    for a in ArticleModel.objects.filter(tag='INewsArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='inewsarticle', date__gte=d):
         INewsArticle.from_es(a)
     print 'Total: %s' % str(INewsArticle.objects.all().count())
 
     print 'Backing up ISportsArticle'
-    for a in ArticleModel.objects.filter(tag='ISportsArticle', date__gte=d):
+    for a in ArticleModel.objects.filter(tag='isportsarticle', date__gte=d):
         ISportsArticle.from_es(a)
     print 'Total: %s' % str(ISportsArticle.objects.all().count())
 
