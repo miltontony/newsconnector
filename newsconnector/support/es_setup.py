@@ -12,8 +12,7 @@ from newsconnector.models import (
 conn = ES('127.0.0.1:9200')
 
 
-def setup():
-    #conn = ES('127.0.0.1:9200')
+def delete_index():
     try:
         conn.indices.delete_index('newsworld')
     except:
@@ -21,7 +20,11 @@ def setup():
 
     conn.indices.create_index("newsworld")
     conn.indices.default_indices = ["newsworld"]
+    conn.indices.refresh()
 
+
+def setup():
+    conn.indices.refresh()
     mapping = {
         u'hash_key': {
             'index': 'not_analyzed',
@@ -57,7 +60,19 @@ def setup():
         u'date_added': {
             'store': 'yes',
             'type': u'date'},
+        u'date_added': {
+            'index': 'no',
+            'store': 'no',
+            'type': u'date'},
         u'source': {
+            'index': 'no',
+            'store': 'no',
+            'type': u'string'},
+        u'seen': {
+            'index': 'no',
+            'store': 'no',
+            'type': u'string'},
+        u'similar': {
             'index': 'no',
             'store': 'no',
             'type': u'string'}
