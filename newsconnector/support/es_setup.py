@@ -15,12 +15,12 @@ conn = ES('127.0.0.1:9200')
 def setup():
     #conn = ES('127.0.0.1:9200')
     try:
-        conn.delete_index('newsworld')
+        conn.indices.delete_index('newsworld')
     except:
         pass
 
-    conn.create_index("newsworld")
-    conn.default_indices = ["newsworld"]
+    conn.indices.create_index("newsworld")
+    conn.indices.default_indices = ["newsworld"]
 
     mapping = {
         u'hash_key': {
@@ -63,11 +63,11 @@ def setup():
             'type': u'string'}
     }
 
-    conn.put_mapping("article", {
+    conn.indices.put_mapping("article", {
         'settings': {"number_of_shards": 1},
         'properties': mapping,
     })
-    conn.refresh()
+    conn.indices.refresh()
 
 
 def init():
