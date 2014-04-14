@@ -1,7 +1,7 @@
 from newsconnector.models import (
     NewsFeed, NewsArticle, SportsFeed, SportsArticle, FinanceArticle,
     FinanceFeed, EntertainmentArticle, EntertainmentFeed, INewsArticle,
-    INewsFeed, ISportsArticle, ISportsFeed)
+    INewsFeed, ISportsArticle, ISportsFeed, Article)
 from newsconnector.support import similar, utils
 
 from django.utils.hashcompat import md5_constructor
@@ -113,6 +113,13 @@ def get_instance(cls, dictArticle, source):
                 'image_url': get_image_url(dictArticle.links),
                 'date': '%s' % article_date
             }
+            a.title = article['title']
+            a.hash_key = article['hash_key']
+            a.content = article['content']
+            a.source = article['source']
+            a.date = article['date']
+            a.image_url = article['image_url']
+            a.save()
             return article
         return None
 
@@ -164,6 +171,15 @@ def scrape_article(article):
     return article
 
 
+def update_fulltext(article):
+    try:
+        art = Article.objects.get(hash_key=article['hash_key'])
+        art.fulltext = article['fulltext']
+        art.save()
+    except:
+        pass
+
+
 def index_articles(articles_list):
     for art in articles_list:
         if not art:
@@ -172,6 +188,7 @@ def index_articles(articles_list):
             logger.info('[index][skipped] ' + art['link'])
             continue
         art = scrape_article(art)
+        update_fulltext(art)
         conn.index(art, 'newsworld', 'article')
 
 
