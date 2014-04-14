@@ -1,8 +1,4 @@
-import json
-import redis
-
-from newsconnector.support.utils import (
-    print_exception, from_es_dict_dto, clean)
+from newsconnector.support.utils import print_exception, clean
 
 from Levenshtein import ratio
 from datetime import datetime
