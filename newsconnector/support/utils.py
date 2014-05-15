@@ -117,5 +117,7 @@ logger = logging.getLogger(__name__)
 
 
 def print_exception():
-    exc_type, exc_value = sys.exc_info()[:2]
+    exc_type, exc_value, some = sys.exc_info()
     logger.error(exc_value, exc_info=True)
+    import traceback
+    print traceback.format_exc()

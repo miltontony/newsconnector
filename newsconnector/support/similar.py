@@ -27,12 +27,12 @@ def get_ratio(art1, art2):
     if not (art1 and art2):
         return 0
 
-    art1_c = get_unicode(art1['content'])
-    art2_c = get_unicode(art2['content'])
-    art1_f = get_unicode(art1['fulltext'])
-    art2_f = get_unicode(art2['fulltext'])
-    art1_t = get_unicode(art1['title'])
-    art2_t = get_unicode(art2['title'])
+    art1_c = get_unicode(art1.content)
+    art2_c = get_unicode(art2.content)
+    art1_f = get_unicode(art1.fulltext)
+    art2_f = get_unicode(art2.fulltext)
+    art1_t = get_unicode(art1.title)
+    art2_t = get_unicode(art2.title)
 
     content_ratio = text_ratio = title_ratio = 0
     if art1_c and art2_c:
@@ -56,10 +56,10 @@ def get_fuzzy_ratio(art1, art2):
 
     content_ratio = text_ratio = 0
 
-    art1_c = get_unicode(art1['content'])
-    art2_c = get_unicode(art2['content'])
-    art1_f = get_unicode(art1['fulltext'])
-    art2_f = get_unicode(art2['fulltext'])
+    art1_c = get_unicode(art1.content)
+    art2_c = get_unicode(art2.content)
+    art1_f = get_unicode(art1.fulltext)
+    art2_f = get_unicode(art2.fulltext)
 
     if art1_c and art2_c:
         content_ratio = fuzz.token_set_ratio(art1_c, art2_c)
@@ -74,7 +74,7 @@ def prepare_es_dto(obj):
     obj['main'] = False
 
     if not 'fulltext' in obj:
-        obj['fulltext'] = ''
+        obj.fulltext = ''
 
     if not 'date_iso' in obj and isinstance(obj['date'], datetime):
         obj['date_iso'] = obj['date'].isoformat()
@@ -96,9 +96,9 @@ def prepare_es_dto(obj):
         obj['similar'] = []
         obj['similar'] = []
 
-    obj['fulltext'] = clean(obj['fulltext'])
-    obj['content'] = clean(obj['content'])
-    obj['title'] = clean(obj['title'])
+    obj.fulltext = clean(obj.fulltext)
+    obj.content = clean(obj.content)
+    obj.title = clean(obj.title)
 
     return obj
 
@@ -131,16 +131,16 @@ def build_similar(articles, tag):
 
         for h in history:
             try:
-                if not h.seen.filter(a).exists():
+                if not h.seen.filter(pk=a.pk).exists():
                     sim_ratio = get_fuzzy_ratio(h, a)
                     if sim_ratio >= 70:
                         a.score = sim_ratio
-                        a.seen.add([h, ])
+                        a.seen = [h, ]
                         a.save()
 
-                        h.similar = [a, ] + h.similar.all() + a.similar.all()
+                        h.similar = [a, ] + list(h.similar.all()) + list(a.similar.all())
                         h.seen.add(a)
-                        h.seen.add(a.seen.all())
+                        h.seen.add(*list(a.seen.all()))
                         h.save()
                         #h = append_related(tag, h, a, 70)
                         seen.append(a)
@@ -148,7 +148,7 @@ def build_similar(articles, tag):
                         found_similar = True
 
                         if a.hash_key == '94032da0f2e05ed7e6df051ec1e0e9ce':
-                            print 'what!!', h['title']
+                            print 'what!!', h.title
                         break
                     #else:
                     #    for s in h['similar']:
@@ -172,7 +172,7 @@ def build_similar(articles, tag):
                 #a['seen'] = []
                 history.append(a)
                 seen.append(a)
-                seen += a.seen.all()
+                seen += list(a.seen.all())
                 a.save()
         except:
             print_exception()
