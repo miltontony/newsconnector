@@ -1,13 +1,9 @@
 from newsconnector.support.utils import print_exception, clean
+from django.db.models.loading import get_model
 
 from Levenshtein import ratio
 from datetime import datetime
 from fuzzywuzzy import fuzz
-from pyes import ES
-from pyes.queryset import generate_model
-ArticleModel = generate_model("newsworld", "article")
-
-conn = ES('127.0.0.1:9200')
 
 import logging
 logger = logging.getLogger('raven')
@@ -120,40 +116,38 @@ def build_similar(articles, tag):
     seen = []
     skipped = []
     index = 0
+
     for a in articles:
         log_progress(index, len(articles), len(history), len(skipped), tag)
-        a = prepare_es_dto(a)
         found_similar = False
         index += 1
 
         if index > 200:
             break
 
-        if a['hash_key'] in seen:
-            skipped.append(a['hash_key'])
+        if a in seen:
+            skipped.append(a)
             continue
 
         for h in history:
             try:
-                if a['hash_key'] not in h['seen']:
+                if not h.seen.filter(a).exists():
                     sim_ratio = get_fuzzy_ratio(h, a)
                     if sim_ratio >= 70:
-                        a['score'] = sim_ratio
-                        a['seen'] = h['hash_key']
-                        try:
-                            a.save()
-                        except:
-                            pass
+                        a.score = sim_ratio
+                        a.seen.add([h, ])
+                        a.save()
 
-                        h['similar'] = [a, ] + h['similar'] + a['similar']
-                        h['seen'].append(a['hash_key'])
-                        h['seen'] += [a['seen'], ]
+                        h.similar = [a, ] + h.similar.all() + a.similar.all()
+                        h.seen.add(a)
+                        h.seen.add(a.seen.all())
+                        h.save()
                         #h = append_related(tag, h, a, 70)
-                        seen.append(a['hash_key'])
-                        seen += [a['seen'], ]
+                        seen.append(a)
+                        seen += list(a.seen.all())
                         found_similar = True
 
-                        if a['hash_key'] == '94032da0f2e05ed7e6df051ec1e0e9ce':
+                        if a.hash_key == '94032da0f2e05ed7e6df051ec1e0e9ce':
                             print 'what!!', h['title']
                         break
                     #else:
@@ -172,13 +166,14 @@ def build_similar(articles, tag):
                 print_exception()
 
         try:
-            if not found_similar and a['hash_key'] not in seen:
-                a['main'] = True
+            if not found_similar and a not in seen:
+                a.main = True
                 #a['similar'] = []
                 #a['seen'] = []
                 history.append(a)
-                seen.append(a['hash_key'])
-                seen += a['seen']
+                seen.append(a)
+                seen += a.seen.all()
+                a.save()
         except:
             print_exception()
     return history
@@ -192,18 +187,7 @@ def date_parser(obj):
 
 
 def build(tag, limit=200):
-    conn.indices.refresh('newsworld')
-    articles = ArticleModel.objects.filter(
-        tag=tag).order_by('-date')
-    history = build_similar(articles, tag)
-    for a in history:
-        if not 'similar' in a:
-            a['similar'] = []
-        if not 'seen' in a:
-            a['seen'] = []
-        a['similar'] = list(dict(
-            (v['hash_key'], v) for v in a['similar']).values())
-        a['seen'] = list(set(a['seen']))
-        a.save()
-    conn.indices.refresh('newsworld')
+    model = get_model('newsconnector', tag)
+    articles = model.objects.all().order_by('-date')
+    build_similar(articles, tag)
     logger.info('[similar] indexing complete for: %s' % tag)

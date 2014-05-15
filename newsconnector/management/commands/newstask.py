@@ -13,16 +13,13 @@ class Command(BaseCommand):
             return obj
 
         from newsconnector.support.tasks import (
-            update_feeds, scrape_articles, build_similar, update_headlines)
+            update_feeds, build_similar, update_headlines)
         from pyes.queryset import generate_model
         import json
         ArticleModel = generate_model("newsworld", "article")
 
         if action == 'feeds':
             update_feeds()
-
-        if action == 'scrape':
-            scrape_articles()
 
         if action == 'dump':
             a = ArticleModel.objects.all().order_by('-date')[:40]

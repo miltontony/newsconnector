@@ -5,6 +5,8 @@ from newsconnector.models import (
 from newsconnector.support import similar, utils
 
 from django.utils.hashcompat import md5_constructor
+from django.db.models.loading import get_model
+
 from time import mktime
 from datetime import datetime, timedelta
 
@@ -12,14 +14,9 @@ import json
 import redis
 import feedparser
 import lxml.html
-from pyes import ES
-from pyes.queryset import generate_model
-ArticleModel = generate_model("newsworld", "article")
 
 import logging
 logger = logging.getLogger('raven')
-
-conn = ES('127.0.0.1:9200')
 
 
 def update_feeds(force=False):
@@ -42,24 +39,6 @@ def update_feeds(force=False):
     run_tasks(e_feeds, EntertainmentArticle)
     run_tasks(inews_feeds, INewsArticle)
     run_tasks(isports_feeds, ISportsArticle)
-
-
-def scrape_articles(limit=100):
-    articles = ArticleModel.objects.exclude(fulltext__gt='').order_by('-date')
-    count = 0
-    for article in articles:
-        try:
-            article.fulltext = utils.scrape(article.link)
-            article.save()
-            print '[scraped] ', article.link
-            count += 1
-        except:
-            print '[scrapper] [error] Unable to scrape ', article.link
-            article.fulltext = article.content
-            article.save()
-
-        if limit and count >= limit:
-            break
 
 
 def build_similar(tag=None):
@@ -151,8 +130,6 @@ def run_tasks(feeds, feedModel):
             l_new_articles))
         utils.print_exception()
 
-    conn.indices.refresh('newsworld')
-
 
 def get_new_articles(feeds, feedModel):
     for feed, source in feeds:
@@ -184,12 +161,8 @@ def index_articles(articles_list):
     for art in articles_list:
         if not art:
             continue
-        if ArticleModel.objects.filter(hash_key=art['hash_key']).exists():
-            logger.info('[index][skipped] ' + art['link'])
-            continue
         art = scrape_article(art)
         update_fulltext(art)
-        conn.index(art, 'newsworld', 'article')
 
 
 def update_headlines():
@@ -208,9 +181,8 @@ def headlines(tag, limit=200):
             return obj.isoformat()
         return obj
 
-    conn.indices.refresh('newsworld')
-    articles = ArticleModel.objects.filter(
-        tag=tag,
+    model = get_model('newsconnector', tag)
+    articles = model.objects.filter(
         main=True,
         date__gte=datetime.now()-timedelta(hours=24)
     ).order_by('-date')[:limit]

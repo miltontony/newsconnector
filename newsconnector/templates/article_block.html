@@ -14,7 +14,7 @@
     <div class="article-footer">
         {{article.date|timesince}} ago |
         <a target="_blank" href="{{article.link}}">{{article.source}}</a>
-        {% with num_similar=article.similar|length %}
+        {% with num_similar=article.similar.all|length %}
         {% if not num_similar or num_similar == 0 %}
         <span class="similar similar-0">{{num_similar}}</span>
         {% else %}{% if num_similar < 5 %}
@@ -25,12 +25,12 @@
         <span class="similar similar">{{num_similar}}</span>
         {% endif %}{% endif %}{% endif %}
         {% endwith %}
-        {% if article.similar %}
+        {% if article.similar.exists %}
         <a href="#" rel='{{article.hash_key}}' class="view-similar">&darr; view similar</a>
         <a href="#" rel='{{article.hash_key}}' class="hide-similar">&uarr; hide similar</a>
         {% endif %}
     </div>
-    {% for a in article.similar %}
+    {% for a in article.similar.all %}
     <div class="article-similar">
         <strong>{{a.title}}</strong><br/>
         <div>{{a.content}}</div>
