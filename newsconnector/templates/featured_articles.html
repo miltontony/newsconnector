@@ -1,7 +1,7 @@
 <div class="span6 featured-articles">
     <h4 class="well well-small">Headlines</h4>
     {% for x in articles %}
-    {% with related=x.similar %}
+    {% with related=x.similar.all %}
 
     <div class="row">
     <div class="box span6">
