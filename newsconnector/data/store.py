@@ -5,7 +5,7 @@ from django.db.models import Count
 
 def get_articles(tag, limit=20, start=0):
     model = get_model('newsconnector', tag)
-    return model.objects.filter(main=True).order_by('-date')[start:limit]
+    return model.objects.all().order_by('-date')[start:limit]
 
 
 def get_headlines(tag, limit=5):
