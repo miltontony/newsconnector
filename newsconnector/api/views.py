@@ -86,7 +86,7 @@ def iheadlines_all(request):
     return HttpResponse(json.dumps({
         'news': news,
         'sports': sports,
-        'entertainment': [a for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
+        'entertainment': [a for a in entertainment if a.hash_key != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }, default=date_parser),
         mimetype='application/json'
     )
