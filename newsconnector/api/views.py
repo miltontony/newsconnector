@@ -72,7 +72,7 @@ def headlines_all(request):
         'news': [utils.from_es_dto(a) for a in news],
         'sports': [utils.from_es_dto(a) for a in sports],
         'finance': [utils.from_es_dto(a) for a in finance],
-        'entertainment': [utils.from_es_dto(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
+        'entertainment': [utils.from_es_dto(a) for a in entertainment if a.hash_key != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }, default=date_parser),
         mimetype='application/json'
     )
