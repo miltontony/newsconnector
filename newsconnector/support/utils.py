@@ -62,9 +62,13 @@ def scrape(url):
     return clean(Goose().extract(raw_html=html).cleaned_text)
 
 
-def from_es_dto(obj):
+def from_es_dto(obj, strip_similar=False):
     from django.template.defaultfilters import truncatewords
-
+    if not strip_similar:
+        similar = [from_es_dto(a, True) for a in obj.similar.all()]
+        seen = [from_es_dto(a, True) for a in obj.seen.all()]
+    else:
+        similar = seen = []
     return {'title': clean(obj.title),
             'score': obj.score,
             'link': obj.link,
@@ -75,9 +79,8 @@ def from_es_dto(obj):
             'hash_key': obj.hash_key,
             'date': obj.date,
             'date_iso': obj.date.isoformat(),
-            'keywords': obj.keywords,
-            'similar': obj.similar or [] if hasattr(obj, 'similar') else [],
-            'seen': obj.seen or [] if hasattr(obj, 'seen') else [],
+            'similar': similar,
+            'seen': seen,
             }
 
 

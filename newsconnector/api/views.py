@@ -9,7 +9,8 @@ def date_parser(obj):
     from django.utils.timesince import timesince
     if isinstance(obj, datetime.datetime):
         return timesince(obj)
-    return obj
+    raise TypeError(
+        "Unserializable object {} of type {}".format(obj, type(obj)))
 
 
 def parse_tag(tag):
@@ -40,9 +41,8 @@ def articles(request, tag):
     stop = page * 40
 
     articles = store.get_articles(tag, start=start, limit=stop)
-    fudge = [utils.from_es_dict_dto(a) for a in articles]
     return HttpResponse(json.dumps({
-        'articles': fudge,
+        'articles': [utils.from_es_dto(a) for a in articles],
         'cat': cat,
     }, default=date_parser),
         mimetype='application/json'
@@ -55,7 +55,7 @@ def headlines(request, tag):
     articles = store.get_headlines(tag)
 
     return HttpResponse(json.dumps({
-        'articles': articles,
+        'articles': [utils.from_es_dto(a) for a in articles],
         'cat': cat,
     }, default=date_parser),
         mimetype='application/json'
@@ -69,10 +69,10 @@ def headlines_all(request):
     entertainment = store.get_headlines('EntertainmentArticle')[:3]
 
     return HttpResponse(json.dumps({
-        'news': news,
-        'sports': sports,
-        'finance': finance,
-        'entertainment': [a for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
+        'news': [utils.from_es_dto(a) for a in news],
+        'sports': [utils.from_es_dto(a) for a in sports],
+        'finance': [utils.from_es_dto(a) for a in finance],
+        'entertainment': [utils.from_es_dto(a) for a in entertainment if a['hash_key'] != '8ad2589bccbe0418a4d57b5fc3e99fd3'],
     }, default=date_parser),
         mimetype='application/json'
     )
