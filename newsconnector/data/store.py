@@ -16,7 +16,7 @@ def get_articles(tag, limit=20, start=0):
 def get_headlines(tag, limit=5):
     model = get_model('newsconnector', tag)
     articles = model.objects.raw('''
-SELECT *,
+SELECT DISTINCT *,
 "newsconnector_article"."id",
 COUNT("newsconnector_article_similar"."to_article_id") AS "headlines"
 FROM "newsconnector_newsarticle"
