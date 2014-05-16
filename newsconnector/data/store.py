@@ -15,9 +15,20 @@ def get_articles(tag, limit=20, start=0):
 
 def get_headlines(tag, limit=5):
     model = get_model('newsconnector', tag)
-    articles = model.objects.raw('SELECT *, "newsconnector_article"."id", COUNT("newsconnector_article_similar"."to_article_id") AS "headlines" FROM "newsconnector_newsarticle" LEFT OUTER JOIN "newsconnector_article" ON ("newsconnector_newsarticle"."article_ptr_id" = "newsconnector_article"."id") LEFT OUTER JOIN "newsconnector_article_similar" ON ("newsconnector_article"."id" = "newsconnector_article_similar"."from_article_id") WHERE "newsconnector_article"."date" >= \'%s\'  GROUP BY "newsconnector_article"."id", "newsconnector_newsarticle"."article_ptr_id", "newsconnector_article_similar"."id" ORDER BY "headlines" DESC' %
-        date.today().isoformat())
-    print articles.query
+    articles = model.objects.raw('''
+SELECT *,
+"newsconnector_article"."id",
+COUNT("newsconnector_article_similar"."to_article_id") AS "headlines"
+FROM "newsconnector_newsarticle"
+LEFT OUTER JOIN "newsconnector_article"
+    ON ("newsconnector_newsarticle"."article_ptr_id" = "newsconnector_article"."id")
+LEFT OUTER JOIN "newsconnector_article_similar"
+    ON ("newsconnector_article"."id" = "newsconnector_article_similar"."from_article_id")
+WHERE "newsconnector_article"."date" >= '%s'
+GROUP BY "newsconnector_article"."id",
+         "newsconnector_newsarticle"."article_ptr_id",
+         "newsconnector_article_similar"."id"
+ORDER BY "headlines" DESC''' % date.today().isoformat())
     return articles[:limit]
 
 
