@@ -80,7 +80,8 @@ def from_es_dto(obj, strip_similar=False):
             'date': obj.date,
             'date_iso': obj.date.isoformat(),
             'similar': similar,
-            'seen': seen,
+            'seen': [],
+            'keywords': []
             }
 
 
