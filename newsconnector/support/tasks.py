@@ -9,12 +9,12 @@ from django.db.models.loading import get_model
 
 from time import mktime
 from datetime import datetime, timedelta
+from fuzzywuzzy import fuzz
 
 import json
 import redis
 import feedparser
 import lxml.html
-
 import logging
 logger = logging.getLogger('raven')
 
@@ -151,8 +151,13 @@ def scrape_article(article):
 def update_fulltext(article):
     try:
         art = Article.objects.get(hash_key=article['hash_key'])
-        art.fulltext = article['fulltext']
-        art.save()
+        if article['fulltext']:
+            ratio = fuzz.token_set_ratio(
+                similar.get_unicode(art.content),
+                similar.get_unicode(article['fulltext']))
+            if ratio >= 80:
+                art.fulltext = article['fulltext']
+                art.save()
     except:
         pass
 
