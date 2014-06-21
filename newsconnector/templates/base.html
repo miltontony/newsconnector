@@ -61,7 +61,7 @@
     {% endblock %}
     </div>
 
-    <form class="navbar-search pull-right" action="{% url search %}">
+    <form class="navbar-search pull-right" action="{% url haystack_search %}">
       <div class="input-append">
         <input placeholder="Search.." name="q" type="text" class="span2 search-query" value="{{q}}"/>
       </div>

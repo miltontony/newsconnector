@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+{% endblock %}
+
+{% block menu %}
+<ul class="nav nav-tabs"></ul>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<h4 class="span6 well well-small">Results</h4>
+<div id="search-results" class="articles">
+    <div class="span6">
+    {% if page.object_list %}
+    {% include "search_article_block.html" with results=page.object_list %}
+    {% else %}
+    <span style="color:#fff">
+        Your search for &ldquo;{{query}}&rdquo; did not return any results.
+    </span>
+    {% endif %}
+    </div>
+</div>
+
+<div id="search-pagination">
+    <div class="span8">
+    {% if page.has_previous %}
+    <a href="?q={{query}}&amp;page={{ page.previous_page_number }}">Prev</a>
+    {% endif %}
+    {{page.number}} of {{page.paginator.num_pages}}
+    {% if page.has_next %}
+    <a href="?q={{query}}&amp;page={{ page.next_page_number }}">Next</a>
+    {% else %}
+    Next
+    {% endif %}
+    </div>
+</div>
+</div>
+{% endblock %}

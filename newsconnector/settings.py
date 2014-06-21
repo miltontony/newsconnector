@@ -65,6 +65,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admin',
+    'haystack',
     'south',
     'django_nose',
     'djcelery',
@@ -135,6 +136,19 @@ LOGGING = {
         },
     },
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.simple_backend.SimpleEngine',
+    },
+}
+
+#HAYSTACK_CONNECTIONS = {
+#    'default': {
+#        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+#        'URL': 'http://127.0.0.1:8300/solr'
+#    },
+#}
 
 from raven.conf import setup_logging
 from raven.contrib.django.raven_compat.handlers import SentryHandler

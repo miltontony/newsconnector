@@ -19,7 +19,7 @@
 		{{query_string}}
 	</div>
 	<div id="search-form">
-	<form action="{% url search %}">
+	<form action="{% url haystack_search %}">
 	<input type="search" name="q" id="filter" results=5 autofocus placeholder="Filter or Search..." value="{{q}}"/>
 	<input type="submit" id="search" value="Search"/>
 	</form>
@@ -62,15 +62,15 @@
 </div>
 <div id="footer">NEWS WORLD</div>
 <div id="footer-sites">
-. 
+.
 {% for site in sites %}
-<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> .
 {% endfor %}
 
 {% endblock %}
 
 {% block js %}
-	
+
 var delay = (function(){
   var timer = 0;
   return function(callback, ms){
@@ -85,6 +85,6 @@ $(document).ready(function(){
     var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
 	var subdomain = '{{request.subdomain}}' == 'None' ? '': '{{request.subdomain}}/';
 	init(min_date, default_min_date, '/data/'+subdomain, '{{request.user.is_staff}}' == 'True', '{{request.path}}');
-});	
+});
 
 {% endblock %}

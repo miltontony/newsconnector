@@ -21,3 +21,4 @@ raven
 goose-extractor
 fuzzywuzzy
 readability-lxml
+django-haystack
