@@ -7,7 +7,7 @@ class ArticleIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     title = indexes.CharField(model_attr='title')
     content = indexes.CharField(model_attr='content')
-    fulltext = indexes.CharField(model_attr='fulltext')
+    fulltext = indexes.CharField(model_attr='fulltext', null=True)
     source = indexes.CharField(model_attr='source')
     date = indexes.DateTimeField(model_attr='date')
 
