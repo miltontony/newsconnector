@@ -1,3 +1,14 @@
+.footer{
+    color: #fff;
+    bottom: 0;
+    position: absolute;
+    font-size: 12px;
+}
+.featured-articles {
+    position: fixed;
+    right: 15px;
+}
+
 .featured-articles .article-block{
     padding-right: 15px;
 }

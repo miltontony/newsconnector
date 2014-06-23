@@ -17,7 +17,7 @@ newsworld = {
     <div class="tab-content">
     <div class="tab-pane active" id="tabs-news">
         <div class="span7 articles">
-                <h1 class="page-header">Latest News</h1>
+                <h1 class="page-header">Local News</h1>
     		{%	include "article_block.html" with articles=news %}
 
     		{% include "read_more_block.html" with tag='NewsArticle' %}
@@ -27,7 +27,7 @@ newsworld = {
 
     <div class="tab-pane" id="tabs-finance">
     	<div class="span7 articles">
-            <h1 class="page-header">Latest Finanical News</h1>
+            <h1 class="page-header">Finanical News</h1>
     	{% include "article_block.html" with articles=finance section_index=3 %}
 
     	{% include "read_more_block.html" with tag='FinanceArticle' %}
@@ -37,7 +37,7 @@ newsworld = {
 
     <div class="tab-pane" id="tabs-sports">
     	<div class="span7 articles">
-            <h1 class="page-header">Latest Sports News</h1>
+            <h1 class="page-header">Sports News</h1>
     	{% include "article_block.html" with articles=sports section_index=2 %}
 
     	{% include "read_more_block.html" with tag='SportsArticle' %}
@@ -47,7 +47,7 @@ newsworld = {
 
     <div class="tab-pane" id="tabs-entertainment">
     	<div class="span7 articles">
-            <h1 class="page-header">Latest E! News</h1>
+            <h1 class="page-header">E! News</h1>
     	{% include "article_block.html" with articles=entertainment section_index=4 %}
 
     	{% include "read_more_block.html" with tag='EntertainmentArticle' %}

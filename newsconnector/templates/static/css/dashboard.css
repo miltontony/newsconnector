@@ -37,7 +37,7 @@ body {
     padding: 20px;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-    background-color: #f5f5f5;
+    background-color: #4082A3;
     border-right: 1px solid #eee;
   }
 }
@@ -54,7 +54,15 @@ body {
 }
 .nav-sidebar > .active > a {
   color: #fff;
-  background-color: #428bca;
+  background-color: #068;
+}
+
+.nav-sidebar > li > a:hover, .nav-sidebar > li > a:focus{
+  background-color: #069;
+}
+
+.nav-sidebar a {
+  color: #fff;
 }
 
 
