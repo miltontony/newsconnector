@@ -47,10 +47,10 @@ def read(request):
             'sports': store.get_articles('SportsArticle', 40),
             'finance': store.get_articles('FinanceArticle', 40),
             'entertainment': store.get_articles('EntertainmentArticle', 40),
-            'featuredNews': store.get_headlines('NewsArticle'),
-            'featuredSports': store.get_headlines('SportsArticle'),
-            'featuredFinance': store.get_headlines('FinanceArticle'),
-            'featuredEntertainment': store.get_headlines('EntertainmentArticle'),
+            'featuredNews': store.get_headlines('NewsArticle', 3),
+            'featuredSports': store.get_headlines('SportsArticle', 3),
+            'featuredFinance': store.get_headlines('FinanceArticle', 3),
+            'featuredEntertainment': store.get_headlines('EntertainmentArticle', 3),
         })
 
 
