@@ -1,27 +1,26 @@
-<div class="span6 featured-articles">
-    <h4 class="well well-small">Headlines</h4>
+<div class="span4 featured-articles">
+    <h1 class="page-header">Headlines</h1>
     {% for x in articles %}
     {% with related=x.similar.all %}
 
     <div class="row">
-    <div class="box span6">
+    <div class="box span4">
     <div class="box-content">
-        <div class="span3">
-        <ul>
-        {% for s in related|slice:":5" %}
-        {% if not s.hash_key == related.hash_key %}
-        <li><a target="_blank" href="{{s.link}}">{{s.title}}</a></li>
-        {% endif %}
-        {% endfor %}
-        </ul>
-        </div>
-        <div class="span3">
-            <h4 class="media-heading">{{x.title}}</h4>
-            {{ x.content }}
-            <br/>
-            <small>
-            <a target="_blank" href="{{x.link}}">Full story...</a> | {{x.source}}
-            </small>
+        <div class="span4 article-block">
+            <div class="media article" id="{{x.hash_key}}">
+              <a class="pull-left" target="_blank" href="{{x.link}}">
+                {% if x.image_url %}
+                <img src="{{x.image_url}}" width="80px"/>
+                {% else %}
+                <img src="{{STATIC_URL}}images/news2.png" width="80px"/>
+                {%endif%}
+              </a>
+              <div class="media-body">
+                <h5 class="media-heading">{{x.title}}</h5>
+                {{x.content|truncatewords:50}}
+                <br/><small><a target="_blank" href="{{x.link}}">Full story...</a> | {{x.source}}</small>
+              </div>
+            </div>
         </div>
     </div>
     </div>

@@ -10,9 +10,9 @@
 
 {% block content %}
 <div class="row">
-<h4 class="span6 well well-small">Results</h4>
 <div id="search-results" class="articles">
-    <div class="span6">
+    <div class="span7">
+    <h1 class="page-header">Results for &ldquo;{{query}}&rdquo;</h1>
     {% if page.object_list %}
     {% include "search_article_block.html" with results=page.object_list %}
     {% else %}

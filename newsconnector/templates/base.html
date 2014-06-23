@@ -1,94 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta name="description" lang="en-us" content="NewsWorld - South Africa's biggest online news resource!"/>
-<title>::News World::</title>
-<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
-<link href="{{STATIC_URL}}css/new_style.css" rel="stylesheet">
-<link href="{{STATIC_URL}}css/bootstrap-responsive.min.css" rel="stylesheet">
-<!--
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/smoothness/jquery.ui.core.css" />
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css?version=0.1" />
-<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
-<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.scrollTo-1.4.2-min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery-ui.1.8.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
--->
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.1.7.min.js"></script>
-<script src="{{STATIC_URL}}scripts/bootstrap.min.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.infinitescroll.js"></script>
-<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
-{% block head %}
-{% endblock %}
-<script type="text/javascript">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-31516824-1']);
-  _gaq.push(['_setDomainName', 'newsworld.co.za']);
-  _gaq.push(['_trackPageview']);
+    <title>News World</title>
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    <!-- Bootstrap core CSS -->
+    <link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="{{STATIC_URL}}css/new_style.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{STATIC_URL}}css/dashboard.css" rel="stylesheet">
 
-</script>
-</head>
-<body>
-<!-- Navbar
-================================================== -->
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-<div class="container">
-   <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-     <span class="icon-bar"></span>
-     <span class="icon-bar"></span>
-     <span class="icon-bar"></span>
-   </a>
-   <a class="brand" href="{% url index %}">NewsWorld</a>
-   <div class="nav-collapse" id="main-menu">
-    {% block menu %}
-    <ul id="tabs" class="nav nav-tabs">
-        <li class="tabs-news active"><a href="#tabs-news">Local News</a></li>
-        <li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
-        <li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
-        <li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
-    </ul>
-    {% endblock %}
-    </div>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
 
-    <form class="navbar-search pull-right" action="{% url haystack_search %}">
-      <div class="input-append">
-        <input placeholder="Search.." name="q" type="text" class="span2 search-query" value="{{q}}"/>
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">News World</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" action="{% url haystack_search %}">
+            <input type="text" class="form-control" placeholder="Search..." name='q' {% if query %}value="{{query}}"{% endif %}>
+          </form>
+        </div>
       </div>
-    </form>
-</div>
-</div>
-</div>
-
-<div class="container">
-    <br/>
-    <br/>
-<section>
-{% block content %}
-{% endblock %}
-<div class="clearfix"></div>
-<div class="row">
-    <div class="text-center">
-    <a target="_blank" href="http://tonym.co.za">&copy; TonyM  {% now "Y" %}</a>
     </div>
-</div>
-</section>
-</div>
-</body>
 
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul id="tabs" class="nav nav-sidebar">
+              <li class="tabs-news active"><a href="#tabs-news">Local News</a></li>
+              <li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
+              <li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
+              <li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
+          </ul>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item</a></li>
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+            <li><a href="">More navigation</a></li>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Nav item again</a></li>
+            <li><a href="">One more nav</a></li>
+            <li><a href="">Another nav item</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{{STATIC_URL}}scripts/jquery/jquery.1.7.min.js"></script>
+<script src="{{STATIC_URL}}scripts/bootstrap.min.js"></script>
+<script src="{{STATIC_URL}}scripts/newsworld.js"></script>
+<script src="{{STATIC_URL}}scripts/date.js"></script>
+<script src="{{STATIC_URL}}scripts/jquery.infinitescroll.js"></script>
 <script type="text/javascript">
 $(function(){
-    $('.navbar #tabs a').click(function (e) {
+    $('.sidebar #tabs a').click(function (e) {
       e.preventDefault();
       $(this).tab('show');
       $('#tabs-news .articles, #tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
@@ -100,6 +100,5 @@ $(function(){
     $('#tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
 });
 </script>
-{% block js %}
-{% endblock %}
+  </body>
 </html>

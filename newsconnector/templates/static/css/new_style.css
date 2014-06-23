@@ -1,3 +1,6 @@
+.featured-articles .article-block{
+    padding-right: 15px;
+}
 .article-footer .view-similar,
 .article-footer .hide-similar{
     float: right;
@@ -43,6 +46,7 @@
 
 .article-footer{
     margin-bottom: 15px;
+    line-height: 20px;
 }
 
 .article-similar{
