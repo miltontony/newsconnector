@@ -11,6 +11,7 @@
 
 .featured-articles .article-block{
     padding-right: 15px;
+    margin-bottom: 10px !important;
 }
 .article-footer .view-similar,
 .article-footer .hide-similar{
