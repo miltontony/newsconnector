@@ -13,7 +13,15 @@ def get_headlines(tag, limit=5):
     articles = model.objects.filter(
         date__gte=datetime.now()-timedelta(days=1)
     ).annotate(headlines=Count('similar')).order_by('-headlines')
-    return articles[:limit]
+    exclusions = []
+    inclusions = []
+    for a in articles:
+        if a.pk in exclusions:
+            continue
+        inclusions.append(a.pk)
+        exclusions += a.similar.exclude(
+            pk__in=inclusions+exclusions).values_list('pk', flat=True)
+    return articles.filter(pk__in=inclusions)[:limit]
 
 
 def update_date(obj):
