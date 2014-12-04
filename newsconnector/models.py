@@ -22,16 +22,20 @@ class Article(models.Model):
         return '%s' % self.link
 
     def to_json(self):
-        return {'title': self.title,
-                'link': self.link,
-                'content': self.content,
-                'source': self.source,
-                'image_url': self.image_url if self.image_url else '',
-                'hash_key': self.hash_key,
-                'tag': self.__class__.__name__,
-                'date': '%s' % self.date.isoformat(),
-                'date_added': '%s' % self.date_added.isoformat(),
-                'fulltext': self.fulltext}
+        return {
+            'title': self.title,
+            'link': self.link,
+            'content': self.content,
+            'source': self.source,
+            'image_url': self.image_url if self.image_url else '',
+            'hash_key': self.hash_key,
+            'tag': self.__class__.__name__,
+            'date': '%s' % self.date.isoformat(),
+            'date_added': '%s' % self.date_added.isoformat(),
+            'fulltext': self.fulltext,
+            'similar': [v.hash_key for v in self.similar.all()],
+            'seen': [v.hash_key for v in self.seen.all()],
+        }
 
     @classmethod
     def from_es(cls, obj):
