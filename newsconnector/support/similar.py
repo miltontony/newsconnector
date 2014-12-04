@@ -69,26 +69,24 @@ def get_fuzzy_ratio(art1, art2):
 
 
 def prepare_es_dto(obj):
-    #obj['similar'] = []
-    #obj['seen'] = []
     obj['main'] = False
 
-    if not 'fulltext' in obj:
+    if 'fulltext' not in obj:
         obj.fulltext = ''
 
-    if not 'date_iso' in obj and isinstance(obj['date'], datetime):
+    if 'date_iso' not in obj and isinstance(obj['date'], datetime):
         obj['date_iso'] = obj['date'].isoformat()
     elif 'date_iso' in obj and isinstance(obj['date_iso'], datetime):
         obj['date_iso'] = obj['date_iso'].isoformat()
 
-    if not 'seen' in obj:
+    if 'seen' not in obj:
         obj['seen'] = []
     elif isinstance(obj['seen'], str):
         obj['seen'] = []
     elif obj['seen'] is None:
         obj['seen'] = []
 
-    if not 'similar' in obj:
+    if 'similar' not in obj:
         obj['similar'] = []
     elif isinstance(obj['similar'], str):
         obj['similar'] = []
@@ -138,11 +136,12 @@ def build_similar(articles, tag):
                         a.seen = [h, ]
                         a.save()
 
-                        h.similar = [a, ] + list(h.similar.all()) + list(a.similar.all())
+                        h.similar = [a, ] + list(
+                            h.similar.all()) + list(a.similar.all())
                         h.seen.add(a)
                         h.seen.add(*list(a.seen.all()))
                         h.save()
-                        #h = append_related(tag, h, a, 70)
+                        # h = append_related(tag, h, a, 70)
                         seen.append(a)
                         seen += list(a.seen.all())
                         found_similar = True
@@ -150,26 +149,14 @@ def build_similar(articles, tag):
                         if a.hash_key == '94032da0f2e05ed7e6df051ec1e0e9ce':
                             print 'what!!', h.title
                         break
-                    #else:
-                    #    for s in h['similar']:
-                    #        sim_ratio = get_fuzzy_ratio(s, a)
-
-                    #        if sim_ratio >= 70 and a['hash_key'] not in h['seen']:
-                    #            a['score'] = sim_ratio
-                    #            a['seen'] = s['hash_key']
-                    #            h['similar'].insert(0, a)
-                    #            h['seen'].append(a['hash_key'])
-                    #            #h = append_related(tag, h, a, 70)
-                    #            seen.append(a['hash_key'])
-                    #            break
             except:
                 print_exception()
 
         try:
             if not found_similar and a not in seen:
                 a.main = True
-                #a['similar'] = []
-                #a['seen'] = []
+                # a['similar'] = []
+                # a['seen'] = []
                 history.append(a)
                 seen.append(a)
                 seen += list(a.seen.all())
