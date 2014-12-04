@@ -1,3 +1,22 @@
+.navbar-form input{
+    width: 370px !important;
+}
+
+.footer{
+    color: #fff;
+    bottom: 0;
+    position: absolute;
+    font-size: 12px;
+}
+.featured-articles {
+    position: fixed;
+    right: 15px;
+}
+
+.featured-articles .article-block{
+    padding-right: 15px;
+    margin-bottom: 10px !important;
+}
 .article-footer .view-similar,
 .article-footer .hide-similar{
     float: right;
@@ -43,6 +62,7 @@
 
 .article-footer{
     margin-bottom: 15px;
+    line-height: 20px;
 }
 
 .article-similar{

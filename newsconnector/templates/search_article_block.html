@@ -1,4 +1,5 @@
-{% for article in articles %}
+{% for result in results %}
+{% with article=result.object %}
 <div class="media article" id="{{article.hash_key}}">
   <a class="pull-left" target="_blank" href="{{article.link}}">
     {% if article.image_url %}
@@ -39,4 +40,5 @@
     {% endfor %}
   </div>
 </div>
+{% endwith %}
 {% endfor %}

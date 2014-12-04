@@ -11,6 +11,12 @@ class Article(models.Model):
     content = models.TextField(null=True, blank=True)
     source = models.TextField(null=True, blank=True)
     fulltext = models.TextField(null=True, blank=True)
+    main = models.BooleanField(default=False)
+    similar = models.ManyToManyField(
+        'Article', related_name='similar_set', null=True, blank=True)
+    seen = models.ManyToManyField(
+        'Article', related_name='seen_set', null=True, blank=True)
+    score = models.FloatField(default=0.0)
 
     def __unicode__(self):  # pragma: no cover
         return '%s' % self.link

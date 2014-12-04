@@ -16,18 +16,18 @@ newsworld = {
     <a name="section_top"></a>
     <div class="tab-content">
     <div class="tab-pane active" id="tabs-news">
-    		<div class="span6 articles">
-                <h4 class="well well-small">Latest News</h4>
+        <div class="span7 articles">
+                <h1 class="page-header">Local News</h1>
     		{%	include "article_block.html" with articles=news %}
 
     		{% include "read_more_block.html" with tag='NewsArticle' %}
-    		</div>
-    		{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
+        </div>
+            {% include "featured_articles.html" with articles=featuredNews section_index=1 %}
     </div>
 
     <div class="tab-pane" id="tabs-finance">
-    	<div class="span6 articles">
-            <h4 class="well well-small">Latest Finanical News</h4>
+    	<div class="span7 articles">
+            <h1 class="page-header">Finanical News</h1>
     	{% include "article_block.html" with articles=finance section_index=3 %}
 
     	{% include "read_more_block.html" with tag='FinanceArticle' %}
@@ -36,8 +36,8 @@ newsworld = {
     </div>
 
     <div class="tab-pane" id="tabs-sports">
-    	<div class="span6 articles">
-            <h4 class="well well-small">Latest Sports News</h4>
+    	<div class="span7 articles">
+            <h1 class="page-header">Sports News</h1>
     	{% include "article_block.html" with articles=sports section_index=2 %}
 
     	{% include "read_more_block.html" with tag='SportsArticle' %}
@@ -46,8 +46,8 @@ newsworld = {
     </div>
 
     <div class="tab-pane" id="tabs-entertainment">
-    	<div class="span6 articles">
-            <h4 class="well well-small">Latest E! News</h4>
+    	<div class="span7 articles">
+            <h1 class="page-header">E! News</h1>
     	{% include "article_block.html" with articles=entertainment section_index=4 %}
 
     	{% include "read_more_block.html" with tag='EntertainmentArticle' %}
