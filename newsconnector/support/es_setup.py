@@ -81,76 +81,9 @@ def setup():
             'store': 'no',
             'type': u'string'},
         u"similar": {
-            "properties": {
-                "content": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "date": {
-                    "type": "date",
-                    "format": "dateOptionalTime",
-                    "index": "no",
-                    "store": "no",
-                },
-                "date_iso": {
-                    "type": "date",
-                    "format": "dateOptionalTime",
-                    "index": "no",
-                    "store": "no",
-                },
-                "fulltext": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "hash_key": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "image_url": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "link": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "main": {
-                    "type": "boolean",
-                    "index": "no",
-                    "store": "no",
-                },
-                "score": {
-                    "type": "long",
-                    "index": "no",
-                    "store": "no",
-                },
-                "seen": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "source": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "tag": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                },
-                "title": {
-                    "type": "string",
-                    "index": "no",
-                    "store": "no",
-                }
-            }
-        }
+            'index': 'no',
+            'store': 'no',
+            'type': u'string'},
     }
 
     conn.indices.put_mapping("article", {

@@ -5,6 +5,8 @@ from Levenshtein import ratio
 from datetime import datetime
 from fuzzywuzzy import fuzz
 
+from pyes.queryset import generate_model
+
 import logging
 logger = logging.getLogger('raven')
 
@@ -92,7 +94,6 @@ def prepare_es_dto(obj):
         obj['similar'] = []
     elif obj['similar'] is None:
         obj['similar'] = []
-        obj['similar'] = []
 
     obj.fulltext = clean(obj.fulltext)
     obj.content = clean(obj.content)
@@ -176,5 +177,18 @@ def date_parser(obj):
 def build(tag, limit=200):
     model = get_model('newsconnector', tag)
     articles = model.objects.all().order_by('-date')
-    build_similar(articles, tag)
+    history = build_similar(articles, tag)
+
+    ArticleModel = generate_model(tag.lower(), "article")
+
+    for article in history:
+        a = ArticleModel.objects.get(hash_key=article.hash_key)
+        if 'similar' not in a:
+            a['similar'] = []
+        if 'seen' not in a:
+            a['seen'] = []
+
+        a['similar'] = [v.hash_key for v in a.similar.all()]
+        a['seen'] = [v.hash_key for v in a.seen.all()]
+        a.save()
     logger.info('[similar] indexing complete for: %s' % tag)
