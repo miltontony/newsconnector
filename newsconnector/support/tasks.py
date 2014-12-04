@@ -180,7 +180,9 @@ def index_articles(articles_list):
 
         art = scrape_article(article)
         update_fulltext(art)
-        conn.index(art, index, 'article')
+
+        db_art = article.__class__.objects.get(pk=article.pk)
+        conn.index(db_art.to_json(), index, 'article')
 
 
 def update_headlines():

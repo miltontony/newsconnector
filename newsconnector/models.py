@@ -57,7 +57,7 @@ class RssFeed(models.Model):
         return self.name
 
 
-#------ Articles ----------
+# ------ Articles ----------
 class NewsArticle(Article):
     pass
 
@@ -82,7 +82,7 @@ class ISportsArticle(Article):
     pass
 
 
-#------ Feeds ----------
+# ------ Feeds ----------
 class NewsFeed(RssFeed):
     pass
 
