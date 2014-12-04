@@ -11,6 +11,10 @@ from time import mktime
 from datetime import datetime, timedelta
 from fuzzywuzzy import fuzz
 
+from pyes import ES
+from pyes.queryset import generate_model
+conn = ES('127.0.0.1:9200')
+
 import json
 import redis
 import feedparser
@@ -163,11 +167,20 @@ def update_fulltext(article):
 
 
 def index_articles(articles_list):
-    for art in articles_list:
-        if not art:
+    for article in articles_list:
+        if not article:
             continue
-        art = scrape_article(art)
+
+        index = article.__class__.__name__.lower()
+        ArticleModel = generate_model(index, "article")
+
+        if ArticleModel.objects.filter(hash_key=article.hash_key).exists():
+            logger.info('[index][skipped] ' + article.link)
+            continue
+
+        art = scrape_article(article)
         update_fulltext(art)
+        conn.index(art, index, 'article')
 
 
 def update_headlines():
