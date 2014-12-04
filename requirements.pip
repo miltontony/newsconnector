@@ -1,11 +1,9 @@
-Django
+Django<1.5
 nose
 django-nose
 South
-http://downloads.sourceforge.net/project/jpype/JPype/0.5.4/JPype-0.5.4.2.zip
--e git+https://github.com/scholrly/neo4django/#egg=neo4django
 requests
-django-celery
+django-celery>=3
 supervisor==3.0a10
 gunicorn==0.13.4
 psycopg2
@@ -14,3 +12,12 @@ feedparser
 simplejson
 lxml
 networkx
+django-subdomains
+python-memcached
+-e git://github.com/aparo/pyes.git@26047221eb5a4c9076011537ce00c82e99e911fe#egg=pyes-dev
+redis
+python-levenshtein
+raven
+goose-extractor
+fuzzywuzzy
+readability-lxml

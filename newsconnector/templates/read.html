@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script type="text/javascript">
+newsworld = {
+    'finance_readmore_href': "{% url read_more 'FinanceArticle' %}",
+    'sports_readmore_href': "{% url read_more 'SportsArticle' %}",
+    'entertainment_readmore_href': "{% url read_more 'EntertainmentArticle' %}",
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row read-results" id="tabs">
+    <a name="section_top"></a>
+    <div class="tab-content">
+    <div class="tab-pane active" id="tabs-news">
+    		<div class="span6 articles">
+                <h4 class="well well-small">Latest News</h4>
+    		{%	include "article_block.html" with articles=news %}
+
+    		{% include "read_more_block.html" with tag='NewsArticle' %}
+    		</div>
+    		{% include "featured_articles.html" with articles=featuredNews section_index=1 %}
+    </div>
+
+    <div class="tab-pane" id="tabs-finance">
+    	<div class="span6 articles">
+            <h4 class="well well-small">Latest Finanical News</h4>
+    	{% include "article_block.html" with articles=finance section_index=3 %}
+
+    	{% include "read_more_block.html" with tag='FinanceArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredFinance section_index=3 %}
+    </div>
+
+    <div class="tab-pane" id="tabs-sports">
+    	<div class="span6 articles">
+            <h4 class="well well-small">Latest Sports News</h4>
+    	{% include "article_block.html" with articles=sports section_index=2 %}
+
+    	{% include "read_more_block.html" with tag='SportsArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredSports section_index=2 %}
+    </div>
+
+    <div class="tab-pane" id="tabs-entertainment">
+    	<div class="span6 articles">
+            <h4 class="well well-small">Latest E! News</h4>
+    	{% include "article_block.html" with articles=entertainment section_index=4 %}
+
+    	{% include "read_more_block.html" with tag='EntertainmentArticle' %}
+    	</div>
+    	{% include "featured_articles.html" with articles=featuredEntertainment section_index=4 %}
+    </div>
+    </div>
+</div>
+{% endblock %}

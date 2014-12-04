@@ -5,3 +5,7 @@
 *.html~
 *.log
 /newsconnector/static/
+*.err
+*.pid
+celerybeat-schedule
+local_settings.py

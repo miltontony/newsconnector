@@ -1,0 +1,31 @@
+<div class="span6 featured-articles">
+    <h4 class="well well-small">Headlines</h4>
+    {% for x in articles %}
+    {% with related=x.similar %}
+
+    <div class="row">
+    <div class="box span6">
+    <div class="box-content">
+        <div class="span3">
+        <ul>
+        {% for s in related|slice:":5" %}
+        {% if not s.hash_key == related.hash_key %}
+        <li><a target="_blank" href="{{s.link}}">{{s.title}}</a></li>
+        {% endif %}
+        {% endfor %}
+        </ul>
+        </div>
+        <div class="span3">
+            <h4 class="media-heading">{{x.title}}</h4>
+            {{ x.content }}
+            <br/>
+            <small>
+            <a target="_blank" href="{{x.link}}">Full story...</a> | {{x.source}}
+            </small>
+        </div>
+    </div>
+    </div>
+    </div>
+    {% endwith %}
+    {% endfor %}
+</div>

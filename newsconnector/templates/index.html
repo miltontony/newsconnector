@@ -1,231 +1,90 @@
-<html>
-<head>
-<title>Home :: News Connector</title>
+{% extends "base.html" %}
 
-<meta name="description" content="News Connector relates news articles by their keywords while giving the user a brief description of the article and a link to the full story." />
-<meta name="keywords" content="news, connect, south africa, rss, news24, mg, times, timeslive, iol, mail, relate, connect, sports, business, finance" /> 
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/index.css" />
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jQRangeSlider-min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jQDateRangeSlider-min.js"></script>
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.tagcloud.min.js "></script>
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/graph.js"></script>
+{% endblock %}
 
-<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-<link rel="icon" type="image/x-icon" href="{{ STATIC_URL }}images/favicon.ico" />
-<link href="{{ STATIC_URL }}css/site.css?version=2.1" rel="stylesheet" type="text/css" media="screen" />
-<link href="{{ STATIC_URL }}css/newsgen.css?version=2.0" rel="stylesheet" type="text/css" media="screen" />
-<link href="{{ STATIC_URL }}css/smoothness/jquery.ui.all.css?version=1.1" rel="stylesheet" type="text/css" media="screen" />
-<link href="{{ STATIC_URL }}css/toolbar.css?v=2.1" rel="stylesheet" type="text/css" />
-<!-- -->
-<script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery.1.4.2.min.js?v=1.4.2"></script>
+{% block content %}
+<div id="keys">
+</div>
+<div id="date-slider-cont"><div id="date-slider"></div></div>
 
-<script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery.ui.1.8.min.js?v=1.8.1"></script>
-<!-- -->
-
-<!---
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
--->
-
-<script type="text/javascript" src="{{ STATIC_URL }}scripts/excanvas.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery.jsPlumb-1.0.3-min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery/jquery.tagcloud.min.js "></script>
-
-<meta http-equiv="pragma" content="no-cache" />
-<meta http-equiv="cache-control" content="no-cache" />
-<meta name="google-site-verification" content="ED7Vy0S6wj_biLlnzeUAvs2Apg7ufHWOYsnhn_gNMl8" />
-
-<script type="text/javascript">
-var popUpWin=0;
-function popUpWindow(URLStr, left, top, width, height)
-{
-  if(popUpWin)
-  {
-    if(!popUpWin.closed) popUpWin.close();
-  }
-  popUpWin = open(URLStr, 'popUpWin', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=yes, width='+width+', height='+height+', left='+left+', top='+top+', screenX='+left+', screenY='+top+'');
-}
-
-function pageClick()
-{
-	$("canvas").hide();
-	$(".story").addClass("hide");
-}
-
-</script>
-</head>
-<body onunload="jsPlumb.unload();">
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-16542639-2']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-	<div style="width: 100%; height: 100%; position: fixed;"  onclick="pageClick();"></div>
-	<!--
-	<div class="topmenu">
-	<ul id="topMenuNavigation">
-		<li class="home"><a href="../"><span>Home</span></a></li>
-		<li class="photomap"><a href="../photomap/"><span>Photo Map</span></a></li>
-		<li class="newsconnector"><a href="#/"><span>News Connector</span></a></li>
-	</ul>
+<div id="browse-search">
+	<div id="search-string">
+		{{query_string}}
 	</div>
+	<div id="search-form">
+	<form action="{% url search %}">
+	<input type="search" name="q" id="filter" results=5 autofocus placeholder="Filter or Search..." value="{{q}}"/>
+	<input type="submit" id="search" value="Search"/>
+	</form>
+	</div>
+</div>
+
+<div id="cat-nav">
+	<a href="http://newsworld.co.za" id="cat-news" {% if id == 1 %}class="active"{%endif%}>News</a>
+	<a href="http://finance.newsworld.co.za" id="cat-finance" {% if id == 3 %}class="active"{%endif%}>Financial</a>
+	<a href="http://sports.newsworld.co.za" id="cat-sports" {% if id == 2 %}class="active"{%endif%}>Sports</a>
+	<a href="http://entertainment.newsworld.co.za" id="cat-entertainment" {% if id == 4 %}class="active"{%endif%}>Entertainment</a>
+	{% if request.user.is_authenticated %}
+	 <a href="{% url logout %}" id="logout">Sign Out</a>
+	{% else %}
+	 <a href="/admin/?next={{request.path}}" id="login">Sign In</a>
+	{% endif %}
+</div>
+
+<!-- Codrops top bar -->
+<section class="ac-container" id="article-header">
+	<div class="h1"><label>{{title}} <br/><small>{{latest.0.date|date:"D, d M H:m"}}</small></label></div>
+</section>
+<section class="ac-container" id="article-details">
+	<div class='content'>
+	{% for a in latest %}
+		<div>
+			<input id="ac-{{a.pk}}" name="accordion-1" type="radio"/>
+			<label for="ac-{{a.pk}}">{{a.title}}</label>
+			<article class="ac-small">
+				<p>[{{a.source}}] - {{a.date|date:"D, d M H:m"}}<br/>
+					{{a.content}}
+					<a target="_blank" href="{{a.link}}">more...</a>
+				</p>
+			</article>
+		</div>
+	{% endfor %}
+	</div>
+	<div class="page_navigation"></div>
+</section>
+</div>
+<div id="footer">NEWS WORLD</div>
+<div id="footer-sites">
+. 
+{% for site in sites %}
+<a target="_blank" href="{{site.site}}">{{site.name}}</a> . 
+{% endfor %}
+
+{% endblock %}
+
+{% block js %}
 	
-	<div class='break'></div>
-	-->
-	<!--
-	<a href="javascript:popUpWindow('comments.html', 200, 200, 610, 500);"><div id="facebookIcon"></div></a>
-	-->
-	<div>
-		<div class="result">
-			<div style="width: 252px; margin: auto;"><img src="{{ STATIC_URL }}images/loading.gif" alt="" style="width: auto;"/>
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
-			</div>
-		</div>
-		<div class="break"></div>
-		<div class="footer"><a target="_blank" href="http://www.tonym.co.za" style="color: #fff">Copyright (c) 2010 TonyM</a></div>
-	</div>
-	<div id="message" title="Welcome to TonyM's News Connector" style="display: none;">
-		The main idea behind News Connector is to <strong>relate news articles</strong> by their 
-		keywords while giving the user a brief description of the article
-		and a link to the full story.
-		<br/><br/>
-
-		The content is sourced in <strong>real time</strong> directly from various news websites
-		and is always up to date.
-		<br/>
-		<img src="{{ STATIC_URL }}images/screenshot.gif" alt="" style="display:block; float:right;padding:5px;margin-top:10px"/>
-		<h4>How to</h4>
-		<ul>
-		<li><strong>Click</strong> on the keyword to highlight the related stories.</li>
-
-		<li>You can also <strong>click</strong> on the story to see its keywords.</li>
-		<li><strong>Drag</strong> the stories and keywords to position them.</li>
-		<li><strong>Ctrl + Click</strong> to select multiple stories and keywords.</li>
-		</ul>
-
-		<h4>Toolbar</h4>
-		<ul>
-			<li>The toolbar allows you to load content from different categores.</li>
-			<li>
-				<strong>Clicking</strong> on <span style="font-weight: bold">Sports news</span> 
-				for example, will load sports news from various news sites.
-			</li>
-
-		</ul>
-		<h4>Feedback/Comments</h4>
-		You can direct your comments/feedback to <strong>feedback(at)newsconnector.co.za</strong>
-		<div style="display:none !important; display:inline\9 !important">
-			<br/>
-			<h4>Notice</h4>
-			<strong style="color: red !important">
-
-			HTML5 is not supported in Internet Explorer so you may experience some rendering issues.
-			I would recommend FireFox.
-			</strong>
-		</div>
-	</div>
-	<div class="toolbarcont"> <!-- toolbar container -->
-	<div id="toolbar"> <!-- all things in floating left side -->
-	  <ul id="social">
-		<li><a class="local link" href="javascript:loadNews('local', 'Local News')"></a></li>
-
-		<li><a class="world link" href="javascript:loadNews('world', 'World News')"></a></li>
-		<li><a class="financial link" href="javascript:loadNews('financial', 'Financial News')"></a></li>
-		<li><a class="sports link" href="javascript:loadNews('sports', 'Sports News')"></a></li>
-		<li><a class="entertainment link" href="javascript:loadNews('entertainment', 'Entertainment News')"></a></li>
-		
-		<li style="float: right"><a class="help link" href="javascript:showMessage()"></a></li>
-		<li style="float: right" id="toggleStories"><a class="toggle link" href="#"></a></li>
-	  </ul>
-	</div>
-	</div>
-
-</body>
-</html>
-
-<script type="text/javascript"> 
 $(document).ready(function(){
-	//createTopMenu();
-	document.title = "Home :: News Connector - Local News";
-	setCurrent("local");
-	$('.result').load("newsgen.php?category=local&cached=1", function(){showMessage();});	
-	
-	$("#toggleStories")
-	.click( function(ev){
-	ev.preventDefault();
-	})
+	$('#article-details').pajinate();
+	var min_date = new Date({{min_date.year}},{{min_date.month|add:"-1"}},{{min_date.day}});
+    var default_min_date = new Date({{default_min_date.year}},{{default_min_date.month|add:"-1"}},{{default_min_date.day}});
+	var subdomain = '{{request.subdomain}}' == 'None' ? '': '{{request.subdomain}}/';
+	init(min_date, default_min_date, '/data/'+subdomain, '{{request.user.is_staff}}' == 'True', '{{request.path}}');
+});	
 
-	.toggle(
-      function () {
-		$("canvas").hide();
-		$(".story").removeClass("hide");
-		$(".toggle").addClass("current");
-      },
-      function () {
-       $("canvas").hide();
-		$(".story").addClass("hide");
-		$(".toggle").removeClass("current");
-      }
-    );
-
-});
-
-function setCurrent(category)
-{
-	$(".current").removeClass("current");
-	$("."+category).addClass("current");
-}
-
-function loadNews(category, title)
-{
-	document.title = "Home :: News Connector - "+title;
-	setCurrent(category);
-	jsPlumb.detachEverything();
-	$('.result')
-	.html("<div style='width: 252px; margin: auto;'><img src='images/loading.gif' alt='' style='width: auto;'/></div>")
-	.load("newsgen.php?category="+category+"&cached=1");
-}
-
-function showMessage()
-{
-	window.scroll(0,0);
-	$("#message").dialog({
-		modal: true,
-		draggable: false,
-		resizable: false,
-		width: 500
-	});
-	$(".ui-widget-overlay").click(function(){$("#message").dialog('close');});
-}
-
-function toggleStories()
-{
-	$("canvas").toggle();
-	$(".story").toggleClass("hide");
-}
-
-function createTopMenu() {
-	var d=300;
-	$('#topMenuNavigation a').each(function(){
-		$(this).stop().animate({
-			'marginTop':'-80px'
-		},d+=150);
-	});
-
-	$('#topMenuNavigation > li').hover(
-	function () {
-		$('a',$(this)).stop().animate({
-			'marginTop':'-2px'
-		},200);
-	},
-	function () {
-		$('a',$(this)).stop().animate({
-			'marginTop':'-80px'
-		},200);
-	}
-	);
-}
-</script>
+{% endblock %}

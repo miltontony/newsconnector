@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="description" lang="en-us" content="NewsWorld - South Africa's biggest online news resource!"/>
+<title>::News World::</title>
+<link href="{{STATIC_URL}}css/bootstrap.min.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/new_style.css" rel="stylesheet">
+<link href="{{STATIC_URL}}css/bootstrap-responsive.min.css" rel="stylesheet">
+<!--
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/smoothness/jquery.ui.core.css" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/style.css?version=0.1" />
+<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/read.css?v=1" />
+<script type="text/javascript" src="{{STATIC_URL}}scripts/jquery.pajinate.min.js "></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.scrollTo-1.4.2-min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery-ui.1.8.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.progressbar.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+-->
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery/jquery.1.7.min.js"></script>
+<script src="{{STATIC_URL}}scripts/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/date.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/jquery.infinitescroll.js"></script>
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+{% block head %}
+{% endblock %}
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31516824-1']);
+  _gaq.push(['_setDomainName', 'newsworld.co.za']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body>
+<!-- Navbar
+================================================== -->
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container">
+   <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+   </a>
+   <a class="brand" href="{% url index %}">NewsWorld</a>
+   <div class="nav-collapse" id="main-menu">
+    {% block menu %}
+    <ul id="tabs" class="nav nav-tabs">
+        <li class="tabs-news active"><a href="#tabs-news">Local News</a></li>
+        <li class="tabs-finance"><a href="#tabs-finance">Financial</a></li>
+        <li class="tabs-sports"><a href="#tabs-sports">Sports</a></li>
+        <li class="tabs-entertainment"><a href="#tabs-entertainment">Entertainment</a></li>
+    </ul>
+    {% endblock %}
+    </div>
+
+    <form class="navbar-search pull-right" action="{% url search %}">
+      <div class="input-append">
+        <input placeholder="Search.." name="q" type="text" class="span2 search-query" value="{{q}}"/>
+      </div>
+    </form>
+</div>
+</div>
+</div>
+
+<div class="container">
+    <br/>
+    <br/>
+<section>
+{% block content %}
+{% endblock %}
+<div class="clearfix"></div>
+<div class="row">
+    <div class="text-center">
+    <a target="_blank" href="http://tonym.co.za">&copy; TonyM  {% now "Y" %}</a>
+    </div>
+</div>
+</section>
+</div>
+</body>
+
+<script type="text/javascript">
+$(function(){
+    $('.navbar #tabs a').click(function (e) {
+      e.preventDefault();
+      $(this).tab('show');
+      $('#tabs-news .articles, #tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
+      var href = $(this).attr('href');
+      $(href+' .articles').infinitescroll('resume');
+      jQuery('html, body').animate({scrollTop: 0}, 500);
+    });
+
+    $('#tabs-sports .articles, #tabs-finance .articles, #tabs-entertainment .articles,').infinitescroll('pause');
+});
+</script>
+{% block js %}
+{% endblock %}
+</html>

@@ -1,0 +1,42 @@
+{% for article in articles %}
+<div class="media article" id="{{article.hash_key}}">
+  <a class="pull-left" target="_blank" href="{{article.link}}">
+    {% if article.image_url %}
+    <img src="{{article.image_url}}" width="64px"/>
+    {% else %}
+    <img src="{{STATIC_URL}}images/news2.png" width="64px"/>
+    {%endif%}
+  </a>
+  <div class="media-body">
+    <h4 class="media-heading">{{article.title}}</h4>
+    {{article.content|truncatewords:50}}
+
+    <div class="article-footer">
+        {{article.date|timesince}} ago |
+        <a target="_blank" href="{{article.link}}">{{article.source}}</a>
+        {% with num_similar=article.similar|length %}
+        {% if not num_similar or num_similar == 0 %}
+        <span class="similar similar-0">{{num_similar}}</span>
+        {% else %}{% if num_similar < 5 %}
+        <span class="similar similar-1">{{num_similar}}</span>
+        {% else %}{% if num_similar < 10 %}
+        <span class="similar similar-2">{{num_similar}}</span>
+        {% else %}
+        <span class="similar similar">{{num_similar}}</span>
+        {% endif %}{% endif %}{% endif %}
+        {% endwith %}
+        {% if article.similar %}
+        <a href="#" rel='{{article.hash_key}}' class="view-similar">&darr; view similar</a>
+        <a href="#" rel='{{article.hash_key}}' class="hide-similar">&uarr; hide similar</a>
+        {% endif %}
+    </div>
+    {% for a in article.similar %}
+    <div class="article-similar">
+        <strong>{{a.title}}</strong><br/>
+        <div>{{a.content}}</div>
+        <div><a target="_blank" href="{{a.link}}">{{a.source}}</a></div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}

@@ -1,0 +1,23 @@
+#tabs li.hover,
+#tabs li.ui-tabs-selected{
+    background: #367fc2 !important;
+}
+
+#tabs li.ui-tabs-selected a{
+    color: #fff!important;
+}
+
+.tabs-container,
+.related-container,
+#search-results div{
+    background: #efefef !important;
+}
+
+.overlay{
+    display: none !important;
+}
+
+
+div.related-link-ie{
+    display: inline !important;
+}

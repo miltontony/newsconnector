@@ -1,0 +1,394 @@
+[
+   {
+      "pk": 1,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.moneyweb.co.za/mw/rss/mw/en/financial_service_rss.xml",
+         "site": "http://www.moneyweb.co.za/",
+         "name": "moneyweb.co.za"
+      }
+   },
+   {
+      "pk": 2,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.businesslive.co.za/?service=rss",
+         "site": "http://www.businesslive.co.za/",
+         "name": "businesslive.co.za"
+      }
+   },
+   {
+      "pk": 3,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.iol.co.za/cmlink/1.730910",
+         "site": "http://www.iol.co.za/business/",
+         "name": "iol.co.za"
+      }
+   },
+   {
+      "pk": 4,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.businessday.co.za/Rss/GenerateRss.aspx?option=TopStories&optionId=3",
+         "site": "http://www.businessday.co.za/",
+         "name": "businessday.co.za"
+      }
+   },
+   {
+      "pk": 5,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.fm.co.za/ToolPages/Rss.aspx",
+         "site": "http://www.fm.co.za/",
+         "name": "fm.co.za"
+      }
+   },
+   {
+      "pk": 6,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.fin24.com/articles/Fin24/News/rss",
+         "site": "http://www.fin24.com/",
+         "name": "fin24.com"
+      }
+   },
+   {
+      "pk": 7,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://mg.co.za/rss/business",
+         "site": "http://mg.co.za/section/business/",
+         "name": "mg.co.za"
+      }
+   },
+   {
+      "pk": 8,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.news24.com/articles/news24/SouthAfrica/rss",
+         "site": "http://news24.com/",
+         "name": "news24.com"
+      }
+   },
+   {
+      "pk": 9,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.timeslive.co.za/?service=rss",
+         "site": "http://www.timeslive.co.za/",
+         "name": "timeslive.co.za"
+      }
+   },
+   {
+      "pk": 10,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.iol.co.za/rss/feed_southafrica.rss",
+         "site": "http://iol.co.za/",
+         "name": "iol.co.za"
+      }
+   },
+   {
+      "pk": 11,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.ewn.co.za/Feeds/Local.aspx",
+         "site": "http://www.ewn.co.za/",
+         "name": "ewn.co.za"
+      }
+   },
+   {
+      "pk": 12,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://mg.co.za/rss/national",
+         "site": "http://mg.co.za/",
+         "name": "mg.co.za"
+      }
+   },
+   {
+      "pk": 13,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.thenewage.co.za/rss.aspx?cat_id=1007",
+         "site": "http://www.thenewage.co.za/",
+         "name": "thenewage.co.za"
+      }
+   },
+   {
+      "pk": 14,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.sowetanlive.co.za/news/?service=rss",
+         "site": "http://www.sowetanlive.co.za/",
+         "name": "sowetanlive.co.za"
+      }
+   },
+   {
+      "pk": 15,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.citypress.co.za/articles/CityPress/TopStories/rss",
+         "site": "http://citypress.co.za/",
+         "name": "citypress.co.za"
+      }
+   },
+   {
+      "pk": 16,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.citypress.co.za/articles/CityPress/Sport/rss",
+         "site": "http://www.citypress.co.za/Sport/",
+         "name": "citypress.co.za"
+      }
+   },
+   {
+      "pk": 17,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://avusa.feedsportal.com/c/33051/f/534659/index.rss",
+         "site": "http://www.sowetanlive.co.za/sport/",
+         "name": "sowetanlive.co.za"
+      }
+   },
+   {
+      "pk": 18,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.sportlive.co.za/?service=rss",
+         "site": "http://www.sportlive.co.za/",
+         "name": "sportlive.co.za"
+      }
+   },
+   {
+      "pk": 19,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://iol.co.za/cmlink/sport-category-rss-1.704",
+         "site": "http://www.iol.co.za/sport",
+         "name": "iol.co.za"
+      }
+   },
+   {
+      "pk": 21,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.supersport.com/rss/",
+         "site": "http://www.supersport.com/rss/",
+         "name": "supersport.com"
+      }
+   },
+   {
+      "pk": 22,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://24.com.feedsportal.com/c/33816/f/607928/index.rss",
+         "site": "http://www.sport24.co.za/",
+         "name": "sport24.co.za"
+      }
+   },
+   {
+      "pk": 23,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.timeslive.co.za/entertainment/?service=rss",
+         "site": "http://www.timeslive.co.za/entertainment/",
+         "name": "timeslive.co.za"
+      }
+   },
+   {
+      "pk": 24,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://syndication.eonline.com/syndication/feeds/rssfeeds/topstories.xml",
+         "site": "http://eonline.com/",
+         "name": "eonline.com"
+      }
+   },
+   {
+      "pk": 25,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://thenewage.co.za/rss.aspx?cat_id=1022",
+         "site": "http://thenewage.co.za/entertainment",
+         "name": "thenewage.co.za"
+      }
+   },
+   {
+      "pk": 26,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://globalgrind.com/rss/hpheadlines",
+         "site": "http://globalgrind.com/",
+         "name": "globalgrind.com"
+      }
+   },
+   {
+      "pk": 27,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://ewn.co.za/RSS%20Feeds/Latest%20News?category=Entertainment",
+         "site": "http://ewn.co.za/Categories/entertainment",
+         "name": "ewn.co.za"
+      }
+   },
+   {
+      "pk": 28,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://feeds.channel24.co.za/articles/Channel/Gossip/rss",
+         "site": "http://channel24.co.za/",
+         "name": "channel24.co.za"
+      }
+   },
+   {
+      "pk": 29,
+      "model": "newsconnector.rssfeed",
+      "fields": {
+         "url": "http://www.huffingtonpost.com/feeds/verticals/entertainment/index.xml",
+         "site": "http://www.huffingtonpost.com/entertainment/",
+         "name": "huffingtonpost.com"
+      }
+   },
+   {
+      "pk": 8,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 9,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 10,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 11,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 12,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 13,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 14,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 15,
+      "model": "newsconnector.newsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 16,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 17,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 18,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 19,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 21,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 22,
+      "model": "newsconnector.sportsfeed",
+      "fields": {}
+   },
+   {
+      "pk": 1,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 2,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 3,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 4,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 5,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 6,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 7,
+      "model": "newsconnector.financefeed",
+      "fields": {}
+   },
+   {
+      "pk": 23,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 24,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 25,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 26,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 27,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 28,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   },
+   {
+      "pk": 29,
+      "model": "newsconnector.entertainmentfeed",
+      "fields": {}
+   }
+]

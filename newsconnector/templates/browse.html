@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block head %}
+<script language="javascript" type="text/javascript" src="{{STATIC_URL}}scripts/newsworld.js"></script>
+{% endblock %}
+
+{% block menu %}
+<ul class="nav nav-tabs"></ul>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<h4 class="span6 well well-small">Results</h4>
+<div id="search-results" class="articles">
+    <div class="span6">
+    {% if news %}
+    {% include "article_block.html" with articles=news %}
+    {% include "readmore_articles.html" with articles=news %}
+    {% else %}
+    <span style="color:#fff">
+        Your search for &ldquo;{{q}}&rdquo; did not return any results.
+    </span>
+    {% endif %}
+</div>
+
+<div id="search-pagination">
+	{% if paged_news.has_previous %}
+	<a href="?q={{q}}&page={{ paged_news.previous_page_number }}">&lt;</a>
+	{% endif %}
+	{% if show_first %}
+	<a href="?q={{q}}&page=1" {% if paged_news.number == 1 %}class="active"{%endif%}>1</a>
+	<a class="elipses">...</a>
+	{% endif %}
+	{% for i in pages %}
+	<a href="?q={{q}}&page={{ i }}" {% if paged_news.number == i %}class="active"{%endif%}>{{i}}</a>
+	{% endfor %}
+	{% if show_last %}
+	<a class="elipses">...</a>
+	<span class="page"><a href="?q={{q}}&page={{paged_news.paginator.num_pages}}">{{ paged_news.paginator.num_pages }}</a></span>
+	{% endif %}
+	{% if paged_news.has_next %}
+	<a href="?q={{q}}&page={{ paged_news.next_page_number }}">&gt;</a>
+	{% endif %}
+</div>
+</div>
+</div>
+{% endblock %}
