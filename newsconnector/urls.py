@@ -8,6 +8,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', views.read, name='index'),
+    url(r'^export/$', views.export_feeds, name='export_feeds'),
     url(r'^more/(?P<tag>\w+)/$', views.read_more, name='read_more'),
     url(r'^featured/(?P<tag>\w+)/$', views.featured_articles,
         name='featured_articles'),

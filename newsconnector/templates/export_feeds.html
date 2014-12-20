@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<opml version="2.0">
+    <head>
+        <title>Coldsweat sample subscriptions</title>
+        <dateCreated>Mon, 11 Nov 2013 17:07:00 GMT</dateCreated>
+    </head>
+    <body>
+        {% for feed, title in feeds %}
+        <outline title="{{title}}" text="{{title}}">
+            {% for item in feed.objects.all %}
+            <outline text="500px: {{item.name}}" title="500px: {{item.name}}"
+                type="rss" xmlUrl="{{item.url}}" htmlUrl="{{item.site}}"/>
+            {% endfor %}
+        </outline>
+        {% endfor %}
+    </body>
+</opml>

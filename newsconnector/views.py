@@ -83,3 +83,15 @@ def read_more(request, tag):
             mimetype='application/json')
 
     return render(request, 'article_block.html', {'articles': articles})
+
+
+def export_feeds(request):
+    feeds = [
+        (NewsFeed, 'News'),
+        (FinanceFeed, 'Finance'),
+        (SportsFeed, 'Sports'),
+        (EntertainmentFeed, 'Entertainment'),
+        (INewsFeed, 'International News'),
+        (ISportsFeed, 'International Sports')]
+    render(request, 'export_feeds.html', feeds,
+           content_type="text/xml")
