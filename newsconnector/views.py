@@ -93,5 +93,4 @@ def export_feeds(request):
         (EntertainmentFeed, 'Entertainment'),
         (INewsFeed, 'International News'),
         (ISportsFeed, 'International Sports')]
-    render(request, 'export_feeds.html', feeds,
-           content_type="text/xml")
+    return render(request, 'export_feeds.html', feeds, content_type="text/xml")
